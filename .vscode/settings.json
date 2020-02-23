@@ -1,0 +1,14 @@
+{
+  "editor.codeActionsOnSave": { // Use eslint to format code when code is saved
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": false, // Disable editor formatting on save as this is handled by eslint  
+  "eslint.format.enable": false, // No need to use eslint as a formatter as formatting happens in a codeAction 
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/android": true,
+    "**/ios": true,
+  }
+}

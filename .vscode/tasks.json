@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "reactNativeDevMenu",
+      "type": "shell",
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "command": "adb reverse tcp:8081 tcp:8081 && adb shell input keyevent 82"
+    }
+  ]
+}
