@@ -12,7 +12,7 @@ export function requestLogger(config) {
     `${method.toUpperCase()} ${url.replace(config.baseURL, "") + queryParams}`
   );
 
-  const token = _.get(config, "headers.Authorization");
+  const token = config?.headers?.Authorization;
   const tokenShort = token ? `${token.substr(0, 40)}...` : "No JWT set";
   lines.push(`Token: ${tokenShort}`);
 

@@ -86,22 +86,22 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
     else if (colorLightSofter) color = C.colorTextLightSofter;
 
     let fontWeight: TextStyle["fontWeight"] = C.fontWeightRegular;
-    let fontFamily: TextStyle["fontFamily"] = "OpenSans-Regular";
+    // let fontFamily: TextStyle["fontFamily"] = "OpenSans-Regular";
     if (weightLight) {
       fontWeight = C.fontWeightLight;
-      fontFamily = "OpenSans-Light";
+      // fontFamily = "OpenSans-Light";
     } else if (weightRegular) {
       fontWeight = C.fontWeightRegular;
-      fontFamily = "OpenSans-Regular";
+      // fontFamily = "OpenSans-Regular";
     } else if (weightSemiBold) {
       fontWeight = C.fontWeightSemiBold;
-      fontFamily = "OpenSans-SemiBold";
+      // fontFamily = "OpenSans-SemiBold";
     } else if (weightBold) {
       fontWeight = C.fontWeightBold;
-      fontFamily = "OpenSans-Bold";
+      // fontFamily = "OpenSans-Bold";
     } else if (weightExtraBold) {
       fontWeight = C.fontWeightExtraBold;
-      fontFamily = "OpenSans-ExtraBold";
+      // fontFamily = "OpenSans-ExtraBold";
     }
     return (
       <RNTextInput
@@ -112,8 +112,7 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
           {
             fontSize,
             color,
-            fontWeight,
-            fontFamily
+            fontWeight
           },
           style
         ]}

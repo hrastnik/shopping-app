@@ -38,6 +38,8 @@ module.exports = {
   },
   rules: {
     "no-console": 0,
+    "no-shadow": "off",
+    "no-catch-shadow": "off",
 
     "prettier/prettier": "error",
 

@@ -6,10 +6,13 @@ import React, {
   useEffect
 } from "react";
 import { observer } from "mobx-react";
+import { StyleSheet } from "react-native";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 
-import { StyleSheet, Text, View, IconButton } from "~/components";
+import { Text } from "~/components/Text";
+import { View } from "~/components/View";
+import { IconButton } from "~/components/IconButton";
 import { constants as C } from "~/style";
 import { shadow } from "~/utils/shadow";
 

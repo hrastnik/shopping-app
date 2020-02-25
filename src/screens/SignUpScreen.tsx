@@ -73,7 +73,7 @@ const Card = ({ source, title, iconName, onPress }: CardProps) => {
   );
 };
 
-export const HomeScreen = observer(() => {
+export const SignUpScreen = observer(() => {
   const navigation = useNavigation();
 
   return (

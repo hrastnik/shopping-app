@@ -1,4 +1,4 @@
-import RNAsyncStorage from "@react-native-community/async-storage";
+import { AsyncStorage as RNAsyncStorage } from "react-native";
 
 export function createPersistence(AsyncStorage = RNAsyncStorage) {
   return {

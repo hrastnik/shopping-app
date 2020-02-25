@@ -3,12 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { Header } from "~/components";
-import { HomeScreen } from "~/screens/HomeScreen";
-import { SecretZadarScreen } from "~/screens/SecretZadarScreen";
-import { SecretDetailsScreen } from "~/screens/SecretDetailsScreen";
-import { MapScreen } from "~/screens/MapScreen";
-import { MusicScreen } from "~/screens/MusicScreen";
-import { GalleryScreen } from "~/screens/GalleryScreen";
+import { LoginScreen } from "~/screens/LoginScreen";
+import { SignUpScreen } from "~/screens/SignUpScreen";
 
 const Stack = createStackNavigator();
 
@@ -23,33 +19,13 @@ export function Router() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Login"
+          component={LoginScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="SecretZadar"
-          component={SecretZadarScreen}
-          options={{ title: "SECRET ZADAR" }}
-        />
-        <Stack.Screen
-          name="SecretDetails"
-          component={SecretDetailsScreen}
-          options={{ title: "SECRET ZADAR" }}
-        />
-        <Stack.Screen
-          name="Map"
-          component={MapScreen}
-          options={{ title: "MAP" }}
-        />
-        <Stack.Screen
-          name="Music"
-          component={MusicScreen}
-          options={{ title: "SECRET ZADAR" }}
-        />
-        <Stack.Screen
-          name="Gallery"
-          component={GalleryScreen}
+          name="Sign Up"
+          component={SignUpScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

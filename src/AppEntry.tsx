@@ -1,18 +1,18 @@
 import "react-native-gesture-handler";
 
+import { StatusBar, Platform, StyleSheet } from "react-native";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import React, { useEffect, useState, useRef } from "react";
 import { Provider } from "mobx-react";
-import Orientation from "react-native-orientation";
+
+import { createPersistence } from "~/services/persistence/createPersistence";
+import { createHttp } from "~/services/http/createHttp";
 
 import { Router } from "~/screens/Router";
-import { HeaderProvider } from "~/components/HeaderHooks";
+import { HeaderProvider } from "~/components/Header";
 import { ModalProvider } from "~/components/ModalProvider";
-import { createHttp } from "~/services/http/createHttp";
-import { createPersistence } from "~/services/persistence/createPersistence";
 import { createStore } from "~/mobx/createStore";
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import { constants } from "./style";
-import { StatusBar, Platform, StyleSheet } from "react-native";
+import { constants } from "~/style";
 
 const S = StyleSheet.create({
   safeAreaView: {
@@ -22,8 +22,6 @@ const S = StyleSheet.create({
 });
 
 async function initialize() {
-  Orientation.lockToPortrait();
-
   StatusBar.setBarStyle("light-content");
   if (Platform.OS === "android")
     StatusBar.setBackgroundColor(constants.colorBackgroundThemeHarder);

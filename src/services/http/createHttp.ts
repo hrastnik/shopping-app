@@ -1,18 +1,14 @@
 import Axios from "axios";
 
-import { addToken } from "./addToken.interceptor";
 import { requestLogger } from "./requestLogger.interceptor";
 import { responseLogger } from "./responseLogger.interceptor";
 import { errorLogger } from "./errorLogger.interceptor";
 
 export function createHttp(axios = Axios) {
-  const state = { token: undefined };
-
   const http = axios.create({
-    baseURL: undefined
+    baseURL: "http://192.168.1.102:1337/"
   });
 
-  http.interceptors.request.use(addToken(() => state.token));
   http.interceptors.request.use(requestLogger);
   http.interceptors.response.use(responseLogger, errorLogger);
 
