@@ -12,29 +12,6 @@ import {
 import { useStore } from "./useStore";
 import { StoreInstance } from "./createStore";
 
-export interface PaginatedResponse<Data> {
-  data: [Data];
-  links: {
-    first?: string;
-    last?: string;
-    next?: string;
-    prev?: string;
-  };
-  meta: {
-    current_page: number;
-    from: number;
-    last_page: number;
-    path: string;
-    per_page: number;
-    to: number;
-    total: number;
-  };
-}
-
-export interface DataResponse<Data> {
-  data: Data;
-}
-
 const initialState = {
   nextPage: 1,
   isLoading: true,
@@ -47,7 +24,7 @@ type Action =
   | { type: "fetch first" }
   | { type: "refresh" }
   | { type: "fetch next" }
-  | { type: "fetch success"; response: PaginatedResponse<any> }
+  | { type: "fetch success"; response: any }
   | { type: "fetch error"; error: Error };
 const reducer = (state: typeof initialState, action: Action) => {
   switch (action.type) {
@@ -105,18 +82,14 @@ const reducer = (state: typeof initialState, action: Action) => {
 };
 
 export function useQuery<EntityType extends IAnyType>(
-  getFetchFn: (
-    store: StoreInstance
-  ) => (
-    ...args: any[]
-  ) => Promise<PaginatedResponse<any>> | Promise<DataResponse<any>>,
+  getFetchFn: (store: StoreInstance) => (...args: any[]) => Promise<any>,
   // getProcessorFn: (store: StoreInstance) => (entity: EntityType) => any,
   getResourceMap: (store: StoreInstance) => IMSTMap<EntityType>,
   deps = []
 ) {
   const store = useStore();
   const [state, dispatch] = useReducer(reducer, initialState);
-  // eslint-disable-next-line
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchListFn = useMemo(() => getFetchFn(store), [store, ...deps]);
   const resourceMap = getResourceMap(store);
   // const processorFn = getProcessorFn(store);
@@ -135,7 +108,7 @@ export function useQuery<EntityType extends IAnyType>(
     return dataList;
   }, [EntityModel, resourceMap]);
   const fetchFirst = useCallback(() => {
-    const maybePromise = fetchListFn({ page: 1 });
+    const maybePromise = fetchListFn();
     const isValid = maybePromise && maybePromise.then;
     if (!isValid) return;
     dispatch({ type: "fetch first" });

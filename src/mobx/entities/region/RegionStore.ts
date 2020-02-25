@@ -24,6 +24,7 @@ export const RegionStore = types
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(`/regions`, params);
         self.processRegionList(response.data);
+        return response;
       }),
 
       readRegionList: flow(function*(params): any {
@@ -32,6 +33,7 @@ export const RegionStore = types
           params
         });
         self.processRegionList(response.data);
+        return response;
       }),
 
       readRegion: flow(function*(id, params): any {
@@ -40,6 +42,7 @@ export const RegionStore = types
           params
         });
         self.processRegionList(response.data);
+        return response;
       }),
 
       updateRegion: flow(function*(id, params): any {
@@ -49,6 +52,7 @@ export const RegionStore = types
           params
         );
         self.processRegionList(response.data);
+        return response;
       }),
 
       deleteRegion: flow(function*(id, params): any {
@@ -58,6 +62,7 @@ export const RegionStore = types
           params
         );
         self.processRegionList(response.data);
+        return response;
       })
     };
   });

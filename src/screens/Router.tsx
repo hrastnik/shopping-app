@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Header } from "~/components";
 import { LoginScreen } from "~/screens/LoginScreen";
 import { SignUpScreen } from "~/screens/SignUpScreen";
+import { RegionSelectScreen } from "~/screens/RegionSelectScreen";
 
 const Stack = createStackNavigator();
 
@@ -24,8 +25,14 @@ export function Router() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Sign Up"
+          name="SignUp"
           component={SignUpScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="RegionSelect"
+          component={RegionSelectScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

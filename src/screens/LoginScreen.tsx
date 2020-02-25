@@ -5,12 +5,14 @@ import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
 import { TextInput, Button, Text } from "~/components";
 import { useStore } from "~/mobx/useStore";
+import { useNavigation } from "@react-navigation/native";
 
 export const LoginScreen = observer(() => {
+  const store = useStore();
+  const navigation = useNavigation();
+
   const [email, setEmail] = useState("hrastnikmateo@gmail.com");
   const [password, setPassword] = useState("test1234");
-
-  const store = useStore();
 
   const [error, setError] = useState(undefined);
 
@@ -32,6 +34,7 @@ export const LoginScreen = observer(() => {
             try {
               setError(undefined);
               await store.authStore.login({ identifier: email, password });
+              navigation.navigate("RegionSelect");
             } catch (error) {
               setError(error.message);
             }
