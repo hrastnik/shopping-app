@@ -1,11 +1,13 @@
 import React from "react";
 
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { constants as C } from "~/style";
 
 export interface IconProps {
   name:
+    | "radio-on"
+    | "radio-off"
     | "chevron-left"
     | "chevron-right"
     | "notifications"
@@ -20,6 +22,8 @@ export interface IconProps {
 
 function Icon({ name, color = C.colorTextLight, size = 28 }: IconProps) {
   switch (name) {
+    case "radio-on":
+    case "radio-off":
     case "chevron-left":
     case "chevron-right":
     case "notifications":

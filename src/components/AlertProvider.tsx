@@ -4,16 +4,17 @@ import {
   AlertButton,
   TouchableWithoutFeedback,
   AlertOptions,
-  ViewStyle,
-  View,
-  Text,
-  Button,
-  Modal
-} from "~/components";
+  ViewStyle
+} from "react-native";
+
+import { Button } from "~/components/Button";
+import { Modal } from "~/components/ModalProvider";
+import { Spacer } from "~/components/Spacer";
+import { Text } from "~/components/Text";
+import { View } from "~/components/View";
 import { shadow } from "~/utils/shadow";
 
 import { constants as C } from "~/style";
-import { Spacer } from "./Spacer";
 
 interface ContextType {
   alert: (

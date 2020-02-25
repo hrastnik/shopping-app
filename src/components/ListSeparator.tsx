@@ -1,6 +1,7 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 
-import { StyleSheet, View } from "~/components";
+import { View } from "~/components/View";
 import { constants as C } from "~/style";
 
 const S = StyleSheet.create({

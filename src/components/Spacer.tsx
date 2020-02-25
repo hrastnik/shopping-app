@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet } from "~/components";
+import { StyleSheet } from "react-native";
+import { View } from "~/components/View";
 
 import { constants as C } from "~/style";
 

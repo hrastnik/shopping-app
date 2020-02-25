@@ -1,7 +1,9 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 
+import { View } from "~/components/View";
+import { Spacer } from "~/components/Spacer";
 import { constants as C } from "~/style";
-import { StyleSheet, View, Spacer } from "~/components";
 
 const S = StyleSheet.create({
   divider: {

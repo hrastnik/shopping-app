@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, ActivityIndicatorProps } from "~/components";
+import { ActivityIndicator, ActivityIndicatorProps } from "react-native";
 
 import { constants as C } from "~/style";
 

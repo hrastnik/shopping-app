@@ -1,10 +1,10 @@
 import React, { ReactNode } from "react";
 import {
-  View,
   TouchableWithoutFeedback,
   StyleSheet,
   BackHandler
-} from "~/components";
+} from "react-native";
+import { View } from "~/components/View";
 
 const ModalContext = React.createContext(null);
 

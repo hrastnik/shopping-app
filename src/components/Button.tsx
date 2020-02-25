@@ -1,20 +1,20 @@
 import React, { ReactNode, useState, forwardRef } from "react";
-
-import { constants as C } from "~/style";
-import { shadow } from "~/utils/shadow";
 import {
   TouchableOpacity,
   TextStyle,
   StyleSheet,
   TouchableOpacityProps,
   Platform,
-  Modal,
-  TouchableWithoutFeedback,
-  Spacer,
-  Spinner,
-  Text,
-  View
-} from "~/components";
+  TouchableWithoutFeedback
+} from "react-native";
+
+import { Modal } from "~/components/ModalProvider";
+import { Spacer } from "~/components/Spacer";
+import { Spinner } from "~/components/Spinner";
+import { Text } from "~/components/Text";
+import { View } from "~/components/View";
+import { constants as C } from "~/style";
+import { shadow } from "~/utils/shadow";
 
 export interface ButtonProps extends TouchableOpacityProps {
   title?: string;

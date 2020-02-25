@@ -1,6 +1,9 @@
 import React, { useContext, ReactNode } from "react";
+import { TouchableOpacity } from "react-native";
 
-import { TouchableOpacity, Icon, RadioGroupContext, View } from "~/components";
+import { Icon } from "~/components/Icon";
+import { RadioGroupContext } from "~/components/RadioGroup";
+import { View } from "~/components/View";
 
 import { constants as C } from "~/style";
 

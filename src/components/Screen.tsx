@@ -1,12 +1,11 @@
 import React, { ReactNode } from "react";
-import { View as RNView } from "react-native";
 import {
+  View as RNView,
   StyleSheet,
   ScrollView,
-  ScrollViewProps,
-  ViewProps,
-  View
-} from "~/components";
+  ScrollViewProps
+} from "react-native";
+import { ViewProps, View } from "~/components/View";
 
 import { constants as C } from "~/style";
 

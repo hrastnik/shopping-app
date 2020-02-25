@@ -2,9 +2,9 @@ import React, { ReactNode } from "react";
 import {
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
-  TextStyle
+  TextStyle,
+  StyleSheet
 } from "react-native";
-import { StyleSheet } from "~/components";
 
 import { constants as C } from "~/style";
 

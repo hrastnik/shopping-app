@@ -1,6 +1,8 @@
 import React, { ReactNode } from "react";
+import { TouchableOpacity } from "react-native";
 
-import { TouchableOpacity, Icon, View } from "~/components";
+import { Icon } from "~/components/Icon";
+import { View } from "~/components/View";
 import { constants as C } from "~/style";
 
 interface CheckBoxProps {
