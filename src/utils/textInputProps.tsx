@@ -1,4 +1,4 @@
-import { TextInputProps } from "~/components";
+import { TextInputProps } from "~/components/TextInput";
 
 export const textInputProps: Record<string, TextInputProps> = {
   email: {

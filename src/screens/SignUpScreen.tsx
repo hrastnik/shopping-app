@@ -15,8 +15,7 @@ import {
 import { constants as C } from "~/style";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { shadow } from "~/utils/shadow";
-import { Icon } from "~/components";
-import { IconProps } from "~/components/Icon";
+import { Icon, IconProps } from "~/components/Icon";
 import { useNavigation } from "@react-navigation/native";
 
 const S = StyleSheet.create({

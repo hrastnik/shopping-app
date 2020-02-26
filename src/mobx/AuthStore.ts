@@ -35,7 +35,7 @@ export const AuthStore = types
   .views(self => {
     return {
       get isLoggedIn() {
-        return self.token !== undefined && self.activeUser;
+        return self.token !== undefined && self.activeUser != null;
       }
     };
   })
@@ -91,7 +91,10 @@ export const AuthStore = types
   .actions(self => {
     return {
       afterAttach: flow(function*(): any {
+        console.warn("afterAttach running");
+
         const env: Environment = getEnv(self);
+        const root = getRoot(self);
         self.token = yield env.persistence.get("token");
 
         autorun(() => {
@@ -106,19 +109,18 @@ export const AuthStore = types
           env.persistence.set("token", self.token);
         });
 
-        yield delay(0);
-
         if (self.token) {
           try {
+            yield delay(0); // wait for token to set
             yield self.me();
+            root.uiStore.set("initialScreen", "RegionList");
           } catch (error) {
             console.warn("error /me", error);
+            root.uiStore.set("initialScreen", "LoginScreen");
           }
+        } else {
+          root.uiStore.set("initialScreen", "LoginScreen");
         }
-
-        autorun(() => {
-          console.warn("isLoggedIn", self);
-        });
       })
     };
   });

@@ -36,4 +36,15 @@ export const Region = types
         yield root.regionStore.deleteRegion(self.id, params);
       })
     };
+  })
+  .actions(self => {
+    return {
+      readShopList: flow(function*(params): any {
+        const root = getRoot(self);
+        return yield root.shopStore.readShopList({
+          region: self.id,
+          ...params
+        });
+      })
+    };
   });

@@ -18,7 +18,7 @@ const S = StyleSheet.create({
   }
 });
 
-interface TextInputProps extends RNTextInputProps {
+export interface TextInputProps extends RNTextInputProps {
   sizeExtraSmall?: boolean;
   sizeSmall?: boolean;
   sizeMedium?: boolean;

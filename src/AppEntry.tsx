@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 
-import { StatusBar, Platform, StyleSheet } from "react-native";
+import { StatusBar, Platform, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import React, { useEffect, useState, useRef } from "react";
 import { Provider } from "mobx-react";
@@ -18,7 +18,8 @@ const S = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: constants.colorBackgroundThemeHarder
-  }
+  },
+  flexCenterContent: { flex: 1, justifyContent: "center", alignItems: "center" }
 });
 
 async function initialize() {
@@ -45,7 +46,11 @@ export function AppEntry() {
   }, []);
 
   if (!isReady) {
-    return null;
+    return (
+      <View style={S.flexCenterContent}>
+        <Text>Loading</Text>
+      </View>
+    );
   }
 
   return (

@@ -12,7 +12,7 @@
         "showReuseMessage": false,
         "clear": false
       },
-      "command": "adb reverse tcp:8081 tcp:8081 && adb shell input keyevent 82"
+      "command": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:19000 tcp:19000 && adb reverse tcp:19001 tcp:19001 &&  adb shell input keyevent 82"
     }
   ]
 }

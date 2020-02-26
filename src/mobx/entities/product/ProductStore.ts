@@ -40,6 +40,7 @@ export const ProductStore = types
           params
         );
         self.processProductList(response.data);
+        return response;
       }),
 
       readProductList: flow(function*(params): any {
@@ -48,6 +49,7 @@ export const ProductStore = types
           params
         });
         self.processProductList(response.data);
+        return response;
       }),
 
       readProduct: flow(function*(id, params): any {
@@ -56,6 +58,7 @@ export const ProductStore = types
           params
         });
         self.processProductList(response.data);
+        return response;
       }),
 
       updateProduct: flow(function*(id, params): any {
@@ -65,6 +68,7 @@ export const ProductStore = types
           params
         );
         self.processProductList(response.data);
+        return response;
       }),
 
       deleteProduct: flow(function*(id, params): any {
@@ -74,6 +78,7 @@ export const ProductStore = types
           params
         );
         self.processProductList(response.data);
+        return response;
       })
     };
   });

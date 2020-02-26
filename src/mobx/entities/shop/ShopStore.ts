@@ -24,6 +24,7 @@ export const ShopStore = types
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(`/shops`, params);
         self.processShopList(response.data);
+        return response;
       }),
 
       readShopList: flow(function*(params): any {
@@ -32,6 +33,7 @@ export const ShopStore = types
           params
         });
         self.processShopList(response.data);
+        return response;
       }),
 
       readShop: flow(function*(id, params): any {
@@ -40,6 +42,7 @@ export const ShopStore = types
           params
         });
         self.processShopList(response.data);
+        return response;
       }),
 
       updateShop: flow(function*(id, params): any {
@@ -49,6 +52,7 @@ export const ShopStore = types
           params
         );
         self.processShopList(response.data);
+        return response;
       }),
 
       deleteShop: flow(function*(id, params): any {
@@ -58,6 +62,7 @@ export const ShopStore = types
           params
         );
         self.processShopList(response.data);
+        return response;
       })
     };
   });

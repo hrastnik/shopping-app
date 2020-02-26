@@ -8,13 +8,15 @@ import { ProductStore } from "./entities/product/ProductStore";
 import { UserStore } from "./entities/user/UserStore";
 import { AuthStore } from "./AuthStore";
 import { UIStore } from "./UIStore";
+import { when } from "mobx";
+import { Await } from "./utils/Await";
 
 export interface Environment {
   http: HttpStatic;
   persistence: PersistenceStatic;
 }
 
-export function createStore(env: Environment) {
+export async function createStore(env: Environment) {
   const Store = types.optional(
     types.model("Store", {
       regionStore: types.optional(RegionStore, {}),
@@ -29,7 +31,14 @@ export function createStore(env: Environment) {
 
   const store = Store.create(undefined, env);
 
+  await when(() => {
+    return (
+      typeof store.authStore.isLoggedIn === "boolean" &&
+      store.uiStore.initialScreen !== undefined
+    );
+  });
+
   return store;
 }
 
-export interface StoreInstance extends ReturnType<typeof createStore> {}
+export interface StoreInstance extends Await<typeof createStore> {}

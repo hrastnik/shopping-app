@@ -40,6 +40,7 @@ module.exports = {
     "no-console": 0,
     "no-shadow": "off",
     "no-catch-shadow": "off",
+    "eslint-comments/no-unlimited-disable": "off",
 
     "prettier/prettier": "error",
 

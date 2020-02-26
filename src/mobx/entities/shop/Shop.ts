@@ -36,4 +36,15 @@ export const Shop = types
         yield root.shopStore.deleteShop(self.id, params);
       })
     };
+  })
+  .actions(self => {
+    return {
+      readProductList: flow(function*(params): any {
+        const root = getRoot(self);
+        return yield root.productStore.readProductList({
+          shop: self.id,
+          ...params
+        });
+      })
+    };
   });

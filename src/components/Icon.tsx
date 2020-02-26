@@ -8,6 +8,8 @@ export interface IconProps {
   name:
     | "radio-on"
     | "radio-off"
+    | "check-box"
+    | "check-box-blank"
     | "chevron-left"
     | "chevron-right"
     | "notifications"

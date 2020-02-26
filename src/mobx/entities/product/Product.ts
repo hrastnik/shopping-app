@@ -5,6 +5,7 @@ import {
   SnapshotIn,
   SnapshotOut
 } from "mobx-state-tree";
+
 import { DateTime } from "~/mobx/util-models/DateTime";
 import { getRoot } from "~/mobx/utils/getRoot";
 
@@ -17,11 +18,26 @@ export const Product = types
     id: types.identifierNumber,
     created_at: DateTime,
     updated_at: DateTime,
-    name: types.string
+    name: types.string,
+    images: types.array(
+      types
+        .model("Image", {
+          id: types.identifierNumber,
+          name: types.string,
+          url: types.string
+        })
+        .views(self => {
+          return {
+            get source() {
+              return { uri: "http://192.168.1.102:1337" + self.url };
+            }
+          };
+        })
+    )
   })
   .actions(self => {
     return {
-      refresh: flow(function*(params): any {
+      refresh: flow(function*(params = undefined): any {
         const root = getRoot(self);
         yield root.productStore.readProduct(self.id, params);
       }),

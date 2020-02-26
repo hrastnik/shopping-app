@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Icon } from "~/components";
-import { IconProps } from "~/components/Icon";
-import { ButtonProps } from "~/components/Button";
+import { Icon, IconProps } from "~/components/Icon";
+import { Button, ButtonProps } from "~/components/Button";
 
 import { constants as C } from "~/style";
 

@@ -12,12 +12,14 @@ import {
 import { useStore } from "./useStore";
 import { StoreInstance } from "./createStore";
 
+const resultsPerPage = 15;
+
 const initialState = {
-  nextPage: 1,
+  params: { _start: 0, _limit: resultsPerPage },
   isLoading: true,
   isRefreshing: false,
-  isFirstLoad: true,
-  isFetchingNext: false,
+  isLoadingFirst: true,
+  isLoadingNext: false,
   isEndReached: false
 };
 type Action =
@@ -29,41 +31,44 @@ type Action =
 const reducer = (state: typeof initialState, action: Action) => {
   switch (action.type) {
     case "fetch first": {
-      if (state.isFirstLoad) return state;
-      return { ...state, isFirstLoad: true, isLoading: true };
+      if (state.isLoadingFirst) return state;
+      return { ...state, isLoadingFirst: true, isLoading: true };
     }
     case "fetch next": {
-      if (state.isRefreshing && !state.isFirstLoad && !state.isFetchingNext)
+      if (state.isRefreshing && !state.isLoadingFirst && !state.isLoadingNext)
         return state;
       return {
         ...state,
         isLoading: true,
         isRefreshing: false,
-        isFirstLoad: false,
-        isFetchingNext: true
+        isLoadingFirst: false,
+        isLoadingNext: true
       };
     }
     case "refresh": {
-      if (state.isRefreshing && !state.isFirstLoad && !state.isFetchingNext)
+      if (state.isRefreshing && !state.isLoadingFirst && !state.isLoadingNext)
         return state;
       return {
         ...state,
         isLoading: true,
         isRefreshing: true,
-        isFirstLoad: false,
-        isFetchingNext: false
+        isLoadingFirst: false,
+        isLoadingNext: false
       };
     }
     case "fetch success": {
       const { response } = action;
       return {
         ...state,
-        nextPage: (response?.meta?.current_page ?? 0) + 1,
-        isEndReached: response?.links?.next == null,
+        params: {
+          _start: state.params._start + resultsPerPage,
+          _limit: resultsPerPage
+        },
+        isEndReached: response.data.length === 0,
         isLoading: false,
         isRefreshing: false,
-        isFirstLoad: false,
-        isFetchingNext: false,
+        isLoadingFirst: false,
+        isLoadingNext: false,
         data: _.castArray(response.data)
       };
     }
@@ -73,8 +78,8 @@ const reducer = (state: typeof initialState, action: Action) => {
         ...state,
         isLoading: false,
         isRefreshing: false,
-        isFirstLoad: false,
-        isFetchingNext: false,
+        isLoadingFirst: false,
+        isLoadingNext: false,
         error
       };
     }
@@ -108,7 +113,7 @@ export function useQuery<EntityType extends IAnyType>(
     return dataList;
   }, [EntityModel, resourceMap]);
   const fetchFirst = useCallback(() => {
-    const maybePromise = fetchListFn();
+    const maybePromise = fetchListFn(initialState.params);
     const isValid = maybePromise && maybePromise.then;
     if (!isValid) return;
     dispatch({ type: "fetch first" });
@@ -120,16 +125,17 @@ export function useQuery<EntityType extends IAnyType>(
         });
       })
       .catch(error => {
+        console.warn("error in use query (fetch first)", error);
         dispatch({ type: "fetch error", error });
       });
   }, [dataList, fetchListFn]);
 
   const fetchNext = useCallback(() => {
-    if (state.isEndReached || state.isFetchingNext) {
+    if (state.isEndReached || state.isLoadingNext) {
       return;
     }
 
-    const maybePromise = fetchListFn({ page: state.nextPage });
+    const maybePromise = fetchListFn(state.params);
     const isValid = maybePromise && maybePromise.then;
     if (!isValid) return;
 
@@ -144,20 +150,19 @@ export function useQuery<EntityType extends IAnyType>(
         });
       })
       .catch(error => {
-        console.log("error in use query", error.message);
-        console.warn("error in use query", error);
+        console.warn("error in use query (fetch next)", error);
         dispatch({ type: "fetch error", error });
       });
   }, [
     dataList,
     fetchListFn,
     state.isEndReached,
-    state.isFetchingNext,
-    state.nextPage
+    state.isLoadingNext,
+    state.params
   ]);
 
   const refresh = useCallback(() => {
-    const maybePromise = fetchListFn({ page: 1 });
+    const maybePromise = fetchListFn(initialState.params);
     const isValid = maybePromise && maybePromise.then;
     if (!isValid) return;
 
@@ -170,12 +175,15 @@ export function useQuery<EntityType extends IAnyType>(
         });
       })
       .catch(error => {
+        console.warn("error in use query (refresh)", error);
         dispatch({ type: "fetch error", error });
       });
   }, [dataList, fetchListFn]);
+
   useEffect(() => {
     fetchFirst();
   }, [fetchFirst]);
+
   const flatListProps = {
     data: dataList,
     extraData: dataList.map(e => e.id).join(":"),
@@ -197,7 +205,8 @@ export function useQuery<EntityType extends IAnyType>(
     ...state,
     data: dataList,
     fetchFirst,
-    fetch,
+    fetchNext,
+    refresh,
     flatListProps
   };
 }
