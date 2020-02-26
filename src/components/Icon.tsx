@@ -6,6 +6,8 @@ import { constants as C } from "~/style";
 
 export interface IconProps {
   name:
+    | "heart"
+    | "heart-outline"
     | "radio-on"
     | "radio-off"
     | "check-box"
@@ -35,6 +37,8 @@ function Icon({ name, color = C.colorTextLight, size = 28 }: IconProps) {
       return <MaterialIcons name={name} size={size} color={color} />;
 
     case "pillar":
+    case "heart":
+    case "heart-outline":
       return <MaterialCommunityIcons name={name} size={size} color={color} />;
 
     default:

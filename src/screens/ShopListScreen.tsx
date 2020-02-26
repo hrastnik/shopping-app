@@ -4,7 +4,8 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  ListRenderItem
+  ListRenderItem,
+  Image
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,9 +16,11 @@ import { useStore } from "~/mobx/useStore";
 import { useQuery } from "~/mobx/useQuery";
 import { keyExtractor } from "~/utils/keyExtractor";
 import { RegionInstance } from "~/mobx/entities/region/Region";
+import { ShopInstance } from "~/mobx/entities/shop/Shop";
 
 const S = StyleSheet.create({
-  flex: { flex: 1 }
+  flex: { flex: 1 },
+  shopImage: { width: "100%", aspectRatio: 2.4 }
 });
 
 export const ShopListScreen = observer(() => {
@@ -29,7 +32,7 @@ export const ShopListScreen = observer(() => {
     store => store.shopStore.map
   );
 
-  const renderItem: ListRenderItem<RegionInstance> = useCallback(
+  const renderItem: ListRenderItem<ShopInstance> = useCallback(
     ({ item: shop }) => {
       return (
         <TouchableOpacity
@@ -39,7 +42,17 @@ export const ShopListScreen = observer(() => {
           }}
         >
           <View paddingMedium>
-            <Text>{JSON.stringify(shop, null, 2)}</Text>
+            {shop.image && (
+              <Image
+                source={shop.image.source}
+                style={S.shopImage}
+                resizeMode="cover"
+              />
+            )}
+            <Text sizeLarge weightBold>
+              {shop.name}
+            </Text>
+            <Text sizeLarge>{shop.about}</Text>
           </View>
         </TouchableOpacity>
       );

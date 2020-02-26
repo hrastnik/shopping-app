@@ -5,8 +5,10 @@ import {
   SnapshotIn,
   SnapshotOut
 } from "mobx-state-tree";
+
 import { DateTime } from "~/mobx/util-models/DateTime";
 import { getRoot } from "~/mobx/utils/getRoot";
+import { Image } from "~/mobx/util-models/Image";
 
 export interface RegionInstance extends Instance<typeof Region> {}
 export interface RegionSnapshotIn extends SnapshotIn<typeof Region> {}
@@ -17,7 +19,10 @@ export const Region = types
     id: types.identifierNumber,
     created_at: DateTime,
     updated_at: DateTime,
-    name: types.string
+    name: types.string,
+    // image: types.maybeNull(Image)
+    lat: types.number,
+    lng: types.number
   })
   .actions(self => {
     return {

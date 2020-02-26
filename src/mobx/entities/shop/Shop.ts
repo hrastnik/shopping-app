@@ -7,6 +7,7 @@ import {
 } from "mobx-state-tree";
 import { DateTime } from "~/mobx/util-models/DateTime";
 import { getRoot } from "~/mobx/utils/getRoot";
+import { Image } from "~/mobx/util-models/Image";
 
 export interface ShopInstance extends Instance<typeof Shop> {}
 export interface ShopSnapshotIn extends SnapshotIn<typeof Shop> {}
@@ -17,7 +18,16 @@ export const Shop = types
     id: types.identifierNumber,
     created_at: DateTime,
     updated_at: DateTime,
-    name: types.string
+    name: types.string,
+    about: types.string,
+    images: types.array(Image)
+  })
+  .views(self => {
+    return {
+      get image() {
+        return self.images?.[0];
+      }
+    };
   })
   .actions(self => {
     return {

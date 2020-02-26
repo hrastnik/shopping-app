@@ -78,7 +78,7 @@ export const Text = React.forwardRef<RNText, TextProps>(
     else if (sizeLarge) fontSize = C.fontSizeLarge;
     else if (sizeExtraLarge) fontSize = C.fontSizeExtraLarge;
 
-    let color: TextStyle["color"] = C.colorTextDark;
+    let color: TextStyle["color"] = C.colorTextLight;
     if (colorTheme) color = C.colorTextTheme;
     else if (colorAccent) color = C.colorTextAccent;
     else if (colorDark) color = C.colorTextDark;

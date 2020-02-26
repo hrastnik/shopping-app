@@ -7,6 +7,8 @@ import {
   ListRenderItem
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import MapView from "react-native-maps";
+import color from "color";
 
 import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
@@ -15,9 +17,19 @@ import { useStore } from "~/mobx/useStore";
 import { useQuery } from "~/mobx/useQuery";
 import { keyExtractor } from "~/utils/keyExtractor";
 import { RegionInstance } from "~/mobx/entities/region/Region";
+import { constants as C } from "~/style";
 
 const S = StyleSheet.create({
-  flex: { flex: 1 }
+  flex: { flex: 1 },
+  map: { width: "100%", aspectRatio: 2.4 },
+  overlay: {
+    flex: 1,
+    backgroundColor: color(C.colorBackgroundDark)
+      .alpha(0.5)
+      .string(),
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
+  }
 });
 
 export const RegionListScreen = observer(() => {
@@ -38,7 +50,23 @@ export const RegionListScreen = observer(() => {
           }}
         >
           <View paddingMedium>
-            <Text>{JSON.stringify(region, null, 2)}</Text>
+            <MapView
+              liteMode
+              region={{
+                latitude: region.lat,
+                longitude: region.lng,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05
+              }}
+              style={S.map}
+            />
+            <View style={StyleSheet.absoluteFill} paddingMedium>
+              <View style={S.overlay} paddingMedium>
+                <Text sizeExtraLarge weightBold>
+                  {region.name}
+                </Text>
+              </View>
+            </View>
           </View>
         </TouchableOpacity>
       );

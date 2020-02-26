@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { Image, StyleSheet, RefreshControl } from "react-native";
+import Carousel from "react-native-snap-carousel";
 
 import { Text } from "~/components/Text";
 import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
 import { useStore } from "~/mobx/useStore";
+import { IconButton } from "~/components/IconButton";
+import { useRightComponent } from "~/components/Header";
+import { constants } from "~/style";
+import { ImageInstance } from "~/mobx/util-models/Image";
+import { Spacer } from "~/components/Spacer";
 
 const S = StyleSheet.create({
-  image: { aspectRatio: 1 }
+  image: { width: "100%", aspectRatio: 1 }
 });
 
 export const ProductDetailsScreen = observer(() => {
@@ -20,6 +26,14 @@ export const ProductDetailsScreen = observer(() => {
   }, [product]);
 
   const [refreshing, setRefreshing] = useState(false);
+
+  useRightComponent(
+    <IconButton
+      onPress={product.toggleFavorite}
+      iconName={product.isFavorited ? "heart" : "heart-outline"}
+    />,
+    [product, product.isFavorited]
+  );
 
   return (
     <Screen
@@ -33,12 +47,31 @@ export const ProductDetailsScreen = observer(() => {
         />
       }
     >
+      <View>
+        <Carousel
+          data={product.images}
+          renderItem={({ item }) => {
+            const image = item as ImageInstance;
+            return (
+              <Image
+                source={image.source}
+                style={S.image}
+                resizeMode="contain"
+              />
+            );
+          }}
+          sliderWidth={constants.windowWidth - constants.spacingMedium * 2}
+          itemWidth={
+            (constants.windowWidth - constants.spacingMedium * 2) * 0.8
+          }
+        />
+      </View>
       <View paddingMedium justifyContentCenter>
-        <Text>{JSON.stringify(product, null, 2)}</Text>
+        <Text weightBold>{product.name}</Text>
+        <Text>{product.description}</Text>
 
-        {product.images.map(image => (
-          <Image key={image.url} style={S.image} source={image.source} />
-        ))}
+        <Spacer extraLarge />
+        <Text>{product.priceText}</Text>
       </View>
     </Screen>
   );
