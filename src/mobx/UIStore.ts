@@ -4,11 +4,13 @@ import {
   SnapshotIn,
   SnapshotOut,
   flow,
-  getEnv
+  getEnv,
+  getSnapshot
 } from "mobx-state-tree";
 
 import { Region } from "./entities/region/Region";
 import { Shop } from "./entities/shop/Shop";
+import { Category } from "./entities/category/Category";
 import { Product } from "./entities/product/Product";
 import { Environment } from "./createStore";
 import { Await } from "./utils/Await";
@@ -26,10 +28,27 @@ export const UIStore = types
     activeRegion: types.safeReference(Region),
     activeShop: types.safeReference(Shop),
     activeProduct: types.safeReference(Product),
+    activeCategory: types.safeReference(Category),
 
     favoriteProducts: types.map(
       types.safeReference(Product, { acceptsUndefined: false })
     )
+  })
+  .views(self => {
+    return {
+      get activeRegionId() {
+        return getSnapshot(self).activeRegion as string;
+      },
+      get activeShopId() {
+        return getSnapshot(self).activeShop as string;
+      },
+      get activeProductId() {
+        return getSnapshot(self).activeProduct as string;
+      },
+      get activeCategoryId() {
+        return getSnapshot(self).activeCategory as string;
+      }
+    };
   })
   .actions(self => {
     return {

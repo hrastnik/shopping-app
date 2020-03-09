@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import moment from "moment";
+import { useNavigation } from "@react-navigation/native";
 
 import { Screen } from "~/components/Screen";
 import { Text } from "~/components/Text";
@@ -10,13 +11,12 @@ import {
   Image,
   StyleSheet,
   ImageProps,
+  TouchableOpacity,
   TouchableOpacityProps
 } from "react-native";
 import { constants as C } from "~/style";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { shadow } from "~/utils/shadow";
 import { Icon, IconProps } from "~/components/Icon";
-import { useNavigation } from "@react-navigation/native";
 
 const S = StyleSheet.create({
   cardWrap: { borderRadius: 8, ...shadow(3), opacity: 0.99 },

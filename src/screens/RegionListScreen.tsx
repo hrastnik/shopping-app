@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
   ListRenderItem
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import MapView from "react-native-maps";
 import color from "color";
+import { useNavigation } from "@react-navigation/native";
 
 import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
@@ -46,7 +46,7 @@ export const RegionListScreen = observer(() => {
         <TouchableOpacity
           onPress={() => {
             store.uiStore.set("activeRegion", region.id);
-            navigation.navigate("ShopList");
+            navigation.navigate("ShopListScreen");
           }}
         >
           <View paddingMedium>
@@ -85,7 +85,7 @@ export const RegionListScreen = observer(() => {
   }
 
   return (
-    <Screen preventScroll>
+    <Screen preventScroll showTabBar>
       <FlatList
         {...query.flatListProps}
         style={S.flex}

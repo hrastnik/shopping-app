@@ -184,8 +184,11 @@ export function useQuery<EntityType extends IAnyType>(
     fetchFirst();
   }, [fetchFirst]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const dataListArray = useMemo(() => dataList.toJS(), [dataList.toJS()]);
+
   const flatListProps = {
-    data: dataList,
+    data: dataListArray,
     extraData: dataList.map(e => e.id).join(":"),
     refreshing: state.isRefreshing,
     onRefresh: refresh,
@@ -201,6 +204,7 @@ export function useQuery<EntityType extends IAnyType>(
   // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.onRefresh changed"), [flatListProps.onRefresh]);
   // // eslint-disable-next-line
   // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.onEndReached changed"), [flatListProps.onEndReached]);
+
   return {
     ...state,
     data: dataList,

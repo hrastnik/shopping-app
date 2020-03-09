@@ -10,5 +10,6 @@
     "**/*.code-search": true,
     "**/android": true,
     "**/ios": true,
-  }
+  },
+  "eslint.enable": true
 }

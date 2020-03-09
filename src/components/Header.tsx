@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { observer } from "mobx-react";
 import { StyleSheet } from "react-native";
-import { StackHeaderProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 
 import { Text } from "~/components/Text";
@@ -21,8 +20,6 @@ import { shadow } from "~/utils/shadow";
  * Component
  *
  *******/
-
-interface HeaderProps extends StackHeaderProps {}
 
 export const HeaderContext = createContext(undefined);
 
@@ -66,14 +63,16 @@ const S = StyleSheet.create({
   titleText: { width: "50%" }
 });
 
-export const Header = observer(({ scene, navigation }: HeaderProps) => {
+export const Header = observer(props => {
+  console.log(props);
+
   const handleBackPress = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    props.navigation.goBack();
+  }, [props.navigation]);
 
-  const { title } = scene.descriptor.options;
+  const title = props?.scene?.descriptor?.options?.title;
 
-  const canGoBack = navigation?.canGoBack();
+  const canGoBack = props.navigation.canGoBack();
 
   const { LeftComponent, RightComponent } = useContext(HeaderContext);
 

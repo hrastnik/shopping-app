@@ -1,9 +1,9 @@
 import React from "react";
+import { ViewStyle } from "react-native";
 
 import { Text } from "~/components/Text";
 import { IconProps, Icon } from "~/components/Icon";
-import { View, ViewProps } from "~/components/View";
-
+import { View } from "~/components/View";
 import { constants as C } from "~/style";
 
 interface IconWithBadgeProps extends IconProps {
@@ -20,7 +20,7 @@ export function IconWithBadge({
 }: IconWithBadgeProps) {
   const badgeSize = size * 0.4;
   const badgeRadius = badgeSize * 0.5;
-  const badgeStyle: ViewProps["style"] = {
+  const badgeStyle: ViewStyle = {
     position: "absolute",
     width: badgeSize,
     height: badgeSize,
@@ -30,7 +30,7 @@ export function IconWithBadge({
     top: size * 0.1
   };
 
-  const shouldShowCount = typeof count === "string" && count != "";
+  const shouldShowCount = typeof count === "string" && count !== "";
 
   return (
     <View>

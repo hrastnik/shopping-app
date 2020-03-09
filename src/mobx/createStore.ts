@@ -10,6 +10,7 @@ import { AuthStore } from "./AuthStore";
 import { UIStore } from "./UIStore";
 import { when } from "mobx";
 import { Await } from "./utils/Await";
+import { CategoryStore } from "./entities/category/CategoryStore";
 
 export interface Environment {
   http: HttpStatic;
@@ -21,6 +22,7 @@ export async function createStore(env: Environment) {
     types.model("Store", {
       regionStore: types.optional(RegionStore, {}),
       shopStore: types.optional(ShopStore, {}),
+      categoryStore: types.optional(CategoryStore, {}),
       productStore: types.optional(ProductStore, {}),
       userStore: types.optional(UserStore, {}),
       authStore: types.optional(AuthStore, {}),

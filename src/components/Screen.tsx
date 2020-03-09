@@ -1,13 +1,11 @@
 import React, { ReactNode } from "react";
-import {
-  View as RNView,
-  StyleSheet,
-  ScrollView,
-  ScrollViewProps
-} from "react-native";
-import { ViewProps, View } from "~/components/View";
+import { StyleSheet } from "react-native";
 
+import { ViewProps, View } from "~/components/View";
+import { ScrollViewProps, ScrollView } from "~/components/ScrollView";
 import { constants as C } from "~/style";
+import { Header } from "./Header";
+import { TabBar } from "./TabBar";
 
 const S = StyleSheet.create({
   base: { backgroundColor: C.colorBackgroundTheme, flex: 1 },
@@ -17,9 +15,15 @@ const S = StyleSheet.create({
   }
 });
 
-interface ScreenProps extends ScrollViewProps, ViewProps {
-  preventScroll?: boolean;
-  children: ReactNode;
+export type ScreenProps = (
+  | ({ preventScroll?: false } & ScrollViewProps)
+  | ({ preventScroll?: true } & ViewProps)
+) & {
+  HeaderComponent?: React.ReactElement<any>;
+  TabBarComponent?: React.ReactElement<any>;
+  showHeader?: boolean;
+  showTabBar?: boolean;
+  children?: ReactNode;
   colorBackgroundTheme?: boolean;
   colorBackgroundAccent?: boolean;
   colorBackgroundLight?: boolean;
@@ -33,10 +37,11 @@ interface ScreenProps extends ScrollViewProps, ViewProps {
   colorBackgroundLightDarker?: boolean;
   colorBackgroundDarkLight?: boolean;
   colorBackgroundDarkLighter?: boolean;
-}
+};
 
-const Screen = React.forwardRef<ScrollView & RNView, ScreenProps>(
-  function _Screen({ preventScroll = false, style, ...props }, ref) {
+export type Screen = typeof Screen;
+export const Screen = React.forwardRef<ScrollView | View, ScreenProps>(
+  ({ style, ...props }, ref) => {
     const screenStyle = [S.base, style];
 
     const resolveBackgroundColor = () => {
@@ -58,7 +63,7 @@ const Screen = React.forwardRef<ScrollView & RNView, ScreenProps>(
 
     const backgroundColor = resolveBackgroundColor();
 
-    if (preventScroll)
+    if (props.preventScroll === true)
       return (
         <View ref={ref} style={[screenStyle, { backgroundColor }]} {...props} />
       );
@@ -74,5 +79,3 @@ const Screen = React.forwardRef<ScrollView & RNView, ScreenProps>(
     );
   }
 );
-
-export { Screen };

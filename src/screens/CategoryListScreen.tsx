@@ -4,10 +4,9 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  ListRenderItem,
-  Image
+  ListRenderItem
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import color from "color";
 
 import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
@@ -15,43 +14,48 @@ import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
 import { useQuery } from "~/mobx/useQuery";
 import { keyExtractor } from "~/utils/keyExtractor";
-import { ShopInstance } from "~/mobx/entities/shop/Shop";
+import { CategoryInstance } from "~/mobx/entities/category/Category";
+import { constants as C } from "~/style";
+import { useNavigation } from "@react-navigation/native";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
-  shopImage: { width: "100%", aspectRatio: 2.4 }
+  map: { width: "100%", aspectRatio: 2.4 },
+  overlay: {
+    flex: 1,
+    backgroundColor: color(C.colorBackgroundDark)
+      .alpha(0.5)
+      .string(),
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
+  }
 });
 
-export const ShopListScreen = observer(() => {
+export const CategoryListScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
-
   const query = useQuery(
-    store => store.uiStore.activeRegion.readShopList,
-    store => store.shopStore.map
+    store => store.categoryStore.readCategoryList,
+    store => store.categoryStore.map
   );
 
-  const renderItem: ListRenderItem<ShopInstance> = useCallback(
-    ({ item: shop }) => {
+  const renderItem: ListRenderItem<CategoryInstance> = useCallback(
+    ({ item: category }) => {
       return (
         <TouchableOpacity
           onPress={() => {
-            store.uiStore.set("activeShop", shop.id);
+            store.uiStore.set("activeCategory", category.id);
             navigation.navigate("ProductListScreen");
           }}
         >
           <View paddingMedium>
-            {shop.image && (
-              <Image
-                source={shop.image.source}
-                style={S.shopImage}
-                resizeMode="cover"
-              />
-            )}
-            <Text sizeLarge weightBold>
-              {shop.name}
-            </Text>
-            <Text sizeLarge>{shop.about}</Text>
+            <View style={StyleSheet.absoluteFill} paddingMedium>
+              <View style={S.overlay} paddingMedium>
+                <Text sizeExtraLarge weightBold>
+                  {category.name}
+                </Text>
+              </View>
+            </View>
           </View>
         </TouchableOpacity>
       );
@@ -70,7 +74,7 @@ export const ShopListScreen = observer(() => {
   }
 
   return (
-    <Screen preventScroll>
+    <Screen preventScroll showTabBar>
       <FlatList
         {...query.flatListProps}
         style={S.flex}

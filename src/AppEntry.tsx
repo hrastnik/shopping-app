@@ -1,4 +1,5 @@
 import "react-native-gesture-handler";
+import { enableScreens } from "react-native-screens";
 
 import { StatusBar, Platform, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
@@ -13,6 +14,9 @@ import { HeaderProvider } from "~/components/Header";
 import { ModalProvider } from "~/components/ModalProvider";
 import { createStore } from "~/mobx/createStore";
 import { constants } from "~/style";
+
+// react-navigation performance optimization
+enableScreens();
 
 const S = StyleSheet.create({
   safeAreaView: {
