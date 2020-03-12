@@ -4,22 +4,33 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  ListRenderItem,
-  Image
+  ListRenderItem
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Screen } from "~/components/Screen";
+import { Image } from "~/components/Image";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
 import { useQuery } from "~/mobx/useQuery";
 import { keyExtractor } from "~/utils/keyExtractor";
 import { ShopInstance } from "~/mobx/entities/shop/Shop";
+import { constants as C } from "~/style";
+import { shadow } from "~/utils/shadow";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
-  shopImage: { width: "100%", aspectRatio: 2.4 }
+  shopImage: { width: "100%", aspectRatio: 2.4 },
+  card: {
+    overflow: "hidden",
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: C.colorBackgroundTheme,
+    borderColor: C.colorTextAccent,
+    opacity: 0.98,
+    ...shadow(3)
+  }
 });
 
 export const ShopListScreen = observer(() => {
@@ -41,17 +52,19 @@ export const ShopListScreen = observer(() => {
           }}
         >
           <View paddingMedium>
-            {shop.image && (
-              <Image
-                source={shop.image.source}
-                style={S.shopImage}
-                resizeMode="cover"
-              />
-            )}
-            <Text sizeLarge weightBold>
-              {shop.name}
-            </Text>
-            <Text sizeLarge>{shop.about}</Text>
+            <View style={S.card}>
+              {shop.image && (
+                <Image
+                  source={shop.image.source}
+                  style={S.shopImage}
+                  resizeMode="cover"
+                />
+              )}
+              <View paddingMedium>
+                <Text weightBold>{shop.name}</Text>
+                <Text>{shop.about}</Text>
+              </View>
+            </View>
           </View>
         </TouchableOpacity>
       );

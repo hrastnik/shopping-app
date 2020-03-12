@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { Image, StyleSheet, RefreshControl } from "react-native";
+import { StyleSheet, RefreshControl } from "react-native";
 import Carousel from "react-native-snap-carousel";
 
 import { Text } from "~/components/Text";
+import { Image } from "~/components/Image";
 import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
 import { useStore } from "~/mobx/useStore";

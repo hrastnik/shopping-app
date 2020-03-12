@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { View } from "./View";
 
-export function MeasureLayout({ children }) {
+interface MeasureLayoutProps {
+  children: (dimensions: { width: number; height: number }) => React.ReactNode;
+}
+
+export function MeasureLayout({ children }: MeasureLayoutProps) {
   const [dimensions, setDimensions] = useState(undefined);
   const ready =
     dimensions !== undefined &&
@@ -12,10 +16,8 @@ export function MeasureLayout({ children }) {
     <View
       flex
       onLayout={event => {
-        setDimensions({
-          width: event.nativeEvent.layout.width,
-          height: event.nativeEvent.layout.height
-        });
+        const { width, height } = event.nativeEvent.layout;
+        setDimensions({ width, height });
       }}
     >
       {ready && children(dimensions)}

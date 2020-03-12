@@ -18,17 +18,22 @@ import { useQuery } from "~/mobx/useQuery";
 import { keyExtractor } from "~/utils/keyExtractor";
 import { RegionInstance } from "~/mobx/entities/region/Region";
 import { constants as C } from "~/style";
+import { shadow } from "~/utils/shadow";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
   map: { width: "100%", aspectRatio: 2.4 },
+  cardShadow: { borderRadius: 8, ...shadow(3), opacity: 0.99 },
+  mapWrap: { borderRadius: 8, overflow: "hidden" },
   overlay: {
     flex: 1,
     backgroundColor: color(C.colorBackgroundDark)
       .alpha(0.5)
       .string(),
     justifyContent: "flex-end",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
+    borderRadius: 8,
+    overflow: "hidden"
   }
 });
 
@@ -50,21 +55,26 @@ export const RegionListScreen = observer(() => {
           }}
         >
           <View paddingMedium>
-            <MapView
-              liteMode
-              region={{
-                latitude: region.lat,
-                longitude: region.lng,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05
-              }}
-              style={S.map}
-            />
-            <View style={StyleSheet.absoluteFill} paddingMedium>
-              <View style={S.overlay} paddingMedium>
-                <Text sizeExtraLarge weightBold>
-                  {region.name}
-                </Text>
+            <View style={S.cardShadow}>
+              <View style={S.mapWrap}>
+                <MapView
+                  liteMode
+                  region={{
+                    latitude: region.lat,
+                    longitude: region.lng,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.05
+                  }}
+                  style={S.map}
+                />
+              </View>
+
+              <View style={StyleSheet.absoluteFill}>
+                <View style={S.overlay} paddingMedium>
+                  <Text sizeExtraLarge weightBold>
+                    {region.name}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -85,11 +95,16 @@ export const RegionListScreen = observer(() => {
   }
 
   return (
-    <Screen preventScroll showTabBar>
+    <Screen preventScroll>
       <FlatList
         {...query.flatListProps}
         style={S.flex}
         keyExtractor={keyExtractor}
+        ListHeaderComponent={
+          <View paddingMedium>
+            <Text>Pick a region closest to your location</Text>
+          </View>
+        }
         renderItem={renderItem}
       />
     </Screen>

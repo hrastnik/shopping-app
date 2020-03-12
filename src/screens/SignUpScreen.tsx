@@ -1,4 +1,9 @@
 import React from "react";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps
+} from "react-native";
 import { observer } from "mobx-react";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
@@ -7,13 +12,8 @@ import { Screen } from "~/components/Screen";
 import { Text } from "~/components/Text";
 import { View } from "~/components/View";
 import { Spacer } from "~/components/Spacer";
-import {
-  Image,
-  StyleSheet,
-  ImageProps,
-  TouchableOpacity,
-  TouchableOpacityProps
-} from "react-native";
+import { Image, ImageProps } from "~/components/Image";
+
 import { constants as C } from "~/style";
 import { shadow } from "~/utils/shadow";
 import { Icon, IconProps } from "~/components/Icon";

@@ -12,14 +12,13 @@ import { Image } from "~/components/Image";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
-import { useQuery } from "~/mobx/useQuery";
 import { keyExtractor } from "~/utils/keyExtractor";
 import { ProductInstance } from "~/mobx/entities/product/Product";
 import { constants as C } from "~/style";
 import { Spacer } from "~/components/Spacer";
 import { useNavigation } from "@react-navigation/native";
-import { Spinner } from "~/components/Spinner";
 import { QuantityPicker } from "~/components/QuantityPicker";
+import { Button } from "~/components/Button";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -97,22 +96,9 @@ const ProductListItem = observer((props: ProductListItemProps) => {
   );
 });
 
-export const ProductListScreen = observer(() => {
+export const CartScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
-
-  const category = store.uiStore.activeCategory;
-  const shopId = store.uiStore.activeShopId;
-
-  const query = useQuery(
-    store => params =>
-      store.productStore.readProductList({
-        ...params,
-        categories_containss: category?.uid,
-        shop: shopId
-      }),
-    store => store.productStore.map
-  );
 
   const handlePress: ProductListItemProps["onPress"] = useCallback(
     product => {
@@ -129,30 +115,25 @@ export const ProductListScreen = observer(() => {
     [handlePress]
   );
 
-  if (query.isLoadingFirst) {
-    return (
-      <Screen preventScroll>
-        <View aspectRatioOne centerContent>
-          <Text>Loading...</Text>
-        </View>
-      </Screen>
-    );
-  }
-
   return (
     <Screen preventScroll>
       <FlatList
-        {...query.flatListProps}
+        data={store.cartStore.cartProducts}
         numColumns={2}
         style={S.flex}
         contentContainerStyle={S.contentContainer}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        ListFooterComponent={
-          query.isLoadingNext && <Spinner style={{ margin: C.spacingMedium }} />
+        ListEmptyComponent={
+          <View aspectRatioOne centerContent>
+            <Text alignCenter>There's nothing here</Text>
+            <Text alignCenter>Go add something first</Text>
+          </View>
         }
-        onEndReachedThreshold={0.05}
       />
+      <View paddingMedium>
+        <Button title="CONTINUE TO CHECKOUT" onPress={() => {}} />
+      </View>
     </Screen>
   );
 });

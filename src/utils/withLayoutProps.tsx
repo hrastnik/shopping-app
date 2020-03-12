@@ -20,7 +20,9 @@ export interface WithLayoutProps {
   paddingVerticalExtraLarge?: boolean;
   centerContent?: boolean;
   justifyContentCenter?: boolean;
+  justifyContentSpaceBetween?: boolean;
   alignItemsCenter?: boolean;
+  alignItemsFlexEnd?: boolean;
   flex?: boolean;
   flexDirectionRow?: boolean;
   flexDirectionColumn?: boolean;
@@ -75,7 +77,9 @@ export function withLayoutProps<Props extends { style?: any }>(
         paddingVerticalExtraLarge,
         centerContent,
         justifyContentCenter,
+        justifyContentSpaceBetween,
         alignItemsCenter,
+        alignItemsFlexEnd,
         flexDirectionRow,
         flexDirectionColumn,
         flexDirectionRowReverse,
@@ -130,7 +134,9 @@ export function withLayoutProps<Props extends { style?: any }>(
         style.alignItems = "center";
       }
       if (justifyContentCenter) style.justifyContent = "center";
+      if (justifyContentSpaceBetween) style.justifyContent = "space-between";
       if (alignItemsCenter) style.alignItems = "center";
+      if (alignItemsFlexEnd) style.alignItems = "flex-end";
 
       if (flexDirectionRow) style.flexDirection = "row";
       if (flexDirectionColumn) style.flexDirection = "column";

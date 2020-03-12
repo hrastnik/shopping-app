@@ -14,6 +14,7 @@ import { View } from "~/components/View";
 import { IconButton } from "~/components/IconButton";
 import { constants as C } from "~/style";
 import { shadow } from "~/utils/shadow";
+import { CartButton } from "./CartButton";
 
 /*******
  *
@@ -64,8 +65,6 @@ const S = StyleSheet.create({
 });
 
 export const Header = observer(props => {
-  console.log(props);
-
   const handleBackPress = useCallback(() => {
     props.navigation.goBack();
   }, [props.navigation]);
@@ -104,6 +103,7 @@ export const Header = observer(props => {
 
       <View justifyContentCenter flexDirectionRow style={S.headerRight}>
         {RightComponent}
+        <CartButton />
       </View>
     </View>
   );

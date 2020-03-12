@@ -91,8 +91,6 @@ export const AuthStore = types
   .actions(self => {
     return {
       afterAttach: flow(function*(): any {
-        console.warn("afterAttach running");
-
         const env: Environment = getEnv(self);
         const root = getRoot(self);
         self.token = yield env.persistence.get("token");

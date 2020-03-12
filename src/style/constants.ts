@@ -76,7 +76,7 @@ export const spacingMedium = 8;
 export const spacingLarge = 16;
 export const spacingExtraLarge = 32;
 
-export const fontSizeExtraSmall = 8;
+export const fontSizeExtraSmall = 10;
 export const fontSizeSmall = 12;
 export const fontSizeMedium = 16;
 export const fontSizeLarge = 20;
@@ -423,9 +423,9 @@ export const markdownStyle = StyleSheet.create({
   }
 });
 
-export const hitSlopSmall = 8;
-export const hitSlopMedium = 12;
-export const hitSlopLarge = 16;
+export const hitSlopSmall = 8 as const;
+export const hitSlopMedium = 12 as const;
+export const hitSlopLarge = 16 as const;
 
 export const hitSlop = {
   small: {

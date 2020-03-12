@@ -64,7 +64,8 @@ const reducer = (state: typeof initialState, action: Action) => {
           _start: state.params._start + resultsPerPage,
           _limit: resultsPerPage
         },
-        isEndReached: response.data.length === 0,
+        isEndReached:
+          response.data.length === 0 || response.data.length < resultsPerPage,
         isLoading: false,
         isRefreshing: false,
         isLoadingFirst: false,

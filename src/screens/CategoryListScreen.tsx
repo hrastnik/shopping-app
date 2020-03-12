@@ -9,6 +9,7 @@ import {
 import color from "color";
 
 import { Screen } from "~/components/Screen";
+import { Image } from "~/components/Image";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
@@ -17,17 +18,21 @@ import { keyExtractor } from "~/utils/keyExtractor";
 import { CategoryInstance } from "~/mobx/entities/category/Category";
 import { constants as C } from "~/style";
 import { useNavigation } from "@react-navigation/native";
+import { shadow } from "~/utils/shadow";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
-  map: { width: "100%", aspectRatio: 2.4 },
+  contentContainer: { padding: C.spacingSmall },
+  column: {
+    width: "33.3333%",
+    aspectRatio: 1,
+    padding: C.spacingSmall
+  },
   overlay: {
     flex: 1,
     backgroundColor: color(C.colorBackgroundDark)
       .alpha(0.5)
-      .string(),
-    justifyContent: "flex-end",
-    alignItems: "flex-end"
+      .string()
   }
 });
 
@@ -40,21 +45,35 @@ export const CategoryListScreen = observer(() => {
   );
 
   const renderItem: ListRenderItem<CategoryInstance> = useCallback(
-    ({ item: category }) => {
+    ({ item: category, index }) => {
       return (
         <TouchableOpacity
+          style={S.column}
           onPress={() => {
             store.uiStore.set("activeCategory", category.id);
             navigation.navigate("ProductListScreen");
           }}
         >
-          <View paddingMedium>
-            <View style={StyleSheet.absoluteFill} paddingMedium>
-              <View style={S.overlay} paddingMedium>
-                <Text sizeExtraLarge weightBold>
-                  {category.name}
-                </Text>
-              </View>
+          <View
+            flex
+            style={{
+              opacity: 0.99,
+              borderRadius: 4,
+              overflow: "hidden",
+              ...shadow(2)
+            }}
+          >
+            <Image
+              style={StyleSheet.absoluteFill}
+              source={{
+                uri: "https://placebear.com/300/30" + (index % 10)
+              }}
+              resizeMode="cover"
+            />
+            <View style={S.overlay} paddingMedium>
+              <Text sizeLarge weightBold>
+                {category.name}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -74,9 +93,11 @@ export const CategoryListScreen = observer(() => {
   }
 
   return (
-    <Screen preventScroll showTabBar>
+    <Screen preventScroll>
       <FlatList
         {...query.flatListProps}
+        contentContainerStyle={S.contentContainer}
+        numColumns={3}
         style={S.flex}
         keyExtractor={keyExtractor}
         renderItem={renderItem}

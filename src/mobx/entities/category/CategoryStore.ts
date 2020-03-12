@@ -11,6 +11,8 @@ import { AxiosResponse } from "axios";
 
 import { Category } from "~/mobx/entities/category/Category";
 import { Environment } from "~/mobx/createStore";
+import { when } from "mobx";
+import { getRoot } from "~/mobx/utils/getRoot";
 
 export interface CategoryStoreInstance extends Instance<typeof CategoryStore> {}
 export interface CategoryStoreSnapshotIn
@@ -21,6 +23,17 @@ export interface CategoryStoreSnapshotOut
 export const CategoryStore = types
   .model("CategoryStore", {
     map: types.map(Category)
+  })
+  .views(self => {
+    return {
+      get categoryByUid() {
+        const map = {};
+        for (const category of self.map.values()) {
+          map[category.uid] = category;
+        }
+        return map;
+      }
+    };
   })
   .actions(self => {
     return {
@@ -82,6 +95,15 @@ export const CategoryStore = types
         );
         self.processCategoryList(response.data);
         return response;
+      })
+    };
+  })
+  .actions(self => {
+    return {
+      afterAttach: flow(function*(): any {
+        const root = getRoot(self);
+        yield when(() => root.authStore.isLoggedIn);
+        yield self.readCategoryList({});
       })
     };
   });

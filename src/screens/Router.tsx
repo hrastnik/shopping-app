@@ -13,6 +13,13 @@ import { ShopListScreen } from "~/screens/ShopListScreen";
 import { ProductListScreen } from "~/screens/ProductListScreen";
 import { ProductDetailsScreen } from "~/screens/ProductDetailsScreen";
 import { ProfileScreen } from "~/screens/ProfileScreen";
+import { ProfileEditScreen } from "~/screens/ProfileEditScreen";
+import { CategoryListScreen } from "~/screens/CategoryListScreen";
+import { FavoriteProductListScreen } from "~/screens/FavoriteProductListScreen";
+import { CartScreen } from "~/screens/CartScreen";
+
+import { constants as C } from "~/style";
+import { Icon } from "~/components/Icon";
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -46,8 +53,33 @@ const TabNavigator = () => {
   };
 
   return (
-    <Tabs.Navigator backBehavior="none">
-      <Tabs.Screen name="Tab.RegionListScreen">
+    <Tabs.Navigator
+      backBehavior="none"
+      tabBarOptions={{
+        activeTintColor: C.colorTextLight,
+        inactiveTintColor: C.colorTextDarkSofter,
+        activeBackgroundColor: C.colorBackgroundThemeSoft,
+        inactiveBackgroundColor: C.colorBackgroundThemeSoft,
+        showLabel: false,
+        showIcon: true
+        // style :,
+        // labelStyle :,
+        // labelPosition :,
+        // tabStyle :,
+        // allowFontScaling :,
+        // adaptive :,
+        // safeAreaInset :,
+        // keyboardHidesTabBar
+      }}
+    >
+      <Tabs.Screen
+        name="Tab.RegionListScreen"
+        options={{
+          tabBarIcon: props => (
+            <Icon name="shopping-cart" color={props.color} size={props.size} />
+          )
+        }}
+      >
         {() => {
           return (
             <Stack.Navigator screenOptions={screenOptions}>
@@ -60,7 +92,36 @@ const TabNavigator = () => {
           );
         }}
       </Tabs.Screen>
-      <Tabs.Screen name="Tab.ProfileScreen">
+
+      <Tabs.Screen
+        name="Tab.CategoryListScreen"
+        options={{
+          tabBarIcon: props => (
+            <Icon name="tag" color={props.color} size={props.size} />
+          )
+        }}
+      >
+        {() => {
+          return (
+            <Stack.Navigator screenOptions={screenOptions}>
+              <Stack.Screen
+                name="CategoryListScreen"
+                component={CategoryListScreen}
+                options={{ title: "Category List" }}
+              />
+            </Stack.Navigator>
+          );
+        }}
+      </Tabs.Screen>
+
+      <Tabs.Screen
+        name="Tab.ProfileScreen"
+        options={{
+          tabBarIcon: props => (
+            <Icon name="person" color={props.color} size={props.size} />
+          )
+        }}
+      >
         {() => {
           return (
             <Stack.Navigator screenOptions={screenOptions}>
@@ -73,12 +134,32 @@ const TabNavigator = () => {
           );
         }}
       </Tabs.Screen>
+
+      <Tabs.Screen
+        name="Tab.FavoriteProductListScreen"
+        options={{
+          tabBarIcon: props => (
+            <Icon name="heart" color={props.color} size={props.size} />
+          )
+        }}
+      >
+        {() => {
+          return (
+            <Stack.Navigator screenOptions={screenOptions}>
+              <Stack.Screen
+                options={{ title: "Favorites" }}
+                component={FavoriteProductListScreen}
+                name="FavoriteProductListScreen"
+              />
+            </Stack.Navigator>
+          );
+        }}
+      </Tabs.Screen>
     </Tabs.Navigator>
   );
 };
 
 const MainStack = () => {
-  console.warn("MainStack rendering");
   return (
     <>
       <Stack.Screen
@@ -86,7 +167,6 @@ const MainStack = () => {
         options={{ headerShown: false }}
         component={TabNavigator}
       />
-
       <Stack.Screen
         name="ShopListScreen"
         component={ShopListScreen}
@@ -101,6 +181,16 @@ const MainStack = () => {
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
         options={{ title: "Product Details" }}
+      />
+      <Stack.Screen
+        name="ProfileEditScreen"
+        component={ProfileEditScreen}
+        options={{ title: "Edit Profile" }}
+      />
+      <Stack.Screen
+        name="CartScreen"
+        component={CartScreen}
+        options={{ title: "Cart" }}
       />
     </>
   );
@@ -124,7 +214,11 @@ export const Router = observer(() => {
 
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer
+        ref={navigation => {
+          store.setNavigation(navigation);
+        }}
+      >
         <Stack.Navigator screenOptions={screenOptions}>
           {shouldShowAuth ? AuthStack() : MainStack()}
         </Stack.Navigator>

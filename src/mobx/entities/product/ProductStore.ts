@@ -11,8 +11,8 @@ import { AxiosResponse } from "axios";
 
 import { Product } from "~/mobx/entities/product/Product";
 import { Environment } from "~/mobx/createStore";
-import { preprocess } from "~/mobx/utils/preprocess";
 import { getRoot } from "~/mobx/utils/getRoot";
+import { preprocess } from "~/mobx/utils/preprocess";
 
 export interface ProductStoreInstance extends Instance<typeof ProductStore> {}
 export interface ProductStoreSnapshotIn
@@ -27,9 +27,30 @@ export const ProductStore = types
   .actions(self => {
     return {
       processProductList(data) {
-        const { processCategoryList } = getRoot(self).categoryStore;
+        const root = getRoot(self);
+        const { categoryByUid } = root.categoryStore;
+        const { processShopList } = root.shopStore;
+        const { processCategoryList } = root.categoryStore;
+
         for (const entity of _.castArray(data)) {
-          preprocess(entity, "categories", processCategoryList);
+          preprocess(entity, "shop", processShopList);
+
+          if (Array.isArray(entity.categories)) {
+            preprocess(entity, "categories", processCategoryList);
+          } else if (typeof entity.categories === "string") {
+            const categoryUidList = entity.categories.split(",");
+
+            const categories = [];
+            for (const categoryUid of categoryUidList) {
+              const category = categoryByUid[categoryUid];
+              categories.push(category);
+            }
+
+            entity.categories = categories;
+          } else if (entity.categories == null) {
+            entity.categories = [];
+          }
+
           self.map.put(entity);
         }
       }

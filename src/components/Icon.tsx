@@ -18,7 +18,13 @@ export interface IconProps {
     | "volume-up"
     | "photo-camera"
     | "pillar"
-    | "location-on";
+    | "location-on"
+    | "person"
+    | "shopping-cart"
+    | "account-edit"
+    | "tag"
+    | "add"
+    | "remove";
 
   color?: string;
   size?: number;
@@ -34,11 +40,17 @@ function Icon({ name, color = C.colorTextLight, size = 28 }: IconProps) {
     case "volume-up":
     case "photo-camera":
     case "location-on":
+    case "person":
+    case "shopping-cart":
+    case "add":
+    case "remove":
       return <MaterialIcons name={name} size={size} color={color} />;
 
     case "pillar":
     case "heart":
     case "heart-outline":
+    case "account-edit":
+    case "tag":
       return <MaterialCommunityIcons name={name} size={size} color={color} />;
 
     default:

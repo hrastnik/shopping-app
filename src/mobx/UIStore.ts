@@ -5,18 +5,20 @@ import {
   SnapshotOut,
   flow,
   getEnv,
-  getSnapshot
+  getSnapshot,
+  tryReference
 } from "mobx-state-tree";
 
 import { Region } from "./entities/region/Region";
 import { Shop } from "./entities/shop/Shop";
 import { Category } from "./entities/category/Category";
-import { Product } from "./entities/product/Product";
+import { Product, ProductInstance } from "./entities/product/Product";
 import { Environment } from "./createStore";
 import { Await } from "./utils/Await";
 import { PersistenceStatic } from "~/services/persistence/createPersistence";
 import { autorun } from "mobx";
 import { constants } from "~/constants";
+import { getRoot } from "./utils/getRoot";
 
 export interface UIStoreInstance extends Instance<typeof UIStore> {}
 export interface UIStoreSnapshotIn extends SnapshotIn<typeof UIStore> {}
@@ -30,9 +32,22 @@ export const UIStore = types
     activeProduct: types.safeReference(Product),
     activeCategory: types.safeReference(Category),
 
-    favoriteProducts: types.map(
+    favoriteProductMap: types.map(
       types.safeReference(Product, { acceptsUndefined: false })
     )
+  })
+  .views(self => {
+    return {
+      get favoriteProductList(): ProductInstance[] {
+        const favorites = Array.from(self.favoriteProductMap.values());
+        const resolved = [];
+        for (let index = 0; index < favorites.length; index++) {
+          const product = tryReference(() => favorites[index]);
+          if (favorites) resolved.push(product);
+        }
+        return resolved;
+      }
+    };
   })
   .views(self => {
     return {
@@ -53,12 +68,12 @@ export const UIStore = types
   .actions(self => {
     return {
       toggleFavorite(id: number) {
-        const isAlreadyFavorited = self.favoriteProducts.has(id.toString());
+        const isAlreadyFavorited = self.favoriteProductMap.has(id.toString());
 
         if (isAlreadyFavorited) {
-          self.favoriteProducts.delete(id.toString());
+          self.favoriteProductMap.delete(id.toString());
         } else {
-          self.favoriteProducts.set(id.toString(), id);
+          self.favoriteProductMap.set(id.toString(), id);
         }
       }
     };
@@ -72,11 +87,23 @@ export const UIStore = types
       afterAttach: flow(function*(): any {
         const env: Environment = getEnv(self);
         try {
-          const favorites = yield env.persistence.get(
-            constants.STORAGE_KEYS.FAVORITES
-          ) as Await<PersistenceStatic["get"]>;
+          // yield env.persistence.set(
+          //   constants.STORAGE_KEYS.FAVORITES,
+          //   undefined
+          // );
 
-          self.favoriteProducts = favorites ?? {};
+          const favoriteList =
+            (yield env.persistence.get(
+              constants.STORAGE_KEYS.FAVORITES
+            ) as Await<PersistenceStatic["get"]>) ?? [];
+
+          getRoot(self).productStore.processProductList(favoriteList);
+
+          for (const product of favoriteList) {
+            console.log("putting product", { product });
+            self.favoriteProductMap.set(product.id.toString(), product.id);
+          }
+          console.log(getSnapshot(self.favoriteProductMap));
         } catch (error) {
           console.warn(
             "error setting favorite products from persistence",
@@ -85,10 +112,10 @@ export const UIStore = types
         }
 
         autorun(() => {
-          env.persistence.set(
-            constants.STORAGE_KEYS.FAVORITES,
-            self.favoriteProducts
-          );
+          const favorites = self.favoriteProductList.map(product => ({
+            ...product
+          }));
+          env.persistence.set(constants.STORAGE_KEYS.FAVORITES, favorites);
         });
       })
     };

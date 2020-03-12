@@ -22,6 +22,7 @@ interface TextProps extends RNTextProps {
   colorLight?: boolean;
   colorLightSoft?: boolean;
   colorLightSofter?: boolean;
+  colorDanger?: boolean;
 
   weightLight?: boolean;
   weightRegular?: boolean;
@@ -54,6 +55,7 @@ export const Text = React.forwardRef<RNText, TextProps>(
       colorLight,
       colorLightSoft,
       colorLightSofter,
+      colorDanger,
 
       weightLight,
       weightRegular,
@@ -87,6 +89,7 @@ export const Text = React.forwardRef<RNText, TextProps>(
     else if (colorLight) color = C.colorTextLight;
     else if (colorLightSoft) color = C.colorTextLightSoft;
     else if (colorLightSofter) color = C.colorTextLightSofter;
+    else if (colorDanger) color = C.colorTextDanger;
 
     let fontWeight: TextStyle["fontWeight"] = C.fontWeightRegular;
     // // let fontFamily: TextStyle["fontFamily"] = "OpenSans-Regular";

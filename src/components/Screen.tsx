@@ -4,8 +4,6 @@ import { StyleSheet } from "react-native";
 import { ViewProps, View } from "~/components/View";
 import { ScrollViewProps, ScrollView } from "~/components/ScrollView";
 import { constants as C } from "~/style";
-import { Header } from "./Header";
-import { TabBar } from "./TabBar";
 
 const S = StyleSheet.create({
   base: { backgroundColor: C.colorBackgroundTheme, flex: 1 },
@@ -15,14 +13,7 @@ const S = StyleSheet.create({
   }
 });
 
-export type ScreenProps = (
-  | ({ preventScroll?: false } & ScrollViewProps)
-  | ({ preventScroll?: true } & ViewProps)
-) & {
-  HeaderComponent?: React.ReactElement<any>;
-  TabBarComponent?: React.ReactElement<any>;
-  showHeader?: boolean;
-  showTabBar?: boolean;
+interface ScreenCommonProps {
   children?: ReactNode;
   colorBackgroundTheme?: boolean;
   colorBackgroundAccent?: boolean;
@@ -37,33 +28,57 @@ export type ScreenProps = (
   colorBackgroundLightDarker?: boolean;
   colorBackgroundDarkLight?: boolean;
   colorBackgroundDarkLighter?: boolean;
-};
+}
+
+type ScreenProps = { preventScroll?: boolean } & ViewProps &
+  ScrollViewProps &
+  ScreenCommonProps;
 
 export type Screen = typeof Screen;
 export const Screen = React.forwardRef<ScrollView | View, ScreenProps>(
-  ({ style, ...props }, ref) => {
+  (
+    {
+      preventScroll = false,
+      colorBackgroundTheme,
+      colorBackgroundAccent,
+      colorBackgroundLight,
+      colorBackgroundDark,
+      colorBackgroundDanger,
+      colorBackgroundThemeSoft,
+      colorBackgroundThemeSofter,
+      colorBackgroundThemeHard,
+      colorBackgroundThemeHarder,
+      colorBackgroundLightDark,
+      colorBackgroundLightDarker,
+      colorBackgroundDarkLight,
+      colorBackgroundDarkLighter,
+      style,
+      ...props
+    },
+    ref
+  ) => {
     const screenStyle = [S.base, style];
 
     const resolveBackgroundColor = () => {
-      if (props.colorBackgroundTheme) return C.colorBackgroundTheme;
-      if (props.colorBackgroundAccent) return C.colorBackgroundAccent;
-      if (props.colorBackgroundLight) return C.colorBackgroundLight;
-      if (props.colorBackgroundDark) return C.colorBackgroundDark;
-      if (props.colorBackgroundDanger) return C.colorBackgroundDanger;
-      if (props.colorBackgroundThemeSoft) return C.colorBackgroundThemeSoft;
-      if (props.colorBackgroundThemeSofter) return C.colorBackgroundThemeSofter;
-      if (props.colorBackgroundThemeHard) return C.colorBackgroundThemeHard;
-      if (props.colorBackgroundThemeHarder) return C.colorBackgroundThemeHarder;
-      if (props.colorBackgroundLightDark) return C.colorBackgroundLightDark;
-      if (props.colorBackgroundLightDarker) return C.colorBackgroundLightDarker;
-      if (props.colorBackgroundDarkLight) return C.colorBackgroundDarkLight;
-      if (props.colorBackgroundDarkLighter) return C.colorBackgroundDarkLighter;
-      return C.colorBackgroundTheme;
+      if (colorBackgroundTheme) return C.colorBackgroundTheme;
+      if (colorBackgroundAccent) return C.colorBackgroundAccent;
+      if (colorBackgroundLight) return C.colorBackgroundLight;
+      if (colorBackgroundDark) return C.colorBackgroundDark;
+      if (colorBackgroundDanger) return C.colorBackgroundDanger;
+      if (colorBackgroundThemeSoft) return C.colorBackgroundThemeSoft;
+      if (colorBackgroundThemeSofter) return C.colorBackgroundThemeSofter;
+      if (colorBackgroundThemeHard) return C.colorBackgroundThemeHard;
+      if (colorBackgroundThemeHarder) return C.colorBackgroundThemeHarder;
+      if (colorBackgroundLightDark) return C.colorBackgroundLightDark;
+      if (colorBackgroundLightDarker) return C.colorBackgroundLightDarker;
+      if (colorBackgroundDarkLight) return C.colorBackgroundDarkLight;
+      if (colorBackgroundDarkLighter) return C.colorBackgroundDarkLighter;
+      return C.colorBackgroundThemeHard;
     };
 
     const backgroundColor = resolveBackgroundColor();
 
-    if (props.preventScroll === true)
+    if (preventScroll === true)
       return (
         <View ref={ref} style={[screenStyle, { backgroundColor }]} {...props} />
       );
