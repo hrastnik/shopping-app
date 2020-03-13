@@ -14,6 +14,7 @@ import { HeaderProvider } from "~/components/Header";
 import { ModalProvider } from "~/components/ModalProvider";
 import { createStore } from "~/mobx/createStore";
 import { constants } from "~/style";
+import { AlertProvider } from "./components/AlertProvider";
 
 // react-navigation performance optimization
 enableScreens();
@@ -62,9 +63,11 @@ export function AppEntry() {
       <Provider store={store.current}>
         <SafeAreaView style={S.safeAreaView}>
           <ModalProvider>
-            <HeaderProvider>
-              <Router />
-            </HeaderProvider>
+            <AlertProvider>
+              <HeaderProvider>
+                <Router />
+              </HeaderProvider>
+            </AlertProvider>
           </ModalProvider>
         </SafeAreaView>
       </Provider>

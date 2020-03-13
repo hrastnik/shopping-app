@@ -58,14 +58,14 @@ const TabNavigator = () => {
       tabBarOptions={{
         activeTintColor: C.colorTextLight,
         inactiveTintColor: C.colorTextDarkSofter,
-        activeBackgroundColor: C.colorBackgroundThemeSoft,
-        inactiveBackgroundColor: C.colorBackgroundThemeSoft,
+        activeBackgroundColor: C.colorBackgroundTheme,
+        inactiveBackgroundColor: C.colorBackgroundTheme,
         showLabel: false,
-        showIcon: true
-        // style :,
+        showIcon: true,
+        style: { borderTopWidth: 0 }
         // labelStyle :,
         // labelPosition :,
-        // tabStyle :,
+        // tabStyle:,
         // allowFontScaling :,
         // adaptive :,
         // safeAreaInset :,

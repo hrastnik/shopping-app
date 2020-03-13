@@ -1,4 +1,4 @@
-import React, { useState, createContext, useCallback } from "react";
+import React, { useState, createContext, useCallback, useContext } from "react";
 import {
   StyleSheet,
   AlertButton,
@@ -33,17 +33,21 @@ const defaultOptions = {
   buttonsContainerStyle: {}
 };
 
-const MODAL_BACKDROP_COLOR = "rgba(126,126,126,0.5)";
+const MODAL_BACKDROP_COLOR = "rgba(0,0,0,0.2)";
 
 const S = StyleSheet.create({
-  containerStyle: {
+  container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: MODAL_BACKDROP_COLOR
+    backgroundColor: MODAL_BACKDROP_COLOR,
+    alignItems: "center",
+    justifyContent: "center"
   },
-  alertContainer: {
+  alertWrap: {
+    ...shadow(4),
     backgroundColor: C.colorBackgroundLight,
+    borderRadius: 8,
     width: "80%",
-    ...shadow(4)
+    padding: C.spacingMedium
   }
 });
 
@@ -85,41 +89,18 @@ export function AlertProvider(props) {
     }
   };
 
-  const buttonsRender = buttons.map((button, index) => {
+  const renderedButtons = buttons.map((button, index) => {
     // "default" | "cancel" | "destructive";
-    const buttonStyle = button.style || "default";
-    const defaultButtonStyle = {
-      flex: 1
+    const buttonStyle = button.style ?? "default";
+
+    const buttonProps = {
+      transparent: true,
+      title: button.text,
+      onPress: handleButtonPress(button),
+      key: button.text,
+      // containerStyle: defaultButtonStyle,
+      colorDanger: buttonStyle === "destructive"
     };
-
-    let buttonProps;
-
-    if (buttonStyle === "default") {
-      buttonProps = {
-        transparent: true,
-        title: button.text,
-        onPress: handleButtonPress(button),
-        key: button.text,
-        containerStyle: defaultButtonStyle
-      };
-    } else if (buttonStyle === "cancel") {
-      buttonProps = {
-        transparent: true,
-        title: button.text,
-        onPress: handleButtonPress(button),
-        key: button.text,
-        containerStyle: defaultButtonStyle
-      };
-    } else if (buttonStyle === "destructive") {
-      buttonProps = {
-        colorDanger: true,
-        transparent: true,
-        title: button.text,
-        onPress: handleButtonPress(button),
-        key: button.text,
-        containerStyle: defaultButtonStyle
-      };
-    }
 
     return (
       <React.Fragment key={index}>
@@ -129,63 +110,44 @@ export function AlertProvider(props) {
     );
   });
 
-  const shouldShowTitle = typeof title === "string" && title !== "";
-  const shouldShowBody = typeof body === "string" && body !== "";
-  const defaultButtonsContainerStyle =
-    buttons.length > 1
-      ? { flexDirection: "row" }
-      : { flexDirection: "row-reverse" };
-
-  const preparedButtonsContainerStyle: object = {
-    ...defaultButtonsContainerStyle,
-    ...buttonsContainerStyle
-  };
-
   return (
     <AlertContext.Provider value={contextValue} {...otherProps}>
       {children}
       {alertVisible && (
         <Modal>
-          <View style={S.containerStyle}>
-            <TouchableWithoutFeedback onPress={handleModalPress}>
-              <View
-                justifyContentCenter
-                alignItemsCenter
-                style={S.containerStyle}
-              >
-                <View paddingLarge style={S.alertContainer}>
-                  {shouldShowTitle && (
-                    <View paddingVerticalMedium>
-                      <Text weightSemiBold>{title}</Text>
-                    </View>
+          <TouchableWithoutFeedback onPress={handleModalPress}>
+            <View style={S.container}>
+              <View style={S.alertWrap}>
+                <Text colorDark>{title}</Text>
+                <Text colorDarkSoft>{body}</Text>
+                <View
+                  flexDirectionRow
+                  justifyContentFlexEnd
+                  style={buttonsContainerStyle}
+                >
+                  {buttons.length > 0 ? (
+                    renderedButtons
+                  ) : (
+                    <Button
+                      colorTheme
+                      transparent
+                      title="OK"
+                      onPress={() => {
+                        setAlertVisible(false);
+                      }}
+                    />
                   )}
-                  {shouldShowBody && (
-                    <View paddingVerticalMedium>
-                      <Text>{body}</Text>
-                    </View>
-                  )}
-                  <View
-                    paddingVerticalMedium
-                    style={preparedButtonsContainerStyle}
-                  >
-                    {buttonsRender.length === 0 ? (
-                      <Button
-                        transparent
-                        title="OK"
-                        onPress={() => {
-                          setAlertVisible(false);
-                        }}
-                      />
-                    ) : (
-                      buttonsRender
-                    )}
-                  </View>
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-          </View>
+            </View>
+          </TouchableWithoutFeedback>
         </Modal>
       )}
     </AlertContext.Provider>
   );
+}
+
+export function useAlert() {
+  const { alert } = useContext(AlertContext);
+  return alert;
 }

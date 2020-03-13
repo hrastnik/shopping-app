@@ -21,6 +21,7 @@ export interface WithLayoutProps {
   centerContent?: boolean;
   justifyContentCenter?: boolean;
   justifyContentSpaceBetween?: boolean;
+  justifyContentFlexEnd?: boolean;
   alignItemsCenter?: boolean;
   alignItemsFlexEnd?: boolean;
   flex?: boolean;
@@ -78,6 +79,7 @@ export function withLayoutProps<Props extends { style?: any }>(
         centerContent,
         justifyContentCenter,
         justifyContentSpaceBetween,
+        justifyContentFlexEnd,
         alignItemsCenter,
         alignItemsFlexEnd,
         flexDirectionRow,
@@ -135,6 +137,7 @@ export function withLayoutProps<Props extends { style?: any }>(
       }
       if (justifyContentCenter) style.justifyContent = "center";
       if (justifyContentSpaceBetween) style.justifyContent = "space-between";
+      if (justifyContentFlexEnd) style.justifyContent = "flex-end";
       if (alignItemsCenter) style.alignItems = "center";
       if (alignItemsFlexEnd) style.alignItems = "flex-end";
 

@@ -6,28 +6,16 @@ const window = Dimensions.get("window");
 export const windowWidth = window.width;
 export const windowHeight = window.height;
 
-export const colorBackgroundTheme = "#0A3EA5";
-export const colorBackgroundAccent = "#FC7808";
-export const colorBackgroundLight = "#F2EFDC";
-export const colorBackgroundDark = "rgba(10, 10, 10, 1)";
+export const colorBackgroundTheme = "#587f8d";
+export const colorBackgroundAccent = "#ef8f79";
+export const colorBackgroundLight = "#f5fcff";
+export const colorBackgroundDark = "#242424";
 export const colorBackgroundDanger = "#ff4444";
 
-export const colorBackgroundThemeSoft = Color(colorBackgroundTheme)
-  .lighten(0.25)
-  .rgb()
-  .string(2);
-export const colorBackgroundThemeSofter = Color(colorBackgroundTheme)
-  .lighten(0.5)
-  .rgb()
-  .string(2);
-export const colorBackgroundThemeHard = Color(colorBackgroundTheme)
-  .darken(0.25)
-  .rgb()
-  .string(2);
-export const colorBackgroundThemeHarder = Color(colorBackgroundTheme)
-  .darken(0.5)
-  .rgb()
-  .string(2);
+export const colorBackgroundThemeSoft = "#85B0BA";
+export const colorBackgroundThemeSofter = "#ABD6DC";
+export const colorBackgroundThemeHard = "#406679";
+export const colorBackgroundThemeHarder = "#2C4E65";
 
 export const colorBackgroundLightDark = Color(colorBackgroundLight)
   .darken(0.03)
@@ -47,10 +35,10 @@ export const colorBackgroundDarkLighter = Color(colorBackgroundDark)
   .rgb()
   .string(2);
 
-export const colorTextTheme = "#0A3EA5";
-export const colorTextAccent = "#FC7808";
-export const colorTextLight = "rgba(255, 255, 255, 0.9)";
-export const colorTextDark = "rgba(0, 0, 0, 0.9)";
+export const colorTextTheme = "#587F8D";
+export const colorTextAccent = "#F5B29A";
+export const colorTextLight = "#e6f9f9";
+export const colorTextDark = "#091524";
 export const colorTextDanger = "#ff4444";
 
 export const colorTextLightSoft = Color(colorTextLight)
@@ -426,6 +414,7 @@ export const markdownStyle = StyleSheet.create({
 export const hitSlopSmall = 8 as const;
 export const hitSlopMedium = 12 as const;
 export const hitSlopLarge = 16 as const;
+export const hitSlopExtraLarge = 32 as const;
 
 export const hitSlop = {
   small: {
@@ -445,5 +434,11 @@ export const hitSlop = {
     left: hitSlopLarge,
     bottom: hitSlopLarge,
     right: hitSlopLarge
+  },
+  extraLarge: {
+    top: hitSlopExtraLarge,
+    left: hitSlopExtraLarge,
+    bottom: hitSlopExtraLarge,
+    right: hitSlopExtraLarge
   }
 };

@@ -28,12 +28,22 @@ const S = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: color(C.colorBackgroundDark)
-      .alpha(0.5)
+      .alpha(0.2)
       .string(),
     justifyContent: "flex-end",
     alignItems: "flex-end",
     borderRadius: 8,
     overflow: "hidden"
+  },
+  titleText: {
+    width: "100%",
+    textShadowColor: C.colorBackgroundDark,
+    textShadowRadius: 9,
+    textShadowOffset: {
+      width: 0,
+      height: 0
+    },
+    color: C.colorTextLight
   }
 });
 
@@ -71,8 +81,13 @@ export const RegionListScreen = observer(() => {
 
               <View style={StyleSheet.absoluteFill}>
                 <View style={S.overlay} paddingMedium>
-                  <Text sizeExtraLarge weightBold>
-                    {region.name}
+                  <Text
+                    sizeExtraLarge
+                    weightBold
+                    alignRight
+                    style={S.titleText}
+                  >
+                    {` ${region.name} `}
                   </Text>
                 </View>
               </View>

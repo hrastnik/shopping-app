@@ -19,6 +19,9 @@ import { Spacer } from "~/components/Spacer";
 import { useNavigation } from "@react-navigation/native";
 import { QuantityPicker } from "~/components/QuantityPicker";
 import { Button } from "~/components/Button";
+import { shadow } from "~/utils/shadow";
+import { promptYesNo } from "~/utils/promptYesNo";
+import { useAlert } from "~/components/AlertProvider";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -32,7 +35,15 @@ const S = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4
   },
-  productImage: { width: "100%", aspectRatio: 1.6 }
+  productImage: { width: "100%", aspectRatio: 1.6 },
+
+  bottomCard: {
+    backgroundColor: C.colorBackgroundThemeHarder,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    paddingTop: C.spacingExtraLarge,
+    ...shadow(2)
+  }
 });
 
 interface ProductListItemProps {
@@ -42,14 +53,25 @@ interface ProductListItemProps {
 
 const ProductListItem = observer((props: ProductListItemProps) => {
   const store = useStore();
+  const alert = useAlert();
   const handlePress = () => props.onPress(props.product);
 
   const { cart, addToCart } = store.cartStore;
 
   const cartItem = cart.get(props.product.id.toString());
 
-  const handleQuantityChange = quantity => {
+  const handleQuantityChange = async quantity => {
     if (cartItem) {
+      if (quantity === 0) {
+        const shouldRemove = await promptYesNo(
+          {
+            title: "Confirm",
+            message: `Are you sure you want to remove "${props.product.name}" from your cart?`
+          },
+          alert
+        );
+        if (!shouldRemove) return;
+      }
       cartItem.setQuantity(quantity);
     } else {
       addToCart(props.product);
@@ -131,8 +153,46 @@ export const CartScreen = observer(() => {
           </View>
         }
       />
-      <View paddingMedium>
-        <Button title="CONTINUE TO CHECKOUT" onPress={() => {}} />
+
+      <View paddingMedium style={S.bottomCard}>
+        {store.cartStore.priceByShop.map(data => {
+          const numProductText =
+            data.numProducts === 1
+              ? "1 product"
+              : `${data.numProducts} prodcuts`;
+          const numItemsText =
+            data.numItems === 1 ? "1 item" : `${data.numItems} items`;
+          return (
+            <React.Fragment key={`${data.shop.id}`}>
+              <View flexDirectionRow>
+                <Text weightBold>
+                  {data.shop.name} ({numProductText} / {numItemsText})
+                </Text>
+              </View>
+              <View
+                flexDirectionRow
+                justifyContentSpaceBetween
+                paddingVerticalMedium
+                style={{
+                  borderBottomColor: C.colorTextLightSofter,
+                  borderBottomWidth: 1
+                }}
+              >
+                <Text>Price:</Text>
+                <Text>{data.price.toFixed(2)} $</Text>
+              </View>
+              <Spacer />
+            </React.Fragment>
+          );
+        })}
+        <View flexDirectionRow justifyContentSpaceBetween>
+          <Text>Total:</Text>
+          <Text weightBold>{store.cartStore.totalPrice.toFixed(2)} $</Text>
+        </View>
+
+        <Spacer />
+
+        <Button colorAccent title="CONTINUE TO CHECKOUT" onPress={() => {}} />
       </View>
     </Screen>
   );

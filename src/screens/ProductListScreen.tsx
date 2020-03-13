@@ -20,6 +20,7 @@ import { Spacer } from "~/components/Spacer";
 import { useNavigation } from "@react-navigation/native";
 import { Spinner } from "~/components/Spinner";
 import { QuantityPicker } from "~/components/QuantityPicker";
+import { shadow } from "~/utils/shadow";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -29,9 +30,10 @@ const S = StyleSheet.create({
     padding: C.spacingSmall
   },
   card: {
-    borderColor: C.colorTextLightSoft,
-    borderWidth: 1,
-    borderRadius: 4
+    ...shadow(2),
+    overflow: "hidden",
+    borderRadius: 4,
+    backgroundColor: C.colorBackgroundTheme
   },
   productImage: { width: "100%", aspectRatio: 1.6 }
 });
@@ -86,6 +88,7 @@ const ProductListItem = observer((props: ProductListItemProps) => {
             <Text sizeExtraSmall style={{ flex: 1 }}>
               {props.product.categories.map(c => c.name).join(", ")}
             </Text>
+            <Spacer small />
             <QuantityPicker
               value={cartItem?.quantity ?? 0}
               onChange={handleQuantityChange}

@@ -26,7 +26,7 @@ export const ProfileScreen = observer(() => {
 
   return (
     <Screen>
-      <View centerContent paddingMedium>
+      <View centerContent paddingExtraLarge>
         <View
           aspectRatioOne
           style={{

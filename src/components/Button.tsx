@@ -21,9 +21,11 @@ export interface ButtonProps extends TouchableOpacityProps {
   small?: boolean;
   outline?: boolean;
   transparent?: boolean;
-  colorDanger?: boolean;
+  colorLight?: boolean;
+  colorDark?: boolean;
   colorTheme?: boolean;
   colorAccent?: boolean;
+  colorDanger?: boolean;
   children?: ReactNode;
   onPress?: TouchableOpacityProps["onPress"] | (() => Promise<any>);
   blockUi?: boolean;
@@ -36,9 +38,11 @@ const Button = forwardRef<TouchableOpacity, ButtonProps>(function Button(
     small = false,
     outline = false,
     transparent = false,
-    colorDanger = false,
+    colorLight = false,
+    colorDark = false,
     colorTheme = false,
     colorAccent = false,
+    colorDanger = false,
 
     style: inheritedStyle,
     disabled,
@@ -55,10 +59,13 @@ const Button = forwardRef<TouchableOpacity, ButtonProps>(function Button(
     if (outline) return "transparent";
     if (transparent) return "transparent";
 
-    if (colorDanger) return C.colorBackgroundDanger;
+    if (colorLight) return C.colorBackgroundLight;
+    else if (colorDark) return C.colorBackgroundDark;
     else if (colorTheme) return C.colorBackgroundTheme;
     else if (colorAccent) return C.colorBackgroundAccent;
+    else if (colorDanger) return C.colorBackgroundDanger;
 
+    // This should work well with default button text color
     return C.colorBackgroundTheme;
   };
 
@@ -73,9 +80,11 @@ const Button = forwardRef<TouchableOpacity, ButtonProps>(function Button(
     else style.fontSize = C.fontSizeMedium;
 
     if (outline || transparent) {
-      if (colorDanger) style.color = C.colorTextDanger;
+      if (colorLight) style.color = C.colorTextLight;
+      else if (colorDark) style.color = C.colorTextDark;
       else if (colorTheme) style.color = C.colorTextTheme;
       else if (colorAccent) style.color = C.colorTextAccent;
+      else if (colorDanger) style.color = C.colorTextDanger;
       else style.color = C.colorTextTheme;
     } else {
       style.color = C.colorTextLight;

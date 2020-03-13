@@ -25,9 +25,7 @@ const S = StyleSheet.create({
   card: {
     overflow: "hidden",
     borderRadius: 8,
-    borderWidth: 1,
     backgroundColor: C.colorBackgroundTheme,
-    borderColor: C.colorTextAccent,
     opacity: 0.98,
     ...shadow(3)
   }

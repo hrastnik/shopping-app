@@ -1,4 +1,4 @@
-import { Alert } from "~core/components";
+import { Alert } from "react-native";
 
 /**
  * returns a promise that resolves either with true or false, depending
