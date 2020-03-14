@@ -28,7 +28,6 @@ interface TextProps extends RNTextProps {
   weightRegular?: boolean;
   weightSemiBold?: boolean;
   weightBold?: boolean;
-  weightExtraBold?: boolean;
 
   alignCenter?: boolean;
   alignLeft?: boolean;
@@ -61,7 +60,6 @@ export const Text = React.forwardRef<RNText, TextProps>(
       weightRegular,
       weightSemiBold,
       weightBold,
-      weightExtraBold,
 
       alignCenter,
       alignLeft,
@@ -92,22 +90,19 @@ export const Text = React.forwardRef<RNText, TextProps>(
     else if (colorDanger) color = C.colorTextDanger;
 
     let fontWeight: TextStyle["fontWeight"] = C.fontWeightRegular;
-    // // let fontFamily: TextStyle["fontFamily"] = "OpenSans-Regular";
+    let fontFamily: TextStyle["fontFamily"] = "SignikaNegative-Regular";
     if (weightLight) {
       fontWeight = C.fontWeightLight;
-      // fontFamily = "OpenSans-Light";
+      fontFamily = "SignikaNegative-Light";
     } else if (weightRegular) {
       fontWeight = C.fontWeightRegular;
-      // fontFamily = "OpenSans-Regular";
+      fontFamily = "SignikaNegative-Regular";
     } else if (weightSemiBold) {
       fontWeight = C.fontWeightSemiBold;
-      // fontFamily = "OpenSans-SemiBold";
+      fontFamily = "SignikaNegative-SemiBold";
     } else if (weightBold) {
       fontWeight = C.fontWeightBold;
-      // fontFamily = "OpenSans-Bold";
-    } else if (weightExtraBold) {
-      fontWeight = C.fontWeightExtraBold;
-      // fontFamily = "OpenSans-ExtraBold";
+      fontFamily = "SignikaNegative-Bold";
     }
 
     let textAlign: TextStyle["textAlign"] = "auto";
@@ -119,10 +114,7 @@ export const Text = React.forwardRef<RNText, TextProps>(
     return (
       <RNText
         ref={ref}
-        style={[
-          { /* fontFamily, */ fontSize, color, fontWeight, textAlign },
-          style
-        ]}
+        style={[{ fontFamily, fontSize, color, fontWeight, textAlign }, style]}
         {...props}
       />
     );

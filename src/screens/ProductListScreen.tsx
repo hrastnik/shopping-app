@@ -1,14 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { observer } from "mobx-react";
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  ListRenderItem
-} from "react-native";
+import { FlatList, StyleSheet, ListRenderItem } from "react-native";
 
 import { Screen } from "~/components/Screen";
-import { Image } from "~/components/Image";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
@@ -16,103 +10,40 @@ import { useQuery } from "~/mobx/useQuery";
 import { keyExtractor } from "~/utils/keyExtractor";
 import { ProductInstance } from "~/mobx/entities/product/Product";
 import { constants as C } from "~/style";
-import { Spacer } from "~/components/Spacer";
 import { useNavigation } from "@react-navigation/native";
 import { Spinner } from "~/components/Spinner";
-import { QuantityPicker } from "~/components/QuantityPicker";
-import { shadow } from "~/utils/shadow";
+import {
+  ProductListItemProps,
+  ProductListItem
+} from "~/components/ProductListItem";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
-  contentContainer: { padding: C.spacingSmall },
-  column: {
-    width: "50%",
-    padding: C.spacingSmall
-  },
-  card: {
-    ...shadow(2),
-    overflow: "hidden",
-    borderRadius: 4,
-    backgroundColor: C.colorBackgroundTheme
-  },
-  productImage: { width: "100%", aspectRatio: 1.6 }
-});
-
-interface ProductListItemProps {
-  product: ProductInstance;
-  onPress: (product: ProductInstance) => any;
-}
-
-const ProductListItem = observer((props: ProductListItemProps) => {
-  const store = useStore();
-  const handlePress = () => props.onPress(props.product);
-
-  const { cart, addToCart } = store.cartStore;
-
-  const cartItem = cart.get(props.product.id.toString());
-
-  const handleQuantityChange = quantity => {
-    if (cartItem) {
-      cartItem.setQuantity(quantity);
-    } else {
-      addToCart(props.product);
-    }
-  };
-
-  return (
-    <TouchableOpacity onPress={handlePress} style={S.column}>
-      <View flex style={S.card}>
-        <Image
-          source={
-            props.product.image?.source ?? {
-              uri: "https://placebear.com/300/300"
-            }
-          }
-          style={S.productImage}
-          resizeMode="cover"
-        />
-
-        <Spacer small />
-
-        <View paddingSmall flex>
-          <View flex>
-            <Text weightBold>{props.product.name}</Text>
-            <Text sizeSmall>{props.product.description}</Text>
-          </View>
-
-          <View>
-            <Text>{props.product.shop.name}</Text>
-          </View>
-
-          <View flexDirectionRow alignItemsFlexEnd>
-            <Text sizeExtraSmall style={{ flex: 1 }}>
-              {props.product.categories.map(c => c.name).join(", ")}
-            </Text>
-            <Spacer small />
-            <QuantityPicker
-              value={cartItem?.quantity ?? 0}
-              onChange={handleQuantityChange}
-            />
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
+  contentContainer: { padding: C.spacingSmall }
 });
 
 export const ProductListScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
 
+  const regionId = store.uiStore.activeRegionId;
   const category = store.uiStore.activeCategory;
   const shopId = store.uiStore.activeShopId;
+
+  useEffect(() => {
+    return () => {
+      store.uiStore.set("activeShop", undefined);
+      store.uiStore.set("activeCategory", undefined);
+    };
+  }, [store.uiStore]);
 
   const query = useQuery(
     store => params =>
       store.productStore.readProductList({
         ...params,
         categories_containss: category?.uid,
-        shop: shopId
+        shop: shopId,
+        "shop.region": regionId
       }),
     store => store.productStore.map
   );

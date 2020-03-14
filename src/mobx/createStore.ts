@@ -50,13 +50,8 @@ export async function createStore(env: Environment) {
   const store = Store.create(undefined, env);
 
   await when(() => {
-    return (
-      typeof store.authStore.isLoggedIn === "boolean" &&
-      store.uiStore.initialScreen !== undefined
-    );
+    return store.authStore && store.uiStore.initialScreen !== undefined;
   });
-
-  await when(() => store.categoryStore.map.size > 0);
 
   return store;
 }

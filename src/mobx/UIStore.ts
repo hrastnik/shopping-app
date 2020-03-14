@@ -100,10 +100,8 @@ export const UIStore = types
           getRoot(self).productStore.processProductList(favoriteList);
 
           for (const product of favoriteList) {
-            console.log("putting product", { product });
             self.favoriteProductMap.set(product.id.toString(), product.id);
           }
-          console.log(getSnapshot(self.favoriteProductMap));
         } catch (error) {
           console.warn(
             "error setting favorite products from persistence",

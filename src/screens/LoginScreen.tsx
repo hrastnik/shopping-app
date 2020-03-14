@@ -8,6 +8,7 @@ import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
 import { useStore } from "~/mobx/useStore";
 import { useNavigation } from "@react-navigation/native";
+import { Spacer } from "~/components/Spacer";
 
 export const LoginScreen = observer(() => {
   const store = useStore();
@@ -22,13 +23,16 @@ export const LoginScreen = observer(() => {
     <Screen>
       <View paddingMedium justifyContentCenter>
         <TextInput value={email} onChangeText={setEmail} />
+        <Spacer />
         <TextInput value={password} onChangeText={setPassword} />
+        <Spacer />
 
         {error && <Text>{error}</Text>}
 
         {store.authStore.isLoggedIn && (
           <Text>User: {store.authStore.activeUser.username}</Text>
         )}
+        <Spacer extraLarge />
 
         <Button
           title="SUBMIT"
@@ -43,7 +47,11 @@ export const LoginScreen = observer(() => {
           }}
         />
 
+        <Spacer />
+
         <Button
+          outline
+          colorLight
           title="SIGN UP"
           onPress={() => {
             navigation.navigate("SignUpScreen");

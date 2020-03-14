@@ -73,7 +73,7 @@ const TabNavigator = () => {
       }}
     >
       <Tabs.Screen
-        name="Tab.RegionListScreen"
+        name="Tab.ShopListScreen"
         options={{
           tabBarIcon: props => (
             <Icon name="shopping-cart" color={props.color} size={props.size} />
@@ -84,9 +84,9 @@ const TabNavigator = () => {
           return (
             <Stack.Navigator screenOptions={screenOptions}>
               <Stack.Screen
-                options={{ title: "Region List" }}
-                component={RegionListScreen}
-                name="RegionListScreen"
+                name="ShopListScreen"
+                component={ShopListScreen}
+                options={{ title: "Shop List" }}
               />
             </Stack.Navigator>
           );
@@ -163,14 +163,14 @@ const MainStack = () => {
   return (
     <>
       <Stack.Screen
+        options={{ title: "Region List" }}
+        component={RegionListScreen}
+        name="RegionListScreen"
+      />
+      <Stack.Screen
         name="Stack.TabNavigator"
         options={{ headerShown: false }}
         component={TabNavigator}
-      />
-      <Stack.Screen
-        name="ShopListScreen"
-        component={ShopListScreen}
-        options={{ title: "Shop List" }}
       />
       <Stack.Screen
         name="ProductListScreen"
@@ -209,7 +209,6 @@ export const Router = observer(() => {
   };
 
   const { isLoggedIn } = store.authStore;
-
   const shouldShowAuth = isLoggedIn === false;
 
   return (

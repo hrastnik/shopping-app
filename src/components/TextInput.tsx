@@ -37,7 +37,6 @@ export interface TextInputProps extends RNTextInputProps {
   weightRegular?: boolean;
   weightSemiBold?: boolean;
   weightBold?: boolean;
-  weightExtraBold?: boolean;
   children?: ReactNode;
 }
 
@@ -62,7 +61,6 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
       weightRegular,
       weightSemiBold,
       weightBold,
-      weightExtraBold,
 
       style,
       ...props
@@ -86,23 +84,21 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
     else if (colorLightSofter) color = C.colorTextLightSofter;
 
     let fontWeight: TextStyle["fontWeight"] = C.fontWeightRegular;
-    // let fontFamily: TextStyle["fontFamily"] = "OpenSans-Regular";
+    let fontFamily: TextStyle["fontFamily"] = "SignikaNegative-Regular";
     if (weightLight) {
       fontWeight = C.fontWeightLight;
-      // fontFamily = "OpenSans-Light";
+      fontFamily = "SignikaNegative-Light";
     } else if (weightRegular) {
       fontWeight = C.fontWeightRegular;
-      // fontFamily = "OpenSans-Regular";
+      fontFamily = "SignikaNegative-Regular";
     } else if (weightSemiBold) {
       fontWeight = C.fontWeightSemiBold;
-      // fontFamily = "OpenSans-SemiBold";
+      fontFamily = "SignikaNegative-SemiBold";
     } else if (weightBold) {
       fontWeight = C.fontWeightBold;
-      // fontFamily = "OpenSans-Bold";
-    } else if (weightExtraBold) {
-      fontWeight = C.fontWeightExtraBold;
-      // fontFamily = "OpenSans-ExtraBold";
+      fontFamily = "SignikaNegative-Bold";
     }
+
     return (
       <RNTextInput
         ref={ref}
@@ -112,7 +108,8 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
           {
             fontSize,
             color,
-            fontWeight
+            fontWeight,
+            fontFamily
           },
           style
         ]}

@@ -61,7 +61,7 @@ export const RegionListScreen = observer(() => {
         <TouchableOpacity
           onPress={() => {
             store.uiStore.set("activeRegion", region.id);
-            navigation.navigate("ShopListScreen");
+            navigation.replace("Stack.TabNavigator", {});
           }}
         >
           <View paddingMedium>

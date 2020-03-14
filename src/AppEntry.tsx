@@ -5,6 +5,7 @@ import { StatusBar, Platform, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import React, { useEffect, useState, useRef } from "react";
 import { Provider } from "mobx-react";
+import * as Font from "expo-font";
 
 import { createPersistence } from "~/services/persistence/createPersistence";
 import { createHttp } from "~/services/http/createHttp";
@@ -27,6 +28,15 @@ const S = StyleSheet.create({
   flexCenterContent: { flex: 1, justifyContent: "center", alignItems: "center" }
 });
 
+async function loadFonts() {
+  await Font.loadAsync({
+    "SignikaNegative-Light": require("./assets/Signika_Negative/SignikaNegative-Light.ttf"),
+    "SignikaNegative-SemiBold": require("./assets/Signika_Negative/SignikaNegative-SemiBold.ttf"),
+    "SignikaNegative-Bold": require("./assets/Signika_Negative/SignikaNegative-Bold.ttf"),
+    "SignikaNegative-Regular": require("./assets/Signika_Negative/SignikaNegative-Regular.ttf")
+  });
+}
+
 async function initialize() {
   StatusBar.setBarStyle("light-content");
   if (Platform.OS === "android")
@@ -35,6 +45,8 @@ async function initialize() {
   const http = createHttp();
   const persistence = createPersistence();
   const store = await createStore({ http, persistence });
+
+  await loadFonts();
 
   return { store };
 }
@@ -53,7 +65,7 @@ export function AppEntry() {
   if (!isReady) {
     return (
       <View style={S.flexCenterContent}>
-        <Text>Loading</Text>
+        <Text>Loading...</Text>
       </View>
     );
   }
