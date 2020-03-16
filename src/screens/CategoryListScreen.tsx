@@ -31,8 +31,20 @@ const S = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: color(C.colorBackgroundDark)
-      .alpha(0.5)
+      .alpha(0.15)
       .string()
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: C.colorBackgroundLight
+  },
+  categoryText: {
+    textShadowColor: C.colorBackgroundDark,
+    textShadowRadius: 9,
+    textShadowOffset: {
+      width: 0,
+      height: 0
+    }
   }
 });
 
@@ -45,7 +57,7 @@ export const CategoryListScreen = observer(() => {
   );
 
   const renderItem: ListRenderItem<CategoryInstance> = useCallback(
-    ({ item: category, index }) => {
+    ({ item: category }) => {
       return (
         <TouchableOpacity
           style={S.column}
@@ -64,14 +76,12 @@ export const CategoryListScreen = observer(() => {
             }}
           >
             <Image
-              style={StyleSheet.absoluteFill}
-              source={{
-                uri: "https://placebear.com/300/30" + (index % 10)
-              }}
+              style={S.image}
+              source={category.image.source}
               resizeMode="cover"
             />
             <View style={S.overlay} paddingMedium>
-              <Text sizeLarge weightBold>
+              <Text sizeLarge weightBold style={S.categoryText}>
                 {category.name}
               </Text>
             </View>

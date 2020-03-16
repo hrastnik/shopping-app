@@ -65,6 +65,14 @@ export const AuthStore = types
         }
       }),
 
+      logout() {
+        const root = getRoot(self);
+        self.activeUser = undefined;
+        self.token = undefined;
+        root.cartStore.clearCart();
+        root.uiStore.favoriteProductMap.clear();
+      },
+
       register: flow(function*(params: {
         username: string;
         email: string;

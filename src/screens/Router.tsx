@@ -20,6 +20,10 @@ import { CartScreen } from "~/screens/CartScreen";
 
 import { constants as C } from "~/style";
 import { Icon } from "~/components/Icon";
+import { CartButton } from "~/components/CartButton";
+import { View } from "~/components/View";
+import { LogoutButton } from "~/components/LogoutButton";
+import { FavoriteButton } from "~/components/FavoriteButton";
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -30,12 +34,12 @@ const AuthStack = () => {
       <Stack.Screen
         name="LoginScreen"
         component={LoginScreen}
-        options={{ title: "Login" }}
+        options={{ headerRight: undefined, title: "Login" }}
       />
       <Stack.Screen
         name="SignUpScreen"
         component={SignUpScreen}
-        options={{ title: "Sign Up" }}
+        options={{ headerRight: undefined, title: "Sign Up" }}
       />
     </>
   );
@@ -49,6 +53,9 @@ const TabNavigator = () => {
     headerStatusBarHeight: 0,
     header(props) {
       return <Header {...props} />;
+    },
+    headerRight() {
+      return <CartButton />;
     }
   };
 
@@ -115,27 +122,6 @@ const TabNavigator = () => {
       </Tabs.Screen>
 
       <Tabs.Screen
-        name="Tab.ProfileScreen"
-        options={{
-          tabBarIcon: props => (
-            <Icon name="person" color={props.color} size={props.size} />
-          )
-        }}
-      >
-        {() => {
-          return (
-            <Stack.Navigator screenOptions={screenOptions}>
-              <Stack.Screen
-                options={{ title: "Profile" }}
-                component={ProfileScreen}
-                name="ProfileScreen"
-              />
-            </Stack.Navigator>
-          );
-        }}
-      </Tabs.Screen>
-
-      <Tabs.Screen
         name="Tab.FavoriteProductListScreen"
         options={{
           tabBarIcon: props => (
@@ -155,6 +141,37 @@ const TabNavigator = () => {
           );
         }}
       </Tabs.Screen>
+
+      <Tabs.Screen
+        name="Tab.ProfileScreen"
+        options={{
+          tabBarIcon: props => (
+            <Icon name="person" color={props.color} size={props.size} />
+          )
+        }}
+      >
+        {() => {
+          return (
+            <Stack.Navigator screenOptions={screenOptions}>
+              <Stack.Screen
+                options={{
+                  title: "Profile",
+                  headerRight() {
+                    return (
+                      <View flexDirectionRow>
+                        <LogoutButton />
+                        <CartButton />
+                      </View>
+                    );
+                  }
+                }}
+                component={ProfileScreen}
+                name="ProfileScreen"
+              />
+            </Stack.Navigator>
+          );
+        }}
+      </Tabs.Screen>
     </Tabs.Navigator>
   );
 };
@@ -163,7 +180,7 @@ const MainStack = () => {
   return (
     <>
       <Stack.Screen
-        options={{ title: "Region List" }}
+        options={{ title: "Region List", headerRight: undefined }}
         component={RegionListScreen}
         name="RegionListScreen"
       />
@@ -180,7 +197,17 @@ const MainStack = () => {
       <Stack.Screen
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
-        options={{ title: "Product Details" }}
+        options={{
+          title: "Product Details",
+          headerRight() {
+            return (
+              <View flexDirectionRow>
+                <FavoriteButton />
+                <CartButton />
+              </View>
+            );
+          }
+        }}
       />
       <Stack.Screen
         name="ProfileEditScreen"
@@ -190,7 +217,7 @@ const MainStack = () => {
       <Stack.Screen
         name="CartScreen"
         component={CartScreen}
-        options={{ title: "Cart" }}
+        options={{ title: "Cart", headerRight: undefined }}
       />
     </>
   );
@@ -205,6 +232,9 @@ export const Router = observer(() => {
     headerShown: true,
     header(props) {
       return <Header {...props} />;
+    },
+    headerRight() {
+      return <CartButton />;
     }
   };
 

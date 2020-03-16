@@ -6,20 +6,33 @@ import { Formik } from "formik";
 import { Screen } from "~/components/Screen";
 import { Text } from "~/components/Text";
 import { View } from "~/components/View";
-import { constants } from "~/style";
 import { Spacer } from "~/components/Spacer";
 import { useStore } from "~/mobx/useStore";
-import { IconButton } from "~/components/IconButton";
-import { MeasureLayout } from "~/components/MeasureLayout";
-import { useRightComponent } from "~/components/Header";
-import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "~/components/TextInput";
-import { values } from "mobx";
 import { Button } from "~/components/Button";
+import { textInputProps } from "~/utils/textInputProps";
 
 const validationSchema = yup.object({
-  username: yup.string().required("Username can't be empty"),
-  email: yup.string().email("Email format is invalid")
+  username: yup
+    .string()
+    .required("Username is required")
+    .trim()
+    .test({
+      name: "username_test",
+      test: (value: string) => Boolean(value.match(/^[A-Za-z0-9_-]+$/)),
+      message: `Only alphanumberic characters, '-' and '_' allowed`
+    }),
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Email format is invalid"),
+  phone: yup
+    .string()
+    .required("Phone number is required")
+    .min(6, "Phone number too short")
+    .max(15, "Phone number too long"),
+  city: yup.string().min(2, "City name too short"),
+  address: yup.string().min(2, "Address too short")
 });
 
 export const ProfileEditScreen = observer(() => {
@@ -60,7 +73,6 @@ export const ProfileEditScreen = observer(() => {
               </View>
               <Spacer small />
               <TextInput
-                weightBold
                 value={values.username}
                 onChangeText={handleChange("username")}
                 onBlur={handleBlur("username")}
@@ -78,7 +90,7 @@ export const ProfileEditScreen = observer(() => {
               </View>
               <Spacer small />
               <TextInput
-                weightBold
+                {...textInputProps.email}
                 value={values.email}
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}

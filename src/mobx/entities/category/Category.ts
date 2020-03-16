@@ -7,6 +7,7 @@ import {
 } from "mobx-state-tree";
 import { DateTime } from "~/mobx/util-models/DateTime";
 import { getRoot } from "~/mobx/utils/getRoot";
+import { Image } from "~/mobx/util-models/Image";
 
 export interface CategoryInstance extends Instance<typeof Category> {}
 export interface CategorySnapshotIn extends SnapshotIn<typeof Category> {}
@@ -18,7 +19,8 @@ export const Category = types
     created_at: DateTime,
     updated_at: DateTime,
     name: types.string,
-    uid: types.string
+    uid: types.string,
+    image: types.maybeNull(Image)
   })
   .actions(self => {
     return {

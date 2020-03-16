@@ -1,14 +1,18 @@
 import { TextInputProps } from "~/components/TextInput";
 
-export const textInputProps: Record<string, TextInputProps> = {
+export const textInputProps = {
   email: {
-    placeholder: "Email",
-    keyboardType: "email-address",
-    textContentType: "emailAddress",
     autoCapitalize: "none",
+    autoCompleteType: "email",
+    autoCorrect: true,
+    dataDetectorTypes: "none",
+    keyboardType: "email-address",
     maxLength: 50,
-    spellCheck: false
-  },
+    placeholder: "Email",
+    secureTextEntry: false,
+    spellCheck: false,
+    textContentType: "emailAddress"
+  } as TextInputProps,
 
   password: {
     placeholder: "Password",
@@ -16,7 +20,7 @@ export const textInputProps: Record<string, TextInputProps> = {
     secureTextEntry: true,
     spellCheck: false,
     textContentType: "password"
-  },
+  } as TextInputProps,
 
   phoneNumber: {
     placeholder: "Phone",
@@ -24,7 +28,7 @@ export const textInputProps: Record<string, TextInputProps> = {
     textContentType: "telephoneNumber",
     maxLength: 16,
     spellCheck: false
-  },
+  } as TextInputProps,
 
   name: {
     placeholder: "First and Last Name",
@@ -33,5 +37,5 @@ export const textInputProps: Record<string, TextInputProps> = {
     autoCapitalize: "words",
     maxLength: 50,
     spellCheck: false
-  }
+  } as TextInputProps
 };

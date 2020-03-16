@@ -40,7 +40,8 @@ async function loadFonts() {
 async function initialize() {
   StatusBar.setBarStyle("light-content");
   if (Platform.OS === "android")
-    StatusBar.setBackgroundColor(constants.colorBackgroundThemeHarder);
+    StatusBar.setBackgroundColor(constants.colorBackgroundTheme);
+  StatusBar.setBarStyle("light-content");
 
   const http = createHttp();
   const persistence = createPersistence();

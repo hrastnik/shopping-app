@@ -8,8 +8,6 @@ import { Image } from "~/components/Image";
 import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
 import { useStore } from "~/mobx/useStore";
-import { IconButton } from "~/components/IconButton";
-import { useRightComponent } from "~/components/Header";
 import { constants } from "~/style";
 import { ImageInstance } from "~/mobx/util-models/Image";
 import { Spacer } from "~/components/Spacer";
@@ -28,13 +26,13 @@ export const ProductDetailsScreen = observer(() => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  useRightComponent(
-    <IconButton
-      onPress={product.toggleFavorite}
-      iconName={product.isFavorited ? "heart" : "heart-outline"}
-    />,
-    [product, product.isFavorited]
-  );
+  // useRightComponent(
+  //   <IconButton
+  //     onPress={product.toggleFavorite}
+  //     iconName={product.isFavorited ? "heart" : "heart-outline"}
+  //   />,
+  //   [product, product.isFavorited]
+  // );
 
   return (
     <Screen

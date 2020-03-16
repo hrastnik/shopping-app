@@ -22,8 +22,22 @@ export const LoginScreen = observer(() => {
   return (
     <Screen>
       <View paddingMedium justifyContentCenter>
+        <View flexDirectionRow justifyContentSpaceBetween>
+          <Text sizeSmall>Email</Text>
+          <Text colorDanger sizeSmall>
+            Username too short
+          </Text>
+        </View>
+        <Spacer small />
         <TextInput value={email} onChangeText={setEmail} />
         <Spacer />
+        <View flexDirectionRow justifyContentSpaceBetween>
+          <Text sizeSmall>Password</Text>
+          <Text colorDanger sizeSmall>
+            Username too short
+          </Text>
+        </View>
+        <Spacer small />
         <TextInput value={password} onChangeText={setPassword} />
         <Spacer />
 
@@ -50,7 +64,7 @@ export const LoginScreen = observer(() => {
         <Spacer />
 
         <Button
-          outline
+          transparent
           colorLight
           title="SIGN UP"
           onPress={() => {

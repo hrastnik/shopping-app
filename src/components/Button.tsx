@@ -127,7 +127,12 @@ const Button = forwardRef<TouchableOpacity, ButtonProps>(function Button(
     }
   }
 
-  const borderRadius = 8; // shared between the button and the spinner overlay
+  const resolveBorderRadius = () => {
+    if (small) return 4;
+    return 8;
+  };
+
+  const borderRadius = resolveBorderRadius(); // shared between the button and the spinner overlay
   const style: TouchableOpacityProps["style"] = {
     flexDirection: "row",
     justifyContent: "center", // ideja kod dodavanja ikona -> children != null ? "flex-start" : "center"

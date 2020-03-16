@@ -7,7 +7,7 @@ const Spinner = React.forwardRef<ActivityIndicator, ActivityIndicatorProps>(
   (
     {
       size = "large",
-      color = C.colorBackgroundAccent,
+      color = C.colorTextAccent,
       ...props
     }: ActivityIndicatorProps,
     ref

@@ -24,7 +24,8 @@ export interface IconProps {
     | "account-edit"
     | "tag"
     | "add"
-    | "remove";
+    | "remove"
+    | "logout";
 
   color?: string;
   size?: number;
@@ -51,6 +52,7 @@ function Icon({ name, color = C.colorTextLight, size = 28 }: IconProps) {
     case "heart-outline":
     case "account-edit":
     case "tag":
+    case "logout":
       return <MaterialCommunityIcons name={name} size={size} color={color} />;
 
     default:

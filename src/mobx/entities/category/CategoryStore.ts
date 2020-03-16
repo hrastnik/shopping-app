@@ -7,6 +7,7 @@ import {
   SnapshotOut
 } from "mobx-state-tree";
 import _ from "lodash";
+import { Image as RNImage } from "react-native";
 import { AxiosResponse } from "axios";
 
 import { Category } from "~/mobx/entities/category/Category";
@@ -104,6 +105,9 @@ export const CategoryStore = types
         const root = getRoot(self);
         yield when(() => root.authStore.isLoggedIn);
         yield self.readCategoryList({});
+        for (const category of self.map.values()) {
+          RNImage.prefetch(category.image.source.uri);
+        }
       })
     };
   });

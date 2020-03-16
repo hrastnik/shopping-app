@@ -11,7 +11,6 @@ import { keyExtractor } from "~/utils/keyExtractor";
 import { ProductInstance } from "~/mobx/entities/product/Product";
 import { constants as C } from "~/style";
 import { useNavigation } from "@react-navigation/native";
-import { Spinner } from "~/components/Spinner";
 import {
   ProductListItemProps,
   ProductListItem
@@ -82,10 +81,7 @@ export const ProductListScreen = observer(() => {
         contentContainerStyle={S.contentContainer}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        ListFooterComponent={
-          query.isLoadingNext && <Spinner style={{ margin: C.spacingMedium }} />
-        }
-        onEndReachedThreshold={0.05}
+        onEndReachedThreshold={0.1}
       />
     </Screen>
   );

@@ -14,7 +14,6 @@ import { View } from "~/components/View";
 import { IconButton } from "~/components/IconButton";
 import { constants as C } from "~/style";
 import { shadow } from "~/utils/shadow";
-import { CartButton } from "./CartButton";
 
 /*******
  *
@@ -70,10 +69,10 @@ export const Header = observer(props => {
   }, [props.navigation]);
 
   const title = props?.scene?.descriptor?.options?.title;
+  const HeaderRight =
+    props?.scene?.descriptor?.options?.headerRight?.() ?? null;
 
   const canGoBack = props.navigation.canGoBack();
-
-  const { LeftComponent, RightComponent } = useContext(HeaderContext);
 
   return (
     <View centerContent style={S.headerContainer}>
@@ -98,12 +97,10 @@ export const Header = observer(props => {
             iconColor={C.colorTextLight}
           />
         )}
-        {LeftComponent}
       </View>
 
       <View justifyContentCenter flexDirectionRow style={S.headerRight}>
-        {RightComponent}
-        <CartButton />
+        {HeaderRight}
       </View>
     </View>
   );

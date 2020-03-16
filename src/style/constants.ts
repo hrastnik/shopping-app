@@ -72,14 +72,14 @@ export const fontSizeExtraLarge = 24;
 
 export const fontWeightLight = "300";
 export const fontWeightRegular = "400";
-export const fontWeightSemiBold = "500";
-export const fontWeightBold = "700";
-export const fontWeightExtraBold = "800";
+export const fontWeightSemiBold = "600";
+export const fontWeightBold = "800"; // This is usually 700 but doesn't show correct font
+// export const fontWeightExtraBold = "800";
 
 const transparentColor = "rgba(255, 255, 255, 0)";
 
 const markdownDisabledFontStyle: TextStyle = {
-  fontFamily: "OpenSans-Regular",
+  fontFamily: "SignikaNegative-Regular",
   color: colorTextDark,
   fontSize: 16,
   fontWeight: "400",
@@ -202,60 +202,60 @@ export const markdownDisabledStyle = StyleSheet.create({
 
 export const markdownStyle = StyleSheet.create({
   heading: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     color: colorTextDark
   },
   heading1: {
-    fontFamily: "OpenSans-Bold",
+    fontFamily: "SignikaNegative-Bold",
     fontSize: 32
   },
   heading2: {
-    fontFamily: "OpenSans-Bold",
+    fontFamily: "SignikaNegative-Bold",
     fontSize: 24
   },
   heading3: {
-    fontFamily: "OpenSans-Bold",
+    fontFamily: "SignikaNegative-Bold",
     fontSize: 18
   },
   heading4: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontSize: 16
   },
   heading5: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontSize: 13
   },
   heading6: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontSize: 11
   },
   text: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     color: colorTextDark
   },
   strong: {
-    fontFamily: "OpenSans-Bold"
+    fontFamily: "SignikaNegative-Bold"
   },
   strikethrough: {
     textDecorationLine: "line-through",
-    fontFamily: "OpenSans-Regular"
+    fontFamily: "SignikaNegative-Regular"
   },
   link: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     color: colorTextTheme
   },
   em: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontStyle: "italic"
   },
   listUnorderedItemIcon: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontSize: 14,
     marginTop: 10,
     marginRight: 10
   },
   listOrderedItemIcon: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontSize: 14,
     marginTop: 10,
     marginRight: 10
@@ -263,11 +263,11 @@ export const markdownStyle = StyleSheet.create({
 
   // new ones
   autolink: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     color: colorTextAccent
   },
   blockQuoteText: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     color: colorTextDarkSoft
   },
   blockQuoteSection: {
@@ -295,13 +295,13 @@ export const markdownStyle = StyleSheet.create({
     alignSelf: "stretch"
   },
   codeBlock: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontWeight: "500",
     padding: spacingSmall,
     backgroundColor: colorBackgroundLightDark
   },
   del: {
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     textDecorationLine: "line-through",
     textDecorationStyle: "solid"
   },
@@ -323,7 +323,7 @@ export const markdownStyle = StyleSheet.create({
     borderColor: colorBackgroundLightDarker,
     borderRadius: 3,
     borderWidth: 1,
-    fontFamily: "OpenSans-Regular",
+    fontFamily: "SignikaNegative-Regular",
     fontWeight: "bold"
   },
   list: {},

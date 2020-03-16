@@ -80,6 +80,9 @@ export const CartStore = types
       },
       removeFromCart(productId: string) {
         self.cart.delete(productId);
+      },
+      clearCart() {
+        self.cart.clear();
       }
     };
   })

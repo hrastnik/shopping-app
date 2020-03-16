@@ -8,21 +8,17 @@ import { constants } from "~/style";
 import { Spacer } from "~/components/Spacer";
 import { useStore } from "~/mobx/useStore";
 import { MeasureLayout } from "~/components/MeasureLayout";
+import { IconButton } from "~/components/IconButton";
+import { useNavigation } from "@react-navigation/native";
 
 export const ProfileScreen = observer(() => {
   const store = useStore();
   const user = store.authStore.activeUser;
+  const navigation = useNavigation();
 
-  // const navigation = useNavigation();
-  // useRightComponent(
-  //   <IconButton
-  //     iconName="account-edit"
-  //     onPress={() => {
-  //       navigation.navigate("ProfileEditScreen");
-  //     }}
-  //   />,
-  //   []
-  // );
+  if (!user) {
+    return null;
+  }
 
   return (
     <Screen>
@@ -48,26 +44,57 @@ export const ProfileScreen = observer(() => {
             }}
           </MeasureLayout>
         </View>
+
+        <View absoluteTopLeftMedium>
+          <IconButton
+            small
+            outline
+            colorLight
+            iconSize={16}
+            iconName="account-edit"
+            title="EDIT DATA"
+            onPress={() => {
+              navigation.navigate("ProfileEditScreen");
+            }}
+          />
+        </View>
       </View>
 
       <View paddingMedium>
-        <Text sizeSmall weightLight>
-          Logged in as:
-        </Text>
+        <Text weightLight>Logged in as:</Text>
         <Text weightBold>{user.username}</Text>
 
-        <Spacer />
+        <Spacer large />
 
-        <Text sizeSmall weightLight>
-          Email
-        </Text>
+        <Text weightLight>Email</Text>
         <Text weightBold>{user.email}</Text>
 
-        <Spacer />
+        <Spacer large />
 
-        <Text sizeSmall weightLight>
-          Account created
-        </Text>
+        <Text weightLight>Phone number</Text>
+        <Text weightBold>{user.phone}</Text>
+
+        {user.city && (
+          <>
+            <Spacer large />
+
+            <Text weightLight>City</Text>
+            <Text weightBold>{user.city}</Text>
+          </>
+        )}
+
+        {user.address && (
+          <>
+            <Spacer large />
+
+            <Text weightLight>Address</Text>
+            <Text weightBold>{user.address}</Text>
+          </>
+        )}
+
+        <Spacer large />
+
+        <Text weightLight>Account created</Text>
         <Text weightBold>{user.created_at.fromNow()}</Text>
       </View>
     </Screen>

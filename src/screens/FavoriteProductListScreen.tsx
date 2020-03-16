@@ -12,6 +12,8 @@ import {
   ProductListItemProps,
   ProductListItem
 } from "~/components/ProductListItem";
+import { View } from "~/components/View";
+import { Text } from "~/components/Text";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -50,6 +52,13 @@ export const FavoriteProductListScreen = observer(() => {
         contentContainerStyle={S.contentContainer}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        ListEmptyComponent={
+          <View aspectRatioOne centerContent paddingExtraLarge>
+            <Text alignCenter colorLightSoft>
+              You haven't added any products to favorites yet
+            </Text>
+          </View>
+        }
       />
     </Screen>
   );

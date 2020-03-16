@@ -75,6 +75,9 @@ export const UIStore = types
         } else {
           self.favoriteProductMap.set(id.toString(), id);
         }
+      },
+      clearFavoriteMap() {
+        self.favoriteProductMap.clear();
       }
     };
   })

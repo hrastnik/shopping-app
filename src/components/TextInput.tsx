@@ -3,18 +3,16 @@ import {
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
   TextStyle,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from "react-native";
 
 import { constants as C } from "~/style";
 
 const S = StyleSheet.create({
   baseStyle: {
-    padding: C.spacingMedium,
     margin: 0,
-    minHeight: 48,
-    backgroundColor: C.colorBackgroundLightDark,
-    borderRadius: 10
+    backgroundColor: C.colorBackgroundLightDark
   }
 });
 
@@ -74,6 +72,10 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
     else if (sizeLarge) fontSize = C.fontSizeLarge;
     else if (sizeExtraLarge) fontSize = C.fontSizeExtraLarge;
 
+    let borderRadius: TextStyle["borderRadius"] = 8;
+    if (sizeExtraSmall) borderRadius = 4;
+    else if (sizeSmall) borderRadius = 4;
+
     let color: TextStyle["color"] = C.colorTextDark;
     if (colorTheme) color = C.colorTextTheme;
     else if (colorDark) color = C.colorTextDark;
@@ -105,7 +107,43 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
         selectionColor={C.colorBackgroundThemeSofter}
         style={[
           S.baseStyle,
+          { textAlignVertical: "top" },
+          Platform.select({
+            ios: sizeSmall
+              ? {
+                  lineHeight: 17,
+                  paddingTop: 2,
+                  paddingBottom: 6,
+                  paddingHorizontal: C.spacingSmall
+                }
+              : {
+                  lineHeight: 20,
+                  paddingTop: 9,
+                  paddingBottom: 9,
+                  paddingHorizontal: C.spacingMedium
+                },
+            android: sizeSmall
+              ? {
+                  paddingHorizontal: C.spacingSmall,
+                  lineHeight: 24,
+                  textAlignVertical: "center",
+                  paddingBottom: 0,
+                  margin: 0,
+                  marginTop: 0,
+                  marginRight: 0,
+                  marginBottom: 0,
+                  marginLeft: 0,
+                  maxHeight: 24
+                }
+              : {
+                  lineHeight: 20,
+                  paddingTop: 9,
+                  paddingBottom: 0,
+                  paddingHorizontal: C.spacingMedium
+                }
+          }),
           {
+            borderRadius,
             fontSize,
             color,
             fontWeight,

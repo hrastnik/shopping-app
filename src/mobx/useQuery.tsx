@@ -1,5 +1,5 @@
+import React, { useEffect, useCallback, useMemo, useReducer } from "react";
 import _ from "lodash";
-import { useEffect, useCallback, useMemo, useReducer } from "react";
 import { runInAction } from "mobx";
 import {
   getChildType,
@@ -11,8 +11,10 @@ import {
 
 import { useStore } from "./useStore";
 import { StoreInstance } from "./createStore";
+import { View } from "~/components/View";
+import { Spinner } from "~/components/Spinner";
 
-const resultsPerPage = 15;
+const resultsPerPage = 16;
 
 const initialState = {
   params: { _start: 0, _limit: resultsPerPage },
@@ -193,7 +195,12 @@ export function useQuery<EntityType extends IAnyType>(
     extraData: dataList.map(e => e.id).join(":"),
     refreshing: state.isRefreshing,
     onRefresh: refresh,
-    onEndReached: fetchNext
+    onEndReached: fetchNext,
+    ListFooterComponent: (
+      <View style={{ height: 96 }} centerContent>
+        {state.isLoadingNext && <Spinner />}
+      </View>
+    )
   };
   // // eslint-disable-next-line
   // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.data changed"), [flatListProps.data]);
