@@ -44,7 +44,7 @@ export const UserStore = types
 
       updateUser: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
+        const response: AxiosResponse = yield env.http.put(
           `/users/${id}`,
           params
         );
@@ -53,7 +53,7 @@ export const UserStore = types
 
       deleteUser: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
+        const response: AxiosResponse = yield env.http.delete(
           `/users/${id}`,
           params
         );

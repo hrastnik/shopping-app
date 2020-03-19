@@ -69,6 +69,7 @@ export const Header = observer(props => {
   }, [props.navigation]);
 
   const title = props?.scene?.descriptor?.options?.title;
+  const HeaderLeft = props?.scene?.descriptor?.options?.headerLeft?.() ?? null;
   const HeaderRight =
     props?.scene?.descriptor?.options?.headerRight?.() ?? null;
 
@@ -97,6 +98,7 @@ export const Header = observer(props => {
             iconColor={C.colorTextLight}
           />
         )}
+        {HeaderLeft}
       </View>
 
       <View justifyContentCenter flexDirectionRow style={S.headerRight}>

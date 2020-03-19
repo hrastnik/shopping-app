@@ -8,13 +8,11 @@ import { constants } from "~/style";
 import { Spacer } from "~/components/Spacer";
 import { useStore } from "~/mobx/useStore";
 import { MeasureLayout } from "~/components/MeasureLayout";
-import { IconButton } from "~/components/IconButton";
 import { useNavigation } from "@react-navigation/native";
 
 export const ProfileScreen = observer(() => {
   const store = useStore();
   const user = store.authStore.activeUser;
-  const navigation = useNavigation();
 
   if (!user) {
     return null;
@@ -44,20 +42,6 @@ export const ProfileScreen = observer(() => {
             }}
           </MeasureLayout>
         </View>
-
-        <View absoluteTopLeftMedium>
-          <IconButton
-            small
-            outline
-            colorLight
-            iconSize={16}
-            iconName="account-edit"
-            title="EDIT DATA"
-            onPress={() => {
-              navigation.navigate("ProfileEditScreen");
-            }}
-          />
-        </View>
       </View>
 
       <View paddingMedium>
@@ -74,7 +58,7 @@ export const ProfileScreen = observer(() => {
         <Text weightLight>Phone number</Text>
         <Text weightBold>{user.phone}</Text>
 
-        {user.city && (
+        {Boolean(user.city) && (
           <>
             <Spacer large />
 
@@ -83,7 +67,7 @@ export const ProfileScreen = observer(() => {
           </>
         )}
 
-        {user.address && (
+        {Boolean(user.address) && (
           <>
             <Spacer large />
 

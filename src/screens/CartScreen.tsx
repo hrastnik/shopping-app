@@ -129,7 +129,13 @@ export const CartScreen = observer(() => {
 
         <Spacer />
 
-        <Button colorAccent title="CONTINUE TO CHECKOUT" onPress={() => {}} />
+        <Button
+          colorAccent
+          title="CONTINUE TO CHECKOUT"
+          onPress={() => {
+            navigation.navigate("CheckoutScreen");
+          }}
+        />
       </View>
     </Screen>
   );

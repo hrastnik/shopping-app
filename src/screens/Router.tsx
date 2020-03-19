@@ -17,6 +17,7 @@ import { ProfileEditScreen } from "~/screens/ProfileEditScreen";
 import { CategoryListScreen } from "~/screens/CategoryListScreen";
 import { FavoriteProductListScreen } from "~/screens/FavoriteProductListScreen";
 import { CartScreen } from "~/screens/CartScreen";
+import { CheckoutScreen } from "~/screens/CheckoutScreen";
 
 import { constants as C } from "~/style";
 import { Icon } from "~/components/Icon";
@@ -24,6 +25,7 @@ import { CartButton } from "~/components/CartButton";
 import { View } from "~/components/View";
 import { LogoutButton } from "~/components/LogoutButton";
 import { FavoriteButton } from "~/components/FavoriteButton";
+import { EditProfileButton } from "~/components/EditProfileButton";
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -156,6 +158,9 @@ const TabNavigator = () => {
               <Stack.Screen
                 options={{
                   title: "Profile",
+                  headerLeft() {
+                    return <EditProfileButton />;
+                  },
                   headerRight() {
                     return (
                       <View flexDirectionRow>
@@ -218,6 +223,11 @@ const MainStack = () => {
         name="CartScreen"
         component={CartScreen}
         options={{ title: "Cart", headerRight: undefined }}
+      />
+      <Stack.Screen
+        name="CheckoutScreen"
+        component={CheckoutScreen}
+        options={{ title: "Checkout", headerRight: undefined }}
       />
     </>
   );

@@ -39,6 +39,13 @@ export const CartItem = types
       }
     };
   })
+  .views(self => {
+    return {
+      get price() {
+        return self.quantity * self.product.price;
+      }
+    };
+  })
   .actions(self => {
     return {
       removeFromCart(): any {
@@ -88,14 +95,21 @@ export const CartStore = types
   })
   .views(self => {
     return {
+      get cartItemList() {
+        return Array.from(self.cart.values());
+      }
+    };
+  })
+  .views(self => {
+    return {
       get cartProducts() {
-        return Array.from(self.cart.values())
+        return self.cartItemList
           .map(item => item.product)
           .filter(product => product != null);
       },
       get numCartItems() {
         let numItems = 0;
-        for (const item of self.cart.values()) {
+        for (const item of self.cartItemList) {
           numItems += item.quantity;
         }
         return numItems;
@@ -109,6 +123,7 @@ export const CartStore = types
         numItems: number;
         numProducts: number;
         shop: ShopInstance;
+        cartItems: CartItemInstance[];
       }[] {
         const shops = {};
 
@@ -118,14 +133,16 @@ export const CartStore = types
               price: 0,
               numItems: 0,
               numProducts: 0,
-              shop: cartItem.product.shop
+              shop: cartItem.product.shop,
+              cartItems: []
             };
           }
 
-          shops[cartItem.product.shop.id].numProducts++;
-          shops[cartItem.product.shop.id].numItems += cartItem.quantity;
-          shops[cartItem.product.shop.id].price +=
-            cartItem.product.price * cartItem.quantity;
+          const context = shops[cartItem.product.shop.id];
+          context.price += cartItem.product.price * cartItem.quantity;
+          context.numItems += cartItem.quantity;
+          context.numProducts++;
+          context.cartItems.push(cartItem);
         }
 
         return Object.values(shops);

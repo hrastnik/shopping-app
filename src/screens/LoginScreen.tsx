@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { TextInput as RNTextInput } from "react-native";
 import { observer } from "mobx-react";
+import { useNavigation } from "@react-navigation/native";
+import { Formik } from "formik";
+import * as yup from "yup";
 
 import { TextInput } from "~/components/TextInput";
 import { Text } from "~/components/Text";
@@ -7,71 +11,127 @@ import { Button } from "~/components/Button";
 import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
 import { useStore } from "~/mobx/useStore";
-import { useNavigation } from "@react-navigation/native";
 import { Spacer } from "~/components/Spacer";
+import { textInputProps } from "~/utils/textInputProps";
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Email format is invalid"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password too short")
+});
 
 export const LoginScreen = observer(() => {
   const store = useStore();
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState("hrastnikmateo@gmail.com");
-  const [password, setPassword] = useState("test1234");
-
   const [error, setError] = useState(undefined);
+
+  const passwordInput = useRef<RNTextInput>();
 
   return (
     <Screen>
-      <View paddingMedium justifyContentCenter>
-        <View flexDirectionRow justifyContentSpaceBetween>
-          <Text sizeSmall>Email</Text>
-          <Text colorDanger sizeSmall>
-            Username too short
-          </Text>
-        </View>
-        <Spacer small />
-        <TextInput value={email} onChangeText={setEmail} />
-        <Spacer />
-        <View flexDirectionRow justifyContentSpaceBetween>
-          <Text sizeSmall>Password</Text>
-          <Text colorDanger sizeSmall>
-            Username too short
-          </Text>
-        </View>
-        <Spacer small />
-        <TextInput value={password} onChangeText={setPassword} />
-        <Spacer />
+      <Formik
+        initialValues={{
+          email: "",
+          password: ""
+        }}
+        validationSchema={validationSchema}
+        onSubmit={async values => {
+          console.warn("on submit");
 
-        {error && <Text>{error}</Text>}
+          try {
+            setError(undefined);
+            console.warn("on submit start");
+            await store.authStore.login({
+              identifier: values.email,
+              password: values.password
+            });
+            console.warn("on submit end");
+            // navigation.navigate("RegionListScreen");
+          } catch (error) {
+            setError(error.message);
+          }
+        }}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+          isSubmitting
+        }) => {
+          return (
+            <View paddingMedium justifyContentCenter>
+              <Text>{}</Text>
+              <View flexDirectionRow justifyContentSpaceBetween>
+                <Text sizeSmall>Email</Text>
+                <Text colorDanger sizeSmall>
+                  {touched.email && errors.email}
+                </Text>
+              </View>
+              <Spacer small />
+              <TextInput
+                {...textInputProps.email}
+                autoFocus
+                value={values.email}
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                onSubmitEditing={passwordInput.current?.focus}
+              />
+              <Spacer />
+              <View flexDirectionRow justifyContentSpaceBetween>
+                <Text sizeSmall>Password</Text>
+                <Text colorDanger sizeSmall>
+                  {touched.password && errors.password}
+                </Text>
+              </View>
+              <Spacer small />
+              <TextInput
+                ref={passwordInput}
+                {...textInputProps.password}
+                placeholder="Password"
+                value={values.password}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                onSubmitEditing={() => {
+                  console.warn("submit editing password");
 
-        {store.authStore.isLoggedIn && (
-          <Text>User: {store.authStore.activeUser.username}</Text>
-        )}
-        <Spacer extraLarge />
+                  return handleSubmit();
+                }}
+              />
+              <Spacer />
 
-        <Button
-          title="SUBMIT"
-          onPress={async () => {
-            try {
-              setError(undefined);
-              await store.authStore.login({ identifier: email, password });
-              // navigation.navigate("RegionListScreen");
-            } catch (error) {
-              setError(error.message);
-            }
-          }}
-        />
+              {error && <Text>{error}</Text>}
 
-        <Spacer />
+              <Spacer extraLarge />
 
-        <Button
-          transparent
-          colorLight
-          title="SIGN UP"
-          onPress={() => {
-            navigation.navigate("SignUpScreen");
-          }}
-        />
-      </View>
+              <Button
+                disabled={isSubmitting}
+                title="SUBMIT"
+                onPress={() => handleSubmit()}
+              />
+
+              <Spacer />
+
+              <Button
+                transparent
+                colorLight
+                title="SIGN UP"
+                onPress={() => {
+                  navigation.navigate("SignUpScreen");
+                }}
+              />
+            </View>
+          );
+        }}
+      </Formik>
     </Screen>
   );
 });

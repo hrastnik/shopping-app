@@ -1,14 +1,10 @@
 import React, { useCallback } from "react";
 import { observer } from "mobx-react";
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  ListRenderItem
-} from "react-native";
+import { FlatList, StyleSheet, ListRenderItem } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Screen } from "~/components/Screen";
+import { TouchableOpacity } from "~/components/TouchableOpacity";
 import { Image } from "~/components/Image";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
@@ -48,20 +44,19 @@ export const ShopListScreen = observer(() => {
             store.uiStore.set("activeShop", shop.id);
             navigation.navigate("ProductListScreen");
           }}
+          paddingMedium
         >
-          <View paddingMedium>
-            <View style={S.card}>
-              {shop.image && (
-                <Image
-                  source={shop.image.source}
-                  style={S.shopImage}
-                  resizeMode="cover"
-                />
-              )}
-              <View paddingMedium>
-                <Text weightBold>{shop.name}</Text>
-                <Text>{shop.about}</Text>
-              </View>
+          <View style={S.card}>
+            {shop.image && (
+              <Image
+                source={shop.image.source}
+                style={S.shopImage}
+                resizeMode="cover"
+              />
+            )}
+            <View paddingMedium>
+              <Text weightBold>{shop.name}</Text>
+              <Text>{shop.about}</Text>
             </View>
           </View>
         </TouchableOpacity>

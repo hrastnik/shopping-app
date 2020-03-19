@@ -38,6 +38,7 @@ export interface TextInputProps extends RNTextInputProps {
   children?: ReactNode;
 }
 
+export type TextInput = typeof TextInput;
 export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
   (
     {
