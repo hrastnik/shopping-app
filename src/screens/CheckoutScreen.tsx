@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -17,6 +17,31 @@ export const CheckoutScreen = observer(() => {
   const store = useStore();
   const alert = useAlert();
   const navigation = useNavigation<StackNavigationProp<any>>();
+
+  const handleConfirmOrderPress = useCallback(async () => {
+    const shouldProceed = await promptYesNo(
+      {
+        title: "Confirm",
+        message: `Your order will be delivered to:\n\n${
+          store.cartStore.city
+        },\n${
+          store.cartStore.address
+        }.\n\nOrder price: ${store.cartStore.totalPrice.toFixed(
+          2
+        )}$\n\nDo you want to proceed?`
+      },
+      alert
+    );
+    if (!shouldProceed) return;
+    try {
+      await store.cartStore.confirmOrder();
+      alert("Success", "Your order is on the way!");
+      navigation.popToTop();
+    } catch (error) {
+      alert("Error", `Something went wrong:\n${error.message}`);
+      console.warn(error);
+    }
+  }, [alert, navigation, store.cartStore]);
 
   return (
     <Screen>
@@ -80,15 +105,12 @@ export const CheckoutScreen = observer(() => {
                     }}
                   >
                     <Text style={{ flex: 3 }}>{cartItem.product.name}</Text>
-                    <Spacer />
                     <Text alignRight style={{ flex: 1 }}>
                       {cartItem.product.price.toFixed(2)}
                     </Text>
-                    <Spacer />
                     <Text alignRight style={{ flex: 1 }}>
                       {cartItem.quantity}
                     </Text>
-                    <Spacer />
                     <Text alignRight style={{ flex: 1 }}>
                       {cartItem.price.toFixed(2)}
                     </Text>
@@ -105,7 +127,7 @@ export const CheckoutScreen = observer(() => {
                 }}
               >
                 <Text style={{ flex: 4 }} weightSemiBold>
-                  TOTAL
+                  Total
                 </Text>
                 <Text style={{ flex: 1 }} alignRight weightBold colorLightSoft>
                   {context.numItems}
@@ -119,7 +141,7 @@ export const CheckoutScreen = observer(() => {
           );
         })}
         <View flexDirectionRow justifyContentSpaceBetween paddingMedium>
-          <Text sizeExtraLarge>TOTAL</Text>
+          <Text sizeExtraLarge>Total</Text>
           <Text sizeExtraLarge weightBold>
             {store.cartStore.totalPrice.toFixed(2)}$
           </Text>
@@ -127,31 +149,31 @@ export const CheckoutScreen = observer(() => {
         <Spacer extraLarge />
         <View paddingMedium>
           <Text weightSemiBold>Delivery address</Text>
-          <Text>{store.cartStore.city}</Text>
-          <Text>{store.cartStore.address}</Text>
           <Spacer />
+          <View flexDirectionRow justifyContentSpaceBetween>
+            <View>
+              <Text>{store.cartStore.city}</Text>
+              <Spacer small />
+              <Text>{store.cartStore.address}</Text>
+            </View>
+            <View>
+              <Button
+                outline
+                colorLight
+                title="CHANGE"
+                onPress={() =>
+                  navigation.navigate("PickAddressScreen", {
+                    onAccept: () => navigation.goBack()
+                  })
+                }
+              />
+            </View>
+          </View>
+          <Spacer extraLarge />
           <Button
             title="CONFIRM ORDER"
             colorAccent
-            onPress={async () => {
-              const shouldProceed = await promptYesNo({
-                title: "Confirm",
-                message: `Your order of ${store.cartStore.totalPrice.toFixed(
-                  2
-                )}$ will be delivered to ${store.cartStore.city}, ${
-                  store.cartStore.address
-                }.\nDo you want to proceed?`
-              });
-              if (!shouldProceed) return;
-              try {
-                await store.cartStore.confirmOrder();
-                alert("Success", "Your order is on the way!");
-                navigation.popToTop();
-              } catch (error) {
-                alert("Error", `Something went wrong:\n${error.message}`);
-                console.warn(error);
-              }
-            }}
+            onPress={handleConfirmOrderPress}
           />
         </View>
       </View>

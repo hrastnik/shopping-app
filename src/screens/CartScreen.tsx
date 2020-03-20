@@ -93,38 +93,36 @@ export const CartScreen = observer(() => {
 
       <View paddingMedium style={S.bottomCard}>
         {store.cartStore.priceByShop.map(data => {
-          const numProductText =
-            data.numProducts === 1
-              ? "1 product"
-              : `${data.numProducts} prodcuts`;
           const numItemsText =
-            data.numItems === 1 ? "1 item" : `${data.numItems} items`;
+            data.numItems === 1 ? "1 product" : `${data.numItems} products`;
+          const numProductText = `${data.numProducts} unique`;
           return (
             <React.Fragment key={`${data.shop.id}`}>
-              <View flexDirectionRow>
-                <Text weightBold>
-                  {data.shop.name} ({numProductText} / {numItemsText})
+              <View flexDirectionRow justifyContentSpaceBetween>
+                <Text>
+                  {data.shop.name} - {numItemsText}, {numProductText}
                 </Text>
+                <Text weightSemiBold>{data.price.toFixed(2)} $</Text>
               </View>
-              <View
-                flexDirectionRow
-                justifyContentSpaceBetween
-                paddingVerticalMedium
-                style={{
-                  borderBottomColor: C.colorTextLightSofter,
-                  borderBottomWidth: 1
-                }}
-              >
-                <Text>Price:</Text>
-                <Text>{data.price.toFixed(2)} $</Text>
-              </View>
+
               <Spacer />
             </React.Fragment>
           );
         })}
+
+        <View
+          style={{
+            marginBottom: C.spacingLarge,
+            backgroundColor: C.colorTextLightSofter,
+            height: 1
+          }}
+        />
+
         <View flexDirectionRow justifyContentSpaceBetween>
           <Text>Total:</Text>
-          <Text weightBold>{store.cartStore.totalPrice.toFixed(2)} $</Text>
+          <Text weightBold sizeLarge>
+            {store.cartStore.totalPrice.toFixed(2)} $
+          </Text>
         </View>
 
         <Spacer />

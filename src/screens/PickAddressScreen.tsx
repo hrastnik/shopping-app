@@ -19,7 +19,7 @@ const validationSchema = yup.object({
   address: yup.string().required("Address is required")
 });
 
-export const PickAddressScreen = observer(() => {
+export const PickAddressScreen = observer(({ route }) => {
   const navigation = useNavigation();
   const store = useStore();
 
@@ -49,6 +49,7 @@ export const PickAddressScreen = observer(() => {
       address: `${street}, ${name}`
     });
   };
+
   return (
     <Screen>
       <View paddingMedium>
@@ -62,7 +63,13 @@ export const PickAddressScreen = observer(() => {
         validationSchema={validationSchema}
         onSubmit={values => {
           store.cartStore.setFullAddress(values);
-          navigation.replace("Stack.TabNavigator", {});
+
+          const onAccept = route?.params?.onAccept;
+          if (typeof onAccept === "function") {
+            onAccept();
+          } else {
+            navigation.replace("Stack.TabNavigator", {});
+          }
         }}
       >
         {({

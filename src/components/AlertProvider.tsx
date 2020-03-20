@@ -119,6 +119,7 @@ export function AlertProvider(props) {
             <View style={S.container}>
               <View style={S.alertWrap}>
                 <Text colorDark>{title}</Text>
+                <Spacer />
                 <Text colorDarkSoft>{body}</Text>
                 <View
                   flexDirectionRow

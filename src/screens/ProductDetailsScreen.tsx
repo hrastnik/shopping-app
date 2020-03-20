@@ -26,14 +26,6 @@ export const ProductDetailsScreen = observer(() => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  // useRightComponent(
-  //   <IconButton
-  //     onPress={product.toggleFavorite}
-  //     iconName={product.isFavorited ? "heart" : "heart-outline"}
-  //   />,
-  //   [product, product.isFavorited]
-  // );
-
   return (
     <Screen
       preventScroll={false}
