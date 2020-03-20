@@ -13,6 +13,7 @@ import { UIStore } from "./UIStore";
 import { CartStore } from "./CartStore";
 import { Await } from "./utils/Await";
 import { useNavigation } from "@react-navigation/native";
+import { OrderStore } from "./entities/order/OrderStore";
 
 export interface Environment {
   http: HttpStatic;
@@ -28,6 +29,7 @@ export async function createStore(env: Environment) {
         categoryStore: types.optional(CategoryStore, {}),
         productStore: types.optional(ProductStore, {}),
         userStore: types.optional(UserStore, {}),
+        orderStore: types.optional(OrderStore, {}),
         authStore: types.optional(AuthStore, {}),
         uiStore: types.optional(UIStore, {}),
         cartStore: types.optional(CartStore, {})
@@ -48,6 +50,9 @@ export async function createStore(env: Environment) {
   );
 
   const store = Store.create(undefined, env);
+
+  // Access cartStore to run CartStore.afterAttach
+  store.cartStore;
 
   await when(() => {
     return store.authStore && store.uiStore.initialScreen !== undefined;

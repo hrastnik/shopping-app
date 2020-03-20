@@ -18,6 +18,7 @@ import { CategoryListScreen } from "~/screens/CategoryListScreen";
 import { FavoriteProductListScreen } from "~/screens/FavoriteProductListScreen";
 import { CartScreen } from "~/screens/CartScreen";
 import { CheckoutScreen } from "~/screens/CheckoutScreen";
+import { PickAddressScreen } from "~/screens/PickAddressScreen";
 
 import { constants as C } from "~/style";
 import { Icon } from "~/components/Icon";
@@ -188,6 +189,11 @@ const MainStack = () => {
         options={{ title: "Region List", headerRight: undefined }}
         component={RegionListScreen}
         name="RegionListScreen"
+      />
+      <Stack.Screen
+        options={{ title: "Address", headerRight: undefined }}
+        component={PickAddressScreen}
+        name="PickAddressScreen"
       />
       <Stack.Screen
         name="Stack.TabNavigator"

@@ -2,7 +2,8 @@ const BASE_URL = "http://192.168.1.102:1337";
 
 const STORAGE_KEYS = {
   FAVORITES: "favorite products",
-  CART: "cart"
+  CART: "cart",
+  ADDRESS: "address"
 };
 
 export const constants = {

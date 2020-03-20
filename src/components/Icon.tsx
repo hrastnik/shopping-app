@@ -1,7 +1,7 @@
 import React from "react";
-
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { constants as C } from "~/style";
 
 export interface IconProps {

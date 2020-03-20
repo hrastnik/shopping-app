@@ -72,10 +72,16 @@ export interface CartStoreSnapshotOut extends SnapshotOut<typeof CartStore> {}
 
 export const CartStore = types
   .model("CartStore", {
-    cart: types.map(CartItem)
+    cart: types.map(CartItem),
+    city: "",
+    address: ""
   })
   .actions(self => {
     return {
+      setFullAddress(values: { city: string; address: string }) {
+        self.city = values.city;
+        self.address = values.address;
+      },
       setCart(snapshot) {
         self.cart = snapshot;
       },
@@ -160,6 +166,22 @@ export const CartStore = types
     return {
       afterAttach: flow(function*(): any {
         const env: Environment = getEnv(self);
+
+        const address = yield env.persistence.get(
+          constants.STORAGE_KEYS.ADDRESS
+        );
+        if (address) {
+          self.address = address?.address ?? "";
+          self.city = address?.city ?? "";
+        }
+
+        autorun(() => {
+          env.persistence.set(constants.STORAGE_KEYS.ADDRESS, {
+            address: self.address,
+            city: self.city
+          });
+        });
+
         const cartItems = yield env.persistence.get(
           constants.STORAGE_KEYS.CART
         );
@@ -183,6 +205,25 @@ export const CartStore = types
 
           env.persistence.set(constants.STORAGE_KEYS.CART, cartItems);
         });
+      })
+    };
+  })
+  .actions(self => {
+    return {
+      confirmOrder: flow(function*(): any {
+        const root = getRoot(self);
+        const response = yield root.orderStore.createOrder({
+          cart: JSON.stringify(
+            self.cartItemList.map(cartItem => ({
+              ...cartItem,
+              product: cartItem.product,
+              price: cartItem.price
+            }))
+          ),
+          price: self.totalPrice
+        });
+
+        return response;
       })
     };
   });

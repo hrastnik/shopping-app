@@ -3,15 +3,15 @@ import { observer } from "mobx-react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-import { Screen } from "~/components/Screen";
-import { View } from "~/components/View";
-import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
 import { constants } from "~/style";
-import { Spacer } from "~/components/Spacer";
+import { promptYesNo } from "~/utils/promptYesNo";
 import { Button } from "~/components/Button";
+import { Screen } from "~/components/Screen";
+import { Spacer } from "~/components/Spacer";
+import { Text } from "~/components/Text";
 import { useAlert } from "~/components/AlertProvider";
-import { delay } from "~/utils/delay";
+import { View } from "~/components/View";
 
 export const CheckoutScreen = observer(() => {
   const store = useStore();
@@ -111,7 +111,7 @@ export const CheckoutScreen = observer(() => {
                   {context.numItems}
                 </Text>
                 <Text style={{ flex: 1 }} alignRight weightBold>
-                  {context.price}
+                  {context.price.toFixed(2)}
                 </Text>
               </View>
               <Spacer extraLarge />
@@ -126,13 +126,31 @@ export const CheckoutScreen = observer(() => {
         </View>
         <Spacer extraLarge />
         <View paddingMedium>
+          <Text weightSemiBold>Delivery address</Text>
+          <Text>{store.cartStore.city}</Text>
+          <Text>{store.cartStore.address}</Text>
+          <Spacer />
           <Button
             title="CONFIRM ORDER"
             colorAccent
             onPress={async () => {
-              await delay(2000);
-              alert("Success", "Your order is on the way!");
-              navigation.popToTop();
+              const shouldProceed = await promptYesNo({
+                title: "Confirm",
+                message: `Your order of ${store.cartStore.totalPrice.toFixed(
+                  2
+                )}$ will be delivered to ${store.cartStore.city}, ${
+                  store.cartStore.address
+                }.\nDo you want to proceed?`
+              });
+              if (!shouldProceed) return;
+              try {
+                await store.cartStore.confirmOrder();
+                alert("Success", "Your order is on the way!");
+                navigation.popToTop();
+              } catch (error) {
+                alert("Error", `Something went wrong:\n${error.message}`);
+                console.warn(error);
+              }
             }}
           />
         </View>

@@ -42,16 +42,12 @@ export const LoginScreen = observer(() => {
         }}
         validationSchema={validationSchema}
         onSubmit={async values => {
-          console.warn("on submit");
-
           try {
             setError(undefined);
-            console.warn("on submit start");
             await store.authStore.login({
               identifier: values.email,
               password: values.password
             });
-            console.warn("on submit end");
             // navigation.navigate("RegionListScreen");
           } catch (error) {
             setError(error.message);
@@ -69,7 +65,6 @@ export const LoginScreen = observer(() => {
         }) => {
           return (
             <View paddingMedium justifyContentCenter>
-              <Text>{}</Text>
               <View flexDirectionRow justifyContentSpaceBetween>
                 <Text sizeSmall>Email</Text>
                 <Text colorDanger sizeSmall>
@@ -101,8 +96,6 @@ export const LoginScreen = observer(() => {
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 onSubmitEditing={() => {
-                  console.warn("submit editing password");
-
                   return handleSubmit();
                 }}
               />

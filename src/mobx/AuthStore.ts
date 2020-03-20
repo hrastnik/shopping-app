@@ -70,6 +70,8 @@ export const AuthStore = types
         self.activeUser = undefined;
         self.token = undefined;
         root.cartStore.clearCart();
+        root.cartStore.address = "";
+        root.cartStore.city = "";
         root.uiStore.favoriteProductMap.clear();
       },
 
