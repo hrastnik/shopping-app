@@ -58,6 +58,10 @@ export const SignUpScreen = observer(() => {
         onSubmit={async values => {
           try {
             await store.authStore.register(values);
+            await store.authStore.login({
+              email: values.email,
+              password: values.password
+            });
           } catch (error) {
             console.warn("error registering", error);
             alert("Error", "Something went wrong while creating a new user");

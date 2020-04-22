@@ -13,6 +13,8 @@ export const RegionStore = types
     return {
       processRegionList(data) {
         for (const entity of _.castArray(data)) {
+          entity.lat = entity.location.lat;
+          entity.lng = entity.location.lng;
           self.map.put(entity);
         }
       }
@@ -23,25 +25,28 @@ export const RegionStore = types
       createRegion: flow(function*(params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(`/regions`, params);
-        self.processRegionList(response.data);
+        self.processRegionList(response.data.data);
         return response;
       }),
 
       readRegionList: flow(function*(params): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.get(`/regions`, {
+        const response: AxiosResponse = yield env.http.get(`/items/region`, {
           params
         });
-        self.processRegionList(response.data);
+        self.processRegionList(response.data.data);
         return response;
       }),
 
       readRegion: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.get(`/regions/${id}`, {
-          params
-        });
-        self.processRegionList(response.data);
+        const response: AxiosResponse = yield env.http.get(
+          `/items/region/${id}`,
+          {
+            params
+          }
+        );
+        self.processRegionList(response.data.data);
         return response;
       }),
 
@@ -51,7 +56,7 @@ export const RegionStore = types
           `/regions/${id}`,
           params
         );
-        self.processRegionList(response.data);
+        self.processRegionList(response.data.data);
         return response;
       }),
 
@@ -61,7 +66,7 @@ export const RegionStore = types
           `/regions/${id}`,
           params
         );
-        self.processRegionList(response.data);
+        self.processRegionList(response.data.data);
         return response;
       })
     };

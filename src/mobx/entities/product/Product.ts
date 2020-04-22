@@ -19,10 +19,8 @@ export interface ProductSnapshotOut extends SnapshotOut<typeof Product> {}
 export const Product = types
   .model("Product", {
     id: types.identifierNumber,
-    created_at: DateTime,
-    updated_at: DateTime,
     name: types.string,
-    description: types.string,
+    // description: types.string,
     price: types.number,
     categories: types.array(
       types.safeReference(Category, { acceptsUndefined: false })

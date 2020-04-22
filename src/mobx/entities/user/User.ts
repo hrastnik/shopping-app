@@ -15,22 +15,11 @@ export interface UserSnapshotOut extends SnapshotOut<typeof User> {}
 export const User = types
   .model("User", {
     id: types.identifierNumber,
-    created_at: DateTime,
-    updated_at: DateTime,
     username: types.string,
     email: types.string,
     phone: types.string,
     city: types.maybeNull(types.string),
-    address: types.maybeNull(types.string),
-    provider: "local" as const,
-    confirmed: types.boolean,
-    blocked: types.maybeNull(types.boolean),
-    role: types.model({
-      id: types.number,
-      name: types.string,
-      description: types.string,
-      type: types.string
-    })
+    address: types.maybeNull(types.string)
   })
   .actions(self => {
     return {

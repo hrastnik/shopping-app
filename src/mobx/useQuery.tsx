@@ -14,10 +14,10 @@ import { StoreInstance } from "./createStore";
 import { View } from "~/components/View";
 import { Spinner } from "~/components/Spinner";
 
-const resultsPerPage = 16;
+const resultsPerPage = 32;
 
 const initialState = {
-  params: { _start: 0, _limit: resultsPerPage },
+  params: { offset: 0, limit: resultsPerPage },
   isLoading: true,
   isRefreshing: false,
   isLoadingFirst: true,
@@ -63,11 +63,12 @@ const reducer = (state: typeof initialState, action: Action) => {
       return {
         ...state,
         params: {
-          _start: state.params._start + resultsPerPage,
-          _limit: resultsPerPage
+          offset: state.params.offset + resultsPerPage,
+          limit: resultsPerPage
         },
         isEndReached:
-          response.data.length === 0 || response.data.length < resultsPerPage,
+          response?.data?.data.length === 0 ||
+          response?.data?.data?.length < resultsPerPage,
         isLoading: false,
         isRefreshing: false,
         isLoadingFirst: false,
@@ -123,7 +124,7 @@ export function useQuery<EntityType extends IAnyType>(
     (maybePromise as Promise<any>)
       .then(response => {
         runInAction(() => {
-          dataList.replace(_.castArray(response.data).map(e => e.id));
+          dataList.replace(_.castArray(response.data.data).map(e => e.id));
           dispatch({ type: "fetch success", response });
         });
       })
@@ -146,7 +147,7 @@ export function useQuery<EntityType extends IAnyType>(
     (maybePromise as Promise<any>)
       .then(response => {
         runInAction(() => {
-          for (const e of _.castArray(response.data)) {
+          for (const e of _.castArray(response.data.data)) {
             dataList.push(e.id);
           }
           dispatch({ type: "fetch success", response });
@@ -173,7 +174,7 @@ export function useQuery<EntityType extends IAnyType>(
     (maybePromise as Promise<any>)
       .then(response => {
         runInAction(() => {
-          dataList.replace(_.castArray(response.data).map(e => e.id));
+          dataList.replace(_.castArray(response.data.data).map(e => e.id));
           dispatch({ type: "fetch success", response });
         });
       })

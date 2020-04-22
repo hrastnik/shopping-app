@@ -45,7 +45,7 @@ export const LoginScreen = observer(() => {
           try {
             setError(undefined);
             await store.authStore.login({
-              identifier: values.email,
+              email: values.email,
               password: values.password
             });
             // navigation.navigate("RegionListScreen");

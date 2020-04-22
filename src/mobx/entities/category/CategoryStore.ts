@@ -25,21 +25,15 @@ export const CategoryStore = types
   .model("CategoryStore", {
     map: types.map(Category)
   })
-  .views(self => {
-    return {
-      get categoryByUid() {
-        const map = {};
-        for (const category of self.map.values()) {
-          map[category.uid] = category;
-        }
-        return map;
-      }
-    };
-  })
   .actions(self => {
     return {
       processCategoryList(data) {
         for (const entity of _.castArray(data)) {
+          if (typeof entity.image === "object") {
+            entity.image = {
+              url: entity.image.data.full_url
+            };
+          }
           self.map.put(entity);
         }
       }
@@ -50,51 +44,54 @@ export const CategoryStore = types
       createCategory: flow(function*(params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
-          `/categories`,
+          `/items/category`,
           params
         );
-        self.processCategoryList(response.data);
+        self.processCategoryList(response.data.data);
         return response;
       }),
 
       readCategoryList: flow(function*(params): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.get(`/categories`, {
-          params
+        const response: AxiosResponse = yield env.http.get(`/items/category`, {
+          params: {
+            ...params,
+            fields: "id,name,image.data"
+          }
         });
-        self.processCategoryList(response.data);
+        self.processCategoryList(response.data.data);
         return response;
       }),
 
       readCategory: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(
-          `/categories/${id}`,
+          `/items/category/${id}`,
           {
             params
           }
         );
-        self.processCategoryList(response.data);
+        self.processCategoryList(response.data.data);
         return response;
       }),
 
       updateCategory: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
-          `/categories/${id}`,
+          `/items/category/${id}`,
           params
         );
-        self.processCategoryList(response.data);
+        self.processCategoryList(response.data.data);
         return response;
       }),
 
       deleteCategory: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
-          `/categories/${id}`,
+          `/items/category/${id}`,
           params
         );
-        self.processCategoryList(response.data);
+        self.processCategoryList(response.data.data);
         return response;
       })
     };

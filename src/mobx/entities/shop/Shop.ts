@@ -16,10 +16,8 @@ export interface ShopSnapshotOut extends SnapshotOut<typeof Shop> {}
 export const Shop = types
   .model("Shop", {
     id: types.identifierNumber,
-    created_at: DateTime,
-    updated_at: DateTime,
     name: types.string,
-    about: types.string,
+    description: types.string,
     images: types.array(Image)
   })
   .views(self => {

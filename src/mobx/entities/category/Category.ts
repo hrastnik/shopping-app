@@ -16,10 +16,8 @@ export interface CategorySnapshotOut extends SnapshotOut<typeof Category> {}
 export const Category = types
   .model("Category", {
     id: types.identifierNumber,
-    created_at: DateTime,
-    updated_at: DateTime,
     name: types.string,
-    uid: types.string,
+    // uid: types.string,
     image: types.maybeNull(Image)
   })
   .actions(self => {

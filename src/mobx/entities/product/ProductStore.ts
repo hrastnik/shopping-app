@@ -28,28 +28,21 @@ export const ProductStore = types
     return {
       processProductList(data) {
         const root = getRoot(self);
-        const { categoryByUid } = root.categoryStore;
         const { processShopList } = root.shopStore;
         const { processCategoryList } = root.categoryStore;
 
         for (const entity of _.castArray(data)) {
+          entity.images = entity.images.map(data => {
+            return {
+              url: data.image.data.full_url
+            };
+          });
+
+          entity.categories = entity.categories.map(data => {
+            return data.category_id;
+          });
+          preprocess(entity, "categories", processCategoryList);
           preprocess(entity, "shop", processShopList);
-
-          if (Array.isArray(entity.categories)) {
-            preprocess(entity, "categories", processCategoryList);
-          } else if (typeof entity.categories === "string") {
-            const categoryUidList = entity.categories.split(",");
-
-            const categories = [];
-            for (const categoryUid of categoryUidList) {
-              const category = categoryByUid[categoryUid];
-              categories.push(category);
-            }
-
-            entity.categories = categories;
-          } else if (entity.categories == null) {
-            entity.categories = [];
-          }
 
           self.map.put(entity);
         }
@@ -61,7 +54,7 @@ export const ProductStore = types
       createProduct: flow(function*(params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
-          `/products`,
+          `/items/product`,
           params
         );
         self.processProductList(response.data);
@@ -70,8 +63,12 @@ export const ProductStore = types
 
       readProductList: flow(function*(params): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.get(`/products`, {
-          params
+        const response: AxiosResponse = yield env.http.get(`/items/product`, {
+          params: {
+            ...params,
+            fields:
+              "id,name,shop.*,images.image.data,categories.category_id.image.data"
+          }
         });
         self.processProductList(response.data);
         return response;
@@ -79,9 +76,12 @@ export const ProductStore = types
 
       readProduct: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.get(`/products/${id}`, {
-          params
-        });
+        const response: AxiosResponse = yield env.http.get(
+          `/items/product/${id}`,
+          {
+            params
+          }
+        );
         self.processProductList(response.data);
         return response;
       }),
@@ -89,7 +89,7 @@ export const ProductStore = types
       updateProduct: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
-          `/products/${id}`,
+          `/items/product/${id}`,
           params
         );
         self.processProductList(response.data);
@@ -99,7 +99,7 @@ export const ProductStore = types
       deleteProduct: flow(function*(id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
-          `/products/${id}`,
+          `/items/product/${id}`,
           params
         );
         self.processProductList(response.data);

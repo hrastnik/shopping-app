@@ -1,0 +1,12 @@
+beverages Beverages
+bread_bakery Bread/Bakery
+canned_jarred_goods Canned/Jarred Goods
+dairy Dairy
+dry_baking_goods Dry/Baking Goods
+frozen_foods Frozen Foods
+meat Meat
+produce Produce
+cleaners Cleaners
+paper_goods Paper Goods
+personal_care Personal Care
+other Other

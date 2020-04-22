@@ -41,24 +41,29 @@ export const AuthStore = types
   })
   .actions(self => {
     return {
-      login: flow(function*(params: {
-        identifier: string;
-        password: string;
-      }): any {
+      login: flow(function*(params: { email: string; password: string }): any {
         const env: Environment = getEnv(self);
 
         const authorization = env.http.defaults.headers.authorization;
         delete env.http.defaults.headers.authorization;
 
         try {
-          const response = yield env.http.post("/auth/local", params);
+          const response = yield env.http.post("/auth/authenticate", params);
+          // Directus has a bug where numberic id is returned as string
+          if (typeof response.data.data.user.id === "string") {
+            response.data.data.user.id = parseInt(
+              response.data.data.user.id,
+              10
+            );
+          }
+
           env.http.defaults.headers.authorization = authorization;
 
           const root = getRoot(self);
-          root.userStore.processUserList(response.data.user);
+          root.userStore.processUserList(response.data.data.user);
 
-          self.activeUser = response.data.user.id;
-          self.token = response.data.jwt;
+          self.activeUser = response.data.data.user.id;
+          self.token = response.data.data.token;
         } catch (error) {
           env.http.defaults.headers.authorization = authorization;
           throw error;
@@ -79,13 +84,18 @@ export const AuthStore = types
         username: string;
         email: string;
         password: string;
+        phone: string;
       }): any {
         const env: Environment = getEnv(self);
-        const response = yield env.http.post("/auth/local/register", params);
+        const response = yield env.http.post("/users", {
+          ...params,
+          role: 3,
+          status: "active"
+        });
         const root = getRoot(self);
-        root.userStore.processUserList(response.data.user);
-        self.activeUser = response.data.user.id;
-        self.token = response.data.jwt;
+        root.userStore.processUserList(response.data.data);
+        // self.activeUser = response.data.data.id;
+        // self.token = response.data.jwt;
       }),
 
       me: flow(function*(config?: AxiosRequestConfig): any {
@@ -93,8 +103,8 @@ export const AuthStore = types
         const response = yield env.http.get("/users/me", config);
 
         const root = getRoot(self);
-        root.userStore.processUserList(response.data);
-        self.activeUser = response.data.id;
+        root.userStore.processUserList(response.data.data);
+        self.activeUser = response.data.data.id;
       })
     };
   })

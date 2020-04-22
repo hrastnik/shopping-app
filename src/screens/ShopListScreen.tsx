@@ -56,7 +56,7 @@ export const ShopListScreen = observer(() => {
             )}
             <View paddingMedium>
               <Text weightBold>{shop.name}</Text>
-              <Text>{shop.about}</Text>
+              <Text>{shop.description}</Text>
             </View>
           </View>
         </TouchableOpacity>

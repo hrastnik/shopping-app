@@ -15,7 +15,7 @@ export function responseLogger(response) {
   const maxLineLenght = 180;
   const { data } = response;
   if (data) {
-    const dataString = JSON.stringify({ data }, null, 2)
+    const dataString = JSON.stringify(data, null, 2)
       .split("\n")
       .slice(0, maxLines)
       .map(line =>
@@ -24,7 +24,7 @@ export function responseLogger(response) {
           : line
       )
       .join("\n");
-    lines.push(`Data: ${dataString}`);
+    lines.push(`Response data:\n${dataString}`);
   }
 
   const pretty = lines
