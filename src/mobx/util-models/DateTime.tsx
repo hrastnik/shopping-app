@@ -3,10 +3,10 @@ import moment from "moment";
 
 export const DateTime = types.custom({
   name: "DateTime",
-  fromSnapshot: string => moment.utc(string).local(),
+  fromSnapshot: (string) => moment.utc(string).local(),
   toSnapshot: (mDate: moment.Moment) => mDate.toISOString(),
-  isTargetType: maybeMoment => moment.isMoment(maybeMoment),
-  getValidationMessage: snapshot => {
+  isTargetType: (maybeMoment) => moment.isMoment(maybeMoment),
+  getValidationMessage: (snapshot) => {
     if (snapshot === undefined) return "";
     // const dateFormat = DATE_FORMAT;
     const mDate = moment(snapshot);
@@ -16,5 +16,5 @@ export const DateTime = types.custom({
       return message;
     }
     return "";
-  }
+  },
 });

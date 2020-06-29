@@ -10,8 +10,8 @@ const S = StyleSheet.create({
     height: 0,
     borderWidth: StyleSheet.hairlineWidth,
     width: "100%",
-    borderColor: C.colorBackgroundLightDark
-  }
+    borderColor: C.colorBackgroundLightDark,
+  },
 });
 
 function HorizontalLine() {

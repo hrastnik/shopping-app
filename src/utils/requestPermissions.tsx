@@ -7,7 +7,7 @@ import { promptYesNo } from ".";
  *
  * returns { permissionsGranted: bool, error: oneOf(undefined, string) }
  */
-const requestPermissions = async permissions => {
+const requestPermissions = async (permissions) => {
   if (Platform.OS !== "android") {
     return { permissionsGranted: true, error: undefined };
   }
@@ -28,7 +28,7 @@ const requestPermissions = async permissions => {
           title,
           message,
           yesText: "ACCEPT",
-          noText: "REJECT"
+          noText: "REJECT",
         });
       } catch (error) {
         throw new Error(error || "Additional permission required!");
@@ -39,7 +39,7 @@ const requestPermissions = async permissions => {
         title,
         buttonNeutral: "Ask Me Later",
         buttonNegative: "Reject",
-        buttonPositive: "Accept"
+        buttonPositive: "Accept",
       });
 
       if (granted !== PermissionsAndroid.RESULTS.GRANTED) {

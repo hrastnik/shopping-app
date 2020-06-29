@@ -23,17 +23,19 @@ const S = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: C.colorBackgroundTheme,
     opacity: 0.98,
-    ...shadow(3)
-  }
+    ...shadow(3),
+  },
 });
 
 export const ShopListScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
 
+  const regionId = store.uiStore.activeRegionId;
+
   const query = useQuery(
-    store => store.uiStore.activeRegion.readShopList,
-    store => store.shopStore.map
+    (store) => store.uiStore.activeRegion.readShopList,
+    (store) => store.shopStore.map
   );
 
   const renderItem: ListRenderItem<ShopInstance> = useCallback(
@@ -42,7 +44,10 @@ export const ShopListScreen = observer(() => {
         <TouchableOpacity
           onPress={() => {
             store.uiStore.set("activeShop", shop.id);
-            navigation.navigate("ProductListScreen");
+            navigation.navigate("ProductListScreen", {
+              shopId: shop.id,
+              regionId,
+            });
           }}
           paddingMedium
         >
@@ -62,7 +67,7 @@ export const ShopListScreen = observer(() => {
         </TouchableOpacity>
       );
     },
-    [navigation, store.uiStore]
+    [navigation, regionId, store.uiStore]
   );
 
   if (query.isLoadingFirst) {

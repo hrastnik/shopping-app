@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import {
   Text as RNText,
   TextProps as RNTextProps,
-  TextStyle
+  TextStyle,
 } from "react-native";
 
 import { constants as C } from "~/style";

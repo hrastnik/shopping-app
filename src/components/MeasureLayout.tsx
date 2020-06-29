@@ -15,7 +15,7 @@ export function MeasureLayout({ children }: MeasureLayoutProps) {
   return (
     <View
       flex
-      onLayout={event => {
+      onLayout={(event) => {
         const { width, height } = event.nativeEvent.layout;
         setDimensions({ width, height });
       }}

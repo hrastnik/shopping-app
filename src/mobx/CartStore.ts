@@ -6,7 +6,7 @@ import {
   SnapshotIn,
   SnapshotOut,
   flow,
-  getEnv
+  getEnv,
 } from "mobx-state-tree";
 
 import { Product, ProductInstance } from "./entities/product/Product";
@@ -23,38 +23,38 @@ export interface CartItemSnapshotOut extends SnapshotOut<typeof CartItem> {}
 export const CartItem = types
   .model("CartItem", {
     productId: types.number,
-    quantity: types.number
+    quantity: types.number,
   })
-  .views(self => {
+  .views((self) => {
     return {
       get productMap(): IMSTMap<typeof Product> {
         return getRoot(self).productStore.map;
-      }
+      },
     };
   })
-  .views(self => {
+  .views((self) => {
     return {
       get product() {
         return self.productMap.get(self.productId.toString());
-      }
+      },
     };
   })
-  .views(self => {
+  .views((self) => {
     return {
       get price() {
         return self.quantity * self.product.price;
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       removeFromCart(): any {
         const parent = getParentOfType(self, CartStore);
         parent.removeFromCart(self.product.id.toString());
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       setQuantity(quantity) {
         if (quantity <= 0) {
@@ -62,7 +62,7 @@ export const CartItem = types
         } else {
           self.quantity = quantity;
         }
-      }
+      },
     };
   });
 
@@ -74,9 +74,9 @@ export const CartStore = types
   .model("CartStore", {
     cart: types.map(CartItem),
     city: "",
-    address: ""
+    address: "",
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       setFullAddress(values: { city: string; address: string }) {
         self.city = values.city;
@@ -88,7 +88,7 @@ export const CartStore = types
       addToCart(product: ProductInstance) {
         self.cart.set(product.id.toString(), {
           productId: product.id,
-          quantity: 1
+          quantity: 1,
         });
       },
       removeFromCart(productId: string) {
@@ -96,22 +96,22 @@ export const CartStore = types
       },
       clearCart() {
         self.cart.clear();
-      }
+      },
     };
   })
-  .views(self => {
+  .views((self) => {
     return {
       get cartItemList() {
         return Array.from(self.cart.values());
-      }
+      },
     };
   })
-  .views(self => {
+  .views((self) => {
     return {
       get cartProducts() {
         return self.cartItemList
-          .map(item => item.product)
-          .filter(product => product != null);
+          .map((item) => item.product)
+          .filter((product) => product != null);
       },
       get numCartItems() {
         let numItems = 0;
@@ -119,10 +119,10 @@ export const CartStore = types
           numItems += item.quantity;
         }
         return numItems;
-      }
+      },
     };
   })
-  .views(self => {
+  .views((self) => {
     return {
       get priceByShop(): {
         price: number;
@@ -140,7 +140,7 @@ export const CartStore = types
               numItems: 0,
               numProducts: 0,
               shop: cartItem.product.shop,
-              cartItems: []
+              cartItems: [],
             };
           }
 
@@ -159,12 +159,12 @@ export const CartStore = types
           totalPrice += cartItem.product.price * cartItem.quantity;
         }
         return totalPrice;
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      afterAttach: flow(function*(): any {
+      afterAttach: flow(function* (): any {
         const env: Environment = getEnv(self);
 
         const address = yield env.persistence.get(
@@ -178,7 +178,7 @@ export const CartStore = types
         autorun(() => {
           env.persistence.set(constants.STORAGE_KEYS.ADDRESS, {
             address: self.address,
-            city: self.city
+            city: self.city,
           });
         });
 
@@ -187,7 +187,7 @@ export const CartStore = types
         );
 
         if (Array.isArray(cartItems)) {
-          const products = cartItems.map(cartItem => cartItem.product);
+          const products = cartItems.map((cartItem) => cartItem.product);
 
           getRoot(self).productStore.processProductList(products);
           for (const cartItem of cartItems) {
@@ -196,34 +196,34 @@ export const CartStore = types
         }
 
         autorun(() => {
-          const cartItems = Array.from(self.cart.values()).map(cartItem => {
+          const cartItems = Array.from(self.cart.values()).map((cartItem) => {
             return {
               ...cartItem,
-              product: { ...cartItem.product }
+              product: { ...cartItem.product },
             };
           });
 
           env.persistence.set(constants.STORAGE_KEYS.CART, cartItems);
         });
-      })
+      }),
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      confirmOrder: flow(function*(): any {
+      confirmOrder: flow(function* (): any {
         const root = getRoot(self);
         const response = yield root.orderStore.createOrder({
           cart: JSON.stringify(
-            self.cartItemList.map(cartItem => ({
+            self.cartItemList.map((cartItem) => ({
               ...cartItem,
               product: cartItem.product,
-              price: cartItem.price
+              price: cartItem.price,
             }))
           ),
-          price: self.totalPrice
+          price: self.totalPrice,
         });
 
         return response;
-      })
+      }),
     };
   });

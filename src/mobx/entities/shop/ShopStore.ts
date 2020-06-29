@@ -7,73 +7,41 @@ import { Environment } from "~/mobx/createStore";
 
 export const ShopStore = types
   .model("ShopStore", {
-    map: types.map(Shop)
+    map: types.map(Shop),
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       processShopList(data) {
         for (const entity of _.castArray(data)) {
-          entity.images = entity.images.map(data => {
-            return {
-              url: data.image.data.full_url
-            };
-          });
+          if (typeof entity.region === "object") {
+            entity.region = entity.region.id;
+          }
           self.map.put(entity);
         }
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      createShop: flow(function*(params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/items/shop`,
-          params
-        );
-        self.processShopList(response.data.data);
-        return response;
-      }),
-
-      readShopList: flow(function*(params): any {
+      readShopList: flow(function* (params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(`/items/shop`, {
-          params: { ...params, fields: "*,images.image.data" }
+          params: { ...params, fields: "*,image.filename_disk" },
         });
         self.processShopList(response.data.data);
         return response;
       }),
 
-      readShop: flow(function*(id, params): any {
+      readShop: flow(function* (id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(
           `/items/shop/${id}`,
           {
-            params
+            params: { ...params, fields: "*,image.filename_disk" },
           }
         );
         self.processShopList(response.data.data);
         return response;
       }),
-
-      updateShop: flow(function*(id, params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/items/shop/${id}`,
-          params
-        );
-        self.processShopList(response.data.data);
-        return response;
-      }),
-
-      deleteShop: flow(function*(id, params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/items/shop/id`,
-          params
-        );
-        self.processShopList(response.data.data);
-        return response;
-      })
     };
   });

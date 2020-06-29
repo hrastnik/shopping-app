@@ -4,7 +4,7 @@ import {
   TextInputProps as RNTextInputProps,
   TextStyle,
   StyleSheet,
-  Platform
+  Platform,
 } from "react-native";
 
 import { constants as C } from "~/style";
@@ -12,8 +12,8 @@ import { constants as C } from "~/style";
 const S = StyleSheet.create({
   baseStyle: {
     margin: 0,
-    backgroundColor: C.colorBackgroundLightDark
-  }
+    backgroundColor: C.colorBackgroundLightDark,
+  },
 });
 
 export interface TextInputProps extends RNTextInputProps {
@@ -115,13 +115,13 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
                   lineHeight: 17,
                   paddingTop: 2,
                   paddingBottom: 6,
-                  paddingHorizontal: C.spacingSmall
+                  paddingHorizontal: C.spacingSmall,
                 }
               : {
                   lineHeight: 20,
                   paddingTop: 9,
                   paddingBottom: 9,
-                  paddingHorizontal: C.spacingMedium
+                  paddingHorizontal: C.spacingMedium,
                 },
             android: sizeSmall
               ? {
@@ -134,23 +134,23 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
                   marginRight: 0,
                   marginBottom: 0,
                   marginLeft: 0,
-                  maxHeight: 24
+                  maxHeight: 24,
                 }
               : {
                   lineHeight: 20,
                   paddingTop: 9,
                   paddingBottom: 0,
-                  paddingHorizontal: C.spacingMedium
-                }
+                  paddingHorizontal: C.spacingMedium,
+                },
           }),
           {
             borderRadius,
             fontSize,
             color,
             fontWeight,
-            fontFamily
+            fontFamily,
           },
-          style
+          style,
         ]}
         {...props}
       />

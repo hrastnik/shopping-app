@@ -8,14 +8,17 @@ const S = StyleSheet.create({
   spacingSmall: { width: C.spacingSmall, height: C.spacingSmall },
   spacingMedium: { width: C.spacingMedium, height: C.spacingMedium },
   spacingLarge: { width: C.spacingLarge, height: C.spacingLarge },
-  spacingExtraLarge: { width: C.spacingExtraLarge, height: C.spacingExtraLarge }
+  spacingExtraLarge: {
+    width: C.spacingExtraLarge,
+    height: C.spacingExtraLarge,
+  },
 });
 
 const Spacer = ({
   small = false,
   medium = false,
   large = false,
-  extraLarge = false
+  extraLarge = false,
 }) => {
   let style = S.spacingMedium;
   if (small) style = S.spacingSmall;

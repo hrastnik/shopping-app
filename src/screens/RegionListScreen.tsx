@@ -4,9 +4,8 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  ListRenderItem
+  ListRenderItem,
 } from "react-native";
-import MapView from "react-native-maps";
 import color from "color";
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,21 +18,20 @@ import { keyExtractor } from "~/utils/keyExtractor";
 import { RegionInstance } from "~/mobx/entities/region/Region";
 import { constants as C } from "~/style";
 import { shadow } from "~/utils/shadow";
+import { Image } from "~/components/Image";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
-  map: { width: "100%", aspectRatio: 2.4 },
+  image: { width: "100%", aspectRatio: 2.4 },
   cardShadow: { borderRadius: 8, ...shadow(3), opacity: 0.99 },
   mapWrap: { borderRadius: 8, overflow: "hidden" },
   overlay: {
     flex: 1,
-    backgroundColor: color(C.colorBackgroundDark)
-      .alpha(0.2)
-      .string(),
+    backgroundColor: color(C.colorBackgroundDark).alpha(0.2).string(),
     justifyContent: "flex-end",
     alignItems: "flex-end",
     borderRadius: 8,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   titleText: {
     width: "100%",
@@ -41,18 +39,18 @@ const S = StyleSheet.create({
     textShadowRadius: 9,
     textShadowOffset: {
       width: 0,
-      height: 0
+      height: 0,
     },
-    color: C.colorTextLight
-  }
+    color: C.colorTextLight,
+  },
 });
 
 export const RegionListScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
   const query = useQuery(
-    store => store.regionStore.readRegionList,
-    store => store.regionStore.map
+    (store) => store.regionStore.readRegionList,
+    (store) => store.regionStore.map
   );
 
   const renderItem: ListRenderItem<RegionInstance> = useCallback(
@@ -67,16 +65,7 @@ export const RegionListScreen = observer(() => {
           <View paddingMedium>
             <View style={S.cardShadow}>
               <View style={S.mapWrap}>
-                <MapView
-                  liteMode
-                  region={{
-                    latitude: region.lat,
-                    longitude: region.lng,
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.05
-                  }}
-                  style={S.map}
-                />
+                <Image source={region.image.source} style={S.image} />
               </View>
 
               <View style={StyleSheet.absoluteFill}>

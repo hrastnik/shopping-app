@@ -4,7 +4,7 @@ import {
   getEnv,
   Instance,
   SnapshotIn,
-  SnapshotOut
+  SnapshotOut,
 } from "mobx-state-tree";
 import _ from "lodash";
 import { Image as RNImage } from "react-native";
@@ -23,88 +23,53 @@ export interface CategoryStoreSnapshotOut
 
 export const CategoryStore = types
   .model("CategoryStore", {
-    map: types.map(Category)
+    map: types.map(Category),
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       processCategoryList(data) {
         for (const entity of _.castArray(data)) {
-          if (typeof entity.image === "object") {
-            entity.image = {
-              url: entity.image.data.full_url
-            };
-          }
           self.map.put(entity);
         }
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      createCategory: flow(function*(params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/items/category`,
-          params
-        );
-        self.processCategoryList(response.data.data);
-        return response;
-      }),
-
-      readCategoryList: flow(function*(params): any {
+      readCategoryList: flow(function* (params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(`/items/category`, {
           params: {
             ...params,
-            fields: "id,name,image.data"
-          }
+            fields: "*,image.filename_disk",
+          },
         });
         self.processCategoryList(response.data.data);
         return response;
       }),
 
-      readCategory: flow(function*(id, params): any {
+      readCategory: flow(function* (id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(
           `/items/category/${id}`,
           {
-            params
+            params: { ...params, fields: "*,image.filename_disk" },
           }
         );
         self.processCategoryList(response.data.data);
         return response;
       }),
-
-      updateCategory: flow(function*(id, params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/items/category/${id}`,
-          params
-        );
-        self.processCategoryList(response.data.data);
-        return response;
-      }),
-
-      deleteCategory: flow(function*(id, params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/items/category/${id}`,
-          params
-        );
-        self.processCategoryList(response.data.data);
-        return response;
-      })
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      afterAttach: flow(function*(): any {
+      afterAttach: flow(function* (): any {
         const root = getRoot(self);
         yield when(() => root.authStore.isLoggedIn);
         yield self.readCategoryList({});
         for (const category of self.map.values()) {
           RNImage.prefetch(category.image.source.uri);
         }
-      })
+      }),
     };
   });

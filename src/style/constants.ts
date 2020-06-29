@@ -50,10 +50,7 @@ export const colorTextLightSofter = Color(colorTextLight)
   .rgb()
   .string(2);
 
-export const colorTextDarkSoft = Color(colorTextDark)
-  .fade(0.3)
-  .rgb()
-  .string(2);
+export const colorTextDarkSoft = Color(colorTextDark).fade(0.3).rgb().string(2);
 export const colorTextDarkSofter = Color(colorTextDark)
   .fade(0.5)
   .rgb()
@@ -84,7 +81,7 @@ const markdownDisabledFontStyle: TextStyle = {
   fontSize: 16,
   fontWeight: "400",
   textAlign: "auto",
-  fontStyle: "normal"
+  fontStyle: "normal",
 };
 export const markdownDisabledStyle = StyleSheet.create({
   heading: markdownDisabledFontStyle,
@@ -112,172 +109,172 @@ export const markdownDisabledStyle = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   bgImageView: {
     flex: 1,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   view: {
-    alignSelf: "stretch"
+    alignSelf: "stretch",
   },
   codeBlock: markdownDisabledFontStyle,
   del: {
     textDecorationLine: "line-through",
-    textDecorationStyle: "solid"
+    textDecorationStyle: "solid",
   },
   hr: {
     backgroundColor: colorBackgroundDark,
-    height: 1
+    height: 1,
   },
   image: {
     height: 200, // Image maximum height
     width: Dimensions.get("window").width - 30, // Width based on the window width
     alignSelf: "center",
-    resizeMode: "contain" // The image will scale uniformly (maintaining aspect ratio)
+    resizeMode: "contain", // The image will scale uniformly (maintaining aspect ratio)
   },
   imageBox: {
     flex: 1,
-    resizeMode: "cover"
+    resizeMode: "cover",
   },
   inlineCode: markdownDisabledFontStyle,
   list: {},
   sublist: {
     paddingLeft: 20,
-    width: Dimensions.get("window").width - 60
+    width: Dimensions.get("window").width - 60,
   },
   listItem: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   listItemText: {
-    flex: 1
+    flex: 1,
   },
   listItemBullet: {
     fontSize: 20,
-    lineHeight: 20
+    lineHeight: 20,
   },
   listItemNumber: markdownDisabledFontStyle,
   listRow: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   paragraph: markdownDisabledFontStyle,
   paragraphCenter: markdownDisabledFontStyle,
   paragraphWithImage: markdownDisabledFontStyle,
   noMargin: {
     marginTop: 0,
-    marginBottom: 0
+    marginBottom: 0,
   },
   table: {
     borderWidth: 1,
     borderColor: colorBackgroundDark,
-    borderRadius: 3
+    borderRadius: 3,
   },
   tableHeader: {
     backgroundColor: colorBackgroundDark,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   tableHeaderCell: {
-    ...markdownDisabledFontStyle
+    ...markdownDisabledFontStyle,
   },
   tableRow: {
     //borderBottomWidth: 1,
     borderColor: colorBackgroundLightDark,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   tableRowLast: {
-    borderColor: transparentColor
+    borderColor: transparentColor,
   },
   tableRowCell: {
-    padding: 5
+    padding: 5,
   },
 
   textRow: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   u: {
     borderColor: colorBackgroundDark,
-    borderBottomWidth: 1
-  }
+    borderBottomWidth: 1,
+  },
 });
 
 export const markdownStyle = StyleSheet.create({
   heading: {
     fontFamily: "SignikaNegative-Regular",
-    color: colorTextDark
+    color: colorTextDark,
   },
   heading1: {
     fontFamily: "SignikaNegative-Bold",
-    fontSize: 32
+    fontSize: 32,
   },
   heading2: {
     fontFamily: "SignikaNegative-Bold",
-    fontSize: 24
+    fontSize: 24,
   },
   heading3: {
     fontFamily: "SignikaNegative-Bold",
-    fontSize: 18
+    fontSize: 18,
   },
   heading4: {
     fontFamily: "SignikaNegative-Regular",
-    fontSize: 16
+    fontSize: 16,
   },
   heading5: {
     fontFamily: "SignikaNegative-Regular",
-    fontSize: 13
+    fontSize: 13,
   },
   heading6: {
     fontFamily: "SignikaNegative-Regular",
-    fontSize: 11
+    fontSize: 11,
   },
   text: {
     fontFamily: "SignikaNegative-Regular",
-    color: colorTextDark
+    color: colorTextDark,
   },
   strong: {
-    fontFamily: "SignikaNegative-Bold"
+    fontFamily: "SignikaNegative-Bold",
   },
   strikethrough: {
     textDecorationLine: "line-through",
-    fontFamily: "SignikaNegative-Regular"
+    fontFamily: "SignikaNegative-Regular",
   },
   link: {
     fontFamily: "SignikaNegative-Regular",
-    color: colorTextTheme
+    color: colorTextTheme,
   },
   em: {
     fontFamily: "SignikaNegative-Regular",
-    fontStyle: "italic"
+    fontStyle: "italic",
   },
   listUnorderedItemIcon: {
     fontFamily: "SignikaNegative-Regular",
     fontSize: 14,
     marginTop: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   listOrderedItemIcon: {
     fontFamily: "SignikaNegative-Regular",
     fontSize: 14,
     marginTop: 10,
-    marginRight: 10
+    marginRight: 10,
   },
 
   // new ones
   autolink: {
     fontFamily: "SignikaNegative-Regular",
-    color: colorTextAccent
+    color: colorTextAccent,
   },
   blockQuoteText: {
     fontFamily: "SignikaNegative-Regular",
-    color: colorTextDarkSoft
+    color: colorTextDarkSoft,
   },
   blockQuoteSection: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   blockQuoteSectionBar: {
     width: 3,
     height: null,
     backgroundColor: colorBackgroundLightDarker,
-    marginRight: 15
+    marginRight: 15,
   },
   bgImage: {
     flex: 1,
@@ -285,38 +282,38 @@ export const markdownStyle = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   bgImageView: {
     flex: 1,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   view: {
-    alignSelf: "stretch"
+    alignSelf: "stretch",
   },
   codeBlock: {
     fontFamily: "SignikaNegative-Regular",
     fontWeight: "500",
     padding: spacingSmall,
-    backgroundColor: colorBackgroundLightDark
+    backgroundColor: colorBackgroundLightDark,
   },
   del: {
     fontFamily: "SignikaNegative-Regular",
     textDecorationLine: "line-through",
-    textDecorationStyle: "solid"
+    textDecorationStyle: "solid",
   },
   hr: {
     backgroundColor: colorBackgroundDark,
-    height: 1
+    height: 1,
   },
   image: {
     width: Dimensions.get("window").width - 30, // Width based on the window width
     alignSelf: "center",
-    resizeMode: "center" // The image will scale uniformly (maintaining aspect ratio)
+    resizeMode: "center", // The image will scale uniformly (maintaining aspect ratio)
   },
   imageBox: {
     flex: 1,
-    resizeMode: "cover"
+    resizeMode: "cover",
   },
   inlineCode: {
     backgroundColor: colorBackgroundLightDarker,
@@ -324,28 +321,28 @@ export const markdownStyle = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 1,
     fontFamily: "SignikaNegative-Regular",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   list: {},
   sublist: {
     paddingLeft: 20,
-    width: Dimensions.get("window").width - 60
+    width: Dimensions.get("window").width - 60,
   },
   listItem: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   listItemText: {
-    flex: 1
+    flex: 1,
   },
   listItemBullet: {
     fontSize: 20,
-    lineHeight: 20
+    lineHeight: 20,
   },
   listItemNumber: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   listRow: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   paragraph: {
     marginTop: 10,
@@ -353,7 +350,7 @@ export const markdownStyle = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     alignItems: "flex-start",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   paragraphCenter: {
     marginTop: 10,
@@ -362,53 +359,53 @@ export const markdownStyle = StyleSheet.create({
     flexDirection: "row",
     textAlign: "center",
     alignItems: "flex-start",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paragraphWithImage: {
     flex: 1,
     marginTop: 10,
     marginBottom: 10,
     alignItems: "flex-start",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   noMargin: {
     marginTop: 0,
-    marginBottom: 0
+    marginBottom: 0,
   },
   table: {
     borderWidth: 1,
     borderColor: colorBackgroundLightDarker,
-    borderRadius: 3
+    borderRadius: 3,
   },
   tableHeader: {
     backgroundColor: colorBackgroundLightDarker,
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   tableHeaderCell: {
     color: colorBackgroundLight,
     fontWeight: "bold",
-    padding: 5
+    padding: 5,
   },
   tableRow: {
     borderColor: colorBackgroundLightDarker,
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   tableRowLast: {
-    borderColor: transparentColor
+    borderColor: transparentColor,
   },
   tableRowCell: {
-    padding: 5
+    padding: 5,
   },
 
   textRow: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   u: {
     borderColor: colorBackgroundLightDarker,
-    borderBottomWidth: 1
-  }
+    borderBottomWidth: 1,
+  },
 });
 
 export const hitSlopSmall = 8 as const;
@@ -421,24 +418,24 @@ export const hitSlop = {
     top: hitSlopSmall,
     left: hitSlopSmall,
     bottom: hitSlopSmall,
-    right: hitSlopSmall
+    right: hitSlopSmall,
   },
   medium: {
     top: hitSlopMedium,
     left: hitSlopMedium,
     bottom: hitSlopMedium,
-    right: hitSlopMedium
+    right: hitSlopMedium,
   },
   large: {
     top: hitSlopLarge,
     left: hitSlopLarge,
     bottom: hitSlopLarge,
-    right: hitSlopLarge
+    right: hitSlopLarge,
   },
   extraLarge: {
     top: hitSlopExtraLarge,
     left: hitSlopExtraLarge,
     bottom: hitSlopExtraLarge,
-    right: hitSlopExtraLarge
-  }
+    right: hitSlopExtraLarge,
+  },
 };

@@ -18,7 +18,7 @@ function RadioButton<T>({
   value,
   size = 28,
   contentContainerStyle,
-  children
+  children,
 }: RadioButtonProps<T>) {
   const { onChange, selectedValue } = useContext(RadioGroupContext);
 

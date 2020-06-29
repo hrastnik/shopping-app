@@ -27,7 +27,7 @@ function shadow(depth) {
     shadowRadius,
     zIndex: depth,
 
-    elevation: depth
+    elevation: depth,
   };
 }
 

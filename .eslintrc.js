@@ -52,6 +52,8 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+
     // React
     "react/boolean-prop-naming": "off", // Enforces consistent naming for boolean props
     "react/button-has-type": "off", // Forbid "button" element without an explicit "type" attribute

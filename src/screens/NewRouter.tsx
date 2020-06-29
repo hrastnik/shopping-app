@@ -3,7 +3,7 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useRef
+  useRef,
 } from "react";
 import { observer } from "mobx-react";
 import posed, { Transition } from "react-native-pose";
@@ -26,25 +26,25 @@ const screens = {
   SignUpScreen: { component: SignUpScreen, meta: { title: "Sign Up" } },
   RegionListScreen: {
     component: RegionListScreen,
-    meta: { title: "Select Region" }
+    meta: { title: "Select Region" },
   },
   ProfileScreen: { component: ProfileScreen, meta: { title: "Profile" } },
   ShopListScreen: { component: ShopListScreen, meta: { title: "Shops" } },
   ProductListScreen: {
     component: ProductListScreen,
-    meta: { title: "Products" }
+    meta: { title: "Products" },
   },
   ProductDetailsScreen: {
     component: ProductDetailsScreen,
-    meta: { title: "Product" }
-  }
+    meta: { title: "Product" },
+  },
 };
 
 const navigationState = observable({
   activeScreenKeys: ["LoginScreen"],
   screens,
   get activeScreens(): { component: any; meta: any; key: string }[] {
-    return navigationState.activeScreenKeys.map(key => {
+    return navigationState.activeScreenKeys.map((key) => {
       return { ...navigationState.screens[key], key };
     });
   },
@@ -61,7 +61,7 @@ const navigationState = observable({
   },
   get focusedScreen(): { component: any; meta: any } {
     return navigationState.screens[navigationState.focusedScreenKey];
-  }
+  },
 });
 
 autorun(() => {
@@ -87,7 +87,7 @@ const navigationActions = {
   }),
   goBack: action((): void => {
     navigationState.activeScreenKeys.pop();
-  })
+  }),
 };
 
 const navigation = { state: navigationState, actions: navigationActions };
@@ -110,12 +110,12 @@ const ScreenMissingError = () => {
 const ScreenWrap = posed.View({
   enter: {
     x: 0,
-    transition: { ease: "easeInOut" }
+    transition: { ease: "easeInOut" },
   },
   exit: {
     x: -C.windowWidth,
-    transition: { ease: "easeInOut" }
-  }
+    transition: { ease: "easeInOut" },
+  },
 });
 
 export const Router = observer(() => {

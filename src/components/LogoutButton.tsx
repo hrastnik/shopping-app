@@ -15,7 +15,7 @@ export const LogoutButton = observer(() => {
     const shouldLogout = await promptYesNo(
       {
         title: "Confirm",
-        message: "Are you sure you want to logout?"
+        message: "Are you sure you want to logout?",
       },
       alert
     );

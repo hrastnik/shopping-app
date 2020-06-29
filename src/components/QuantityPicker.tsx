@@ -14,9 +14,9 @@ const S = StyleSheet.create({
     aspectRatio: 3,
     borderRadius: 2,
     backgroundColor: C.colorBackgroundAccent,
-    ...shadow(1)
+    ...shadow(1),
   },
-  noPadding: { padding: 0 }
+  noPadding: { padding: 0 },
 });
 
 export interface QuantityPickerProps {

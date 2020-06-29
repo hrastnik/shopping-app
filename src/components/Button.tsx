@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacityProps,
   Platform,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 
 import { Modal } from "~/components/ModalProvider";
@@ -143,7 +143,7 @@ const Button = forwardRef<TouchableOpacity, ButtonProps>(function Button(
     padding: resolvePadding(),
     borderRadius,
     ...shadow(resolveShadow()),
-    opacity: isLoading ? 0.5 : 1
+    opacity: isLoading ? 0.5 : 1,
   };
 
   const textStyle = resolveTextStyle();

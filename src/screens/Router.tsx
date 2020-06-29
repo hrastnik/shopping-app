@@ -59,7 +59,7 @@ const TabNavigator = () => {
     },
     headerRight() {
       return <CartButton />;
-    }
+    },
   };
 
   return (
@@ -72,7 +72,7 @@ const TabNavigator = () => {
         inactiveBackgroundColor: C.colorBackgroundTheme,
         showLabel: false,
         showIcon: true,
-        style: { borderTopWidth: 0 }
+        style: { borderTopWidth: 0 },
         // labelStyle :,
         // labelPosition :,
         // tabStyle:,
@@ -85,9 +85,9 @@ const TabNavigator = () => {
       <Tabs.Screen
         name="Tab.ShopListScreen"
         options={{
-          tabBarIcon: props => (
+          tabBarIcon: (props) => (
             <Icon name="shopping-cart" color={props.color} size={props.size} />
-          )
+          ),
         }}
       >
         {() => {
@@ -106,9 +106,9 @@ const TabNavigator = () => {
       <Tabs.Screen
         name="Tab.CategoryListScreen"
         options={{
-          tabBarIcon: props => (
+          tabBarIcon: (props) => (
             <Icon name="tag" color={props.color} size={props.size} />
-          )
+          ),
         }}
       >
         {() => {
@@ -127,9 +127,9 @@ const TabNavigator = () => {
       <Tabs.Screen
         name="Tab.FavoriteProductListScreen"
         options={{
-          tabBarIcon: props => (
+          tabBarIcon: (props) => (
             <Icon name="heart" color={props.color} size={props.size} />
-          )
+          ),
         }}
       >
         {() => {
@@ -148,9 +148,9 @@ const TabNavigator = () => {
       <Tabs.Screen
         name="Tab.ProfileScreen"
         options={{
-          tabBarIcon: props => (
+          tabBarIcon: (props) => (
             <Icon name="person" color={props.color} size={props.size} />
-          )
+          ),
         }}
       >
         {() => {
@@ -169,7 +169,7 @@ const TabNavigator = () => {
                         <CartButton />
                       </View>
                     );
-                  }
+                  },
                 }}
                 component={ProfileScreen}
                 name="ProfileScreen"
@@ -217,7 +217,7 @@ const MainStack = () => {
                 <CartButton />
               </View>
             );
-          }
+          },
         }}
       />
       <Stack.Screen
@@ -251,7 +251,7 @@ export const Router = observer(() => {
     },
     headerRight() {
       return <CartButton />;
-    }
+    },
   };
 
   const { isLoggedIn } = store.authStore;
@@ -260,7 +260,7 @@ export const Router = observer(() => {
   return (
     <>
       <NavigationContainer
-        ref={navigation => {
+        ref={(navigation) => {
           store.setNavigation(navigation);
         }}
       >

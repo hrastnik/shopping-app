@@ -4,7 +4,7 @@ import {
   getEnv,
   Instance,
   SnapshotIn,
-  SnapshotOut
+  SnapshotOut,
 } from "mobx-state-tree";
 
 import { getRoot } from "./utils/getRoot";
@@ -21,27 +21,27 @@ export interface AuthStoreSnapshotOut extends SnapshotOut<typeof AuthStore> {}
 export const AuthStore = types
   .model("AuthStore", {
     activeUser: types.safeReference(User),
-    token: types.maybe(types.string)
+    token: types.maybe(types.string),
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       processAuthUser(data) {
         const root = getRoot(self);
         root.userStore.processUserList(data.user);
         self.token = data.jwt;
-      }
+      },
     };
   })
-  .views(self => {
+  .views((self) => {
     return {
       get isLoggedIn() {
         return self.token !== undefined && self.activeUser != null;
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      login: flow(function*(params: { email: string; password: string }): any {
+      login: flow(function* (params: { email: string; password: string }): any {
         const env: Environment = getEnv(self);
 
         const authorization = env.http.defaults.headers.authorization;
@@ -59,11 +59,22 @@ export const AuthStore = types
 
           env.http.defaults.headers.authorization = authorization;
 
-          const root = getRoot(self);
-          root.userStore.processUserList(response.data.data.user);
+          const token = response.data.data.token;
+          const user = {
+            id: response.data.data.user.id,
+            firstName: response.data.data.user.first_name,
+            lastName: response.data.data.user.last_name,
+            email: response.data.data.user.email,
+            phone: response.data.data.user.phone,
+            city: response.data.data.user.city,
+            address: response.data.data.user.address,
+          };
 
-          self.activeUser = response.data.data.user.id;
-          self.token = response.data.data.token;
+          const root = getRoot(self);
+          root.userStore.processUserList(user);
+
+          self.activeUser = user.id;
+          self.token = token;
         } catch (error) {
           env.http.defaults.headers.authorization = authorization;
           throw error;
@@ -80,37 +91,84 @@ export const AuthStore = types
         root.uiStore.favoriteProductMap.clear();
       },
 
-      register: flow(function*(params: {
-        username: string;
+      register: flow(function* (params: {
+        firstName: string;
+        lastName: string;
         email: string;
-        password: string;
         phone: string;
+        password: string;
+        city: string;
+        address: string;
       }): any {
         const env: Environment = getEnv(self);
-        const response = yield env.http.post("/users", {
-          ...params,
-          role: 3,
-          status: "active"
-        });
-        const root = getRoot(self);
-        root.userStore.processUserList(response.data.data);
-        // self.activeUser = response.data.data.id;
-        // self.token = response.data.jwt;
+        const response = yield env.http.post(
+          "/users",
+          {
+            first_name: params.firstName,
+            last_name: params.lastName,
+            email: params.email,
+            phone: params.phone,
+            city: params.city,
+            address: params.address,
+            password: params.password,
+            status: "active",
+            role: 4,
+          },
+          {
+            params: {
+              fields: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "city",
+                "address",
+              ].join(","),
+            },
+          }
+        );
+
+        return response;
       }),
 
-      me: flow(function*(config?: AxiosRequestConfig): any {
+      me: flow(function* (config?: AxiosRequestConfig): any {
         const env: Environment = getEnv(self);
-        const response = yield env.http.get("/users/me", config);
+        const response = yield env.http.get("/users/me", {
+          ...config,
+          params: {
+            fields: [
+              "id",
+              "first_name",
+              "last_name",
+              "email",
+              "phone",
+              "city",
+              "address",
+            ].join(","),
+          },
+        });
+
+        const user = {
+          id: response.data.data.id,
+          firstName: response.data.data.first_name,
+          lastName: response.data.data.last_name,
+          email: response.data.data.email,
+          phone: response.data.data.phone,
+          city: response.data.data.city,
+          address: response.data.data.address,
+        };
 
         const root = getRoot(self);
-        root.userStore.processUserList(response.data.data);
-        self.activeUser = response.data.data.id;
-      })
+        root.userStore.processUserList(user);
+
+        self.activeUser = user.id;
+      }),
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      afterAttach: flow(function*(): any {
+      afterAttach: flow(function* (): any {
         const env: Environment = getEnv(self);
         const root = getRoot(self);
         self.token = yield env.persistence.get("token");
@@ -139,6 +197,6 @@ export const AuthStore = types
         } else {
           root.uiStore.set("initialScreen", "LoginScreen");
         }
-      })
+      }),
     };
   });

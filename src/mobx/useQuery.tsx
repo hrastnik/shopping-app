@@ -6,7 +6,7 @@ import {
   types,
   unprotect,
   IAnyType,
-  IMSTMap
+  IMSTMap,
 } from "mobx-state-tree";
 
 import { useStore } from "./useStore";
@@ -17,12 +17,12 @@ import { Spinner } from "~/components/Spinner";
 const resultsPerPage = 32;
 
 const initialState = {
-  params: { offset: 0, limit: resultsPerPage },
+  params: { page: 0, limit: resultsPerPage },
   isLoading: true,
   isRefreshing: false,
   isLoadingFirst: true,
   isLoadingNext: false,
-  isEndReached: false
+  isEndReached: false,
 };
 type Action =
   | { type: "fetch first" }
@@ -44,7 +44,7 @@ const reducer = (state: typeof initialState, action: Action) => {
         isLoading: true,
         isRefreshing: false,
         isLoadingFirst: false,
-        isLoadingNext: true
+        isLoadingNext: true,
       };
     }
     case "refresh": {
@@ -55,7 +55,7 @@ const reducer = (state: typeof initialState, action: Action) => {
         isLoading: true,
         isRefreshing: true,
         isLoadingFirst: false,
-        isLoadingNext: false
+        isLoadingNext: false,
       };
     }
     case "fetch success": {
@@ -63,8 +63,8 @@ const reducer = (state: typeof initialState, action: Action) => {
       return {
         ...state,
         params: {
-          offset: state.params.offset + resultsPerPage,
-          limit: resultsPerPage
+          page: state.params.page + resultsPerPage,
+          limit: resultsPerPage,
         },
         isEndReached:
           response?.data?.data.length === 0 ||
@@ -73,7 +73,7 @@ const reducer = (state: typeof initialState, action: Action) => {
         isRefreshing: false,
         isLoadingFirst: false,
         isLoadingNext: false,
-        data: _.castArray(response.data)
+        data: _.castArray(response.data),
       };
     }
     case "fetch error": {
@@ -84,7 +84,7 @@ const reducer = (state: typeof initialState, action: Action) => {
         isRefreshing: false,
         isLoadingFirst: false,
         isLoadingNext: false,
-        error
+        error,
       };
     }
   }
@@ -108,8 +108,8 @@ export function useQuery<EntityType extends IAnyType>(
       .array(
         types.safeReference<EntityType>(EntityModel as EntityType, {
           acceptsUndefined: false,
-          get: id => resourceMap.get(id as string),
-          set: e => e.id
+          get: (id) => resourceMap.get(id as string),
+          set: (e) => e.id,
         })
       )
       .create();
@@ -122,13 +122,13 @@ export function useQuery<EntityType extends IAnyType>(
     if (!isValid) return;
     dispatch({ type: "fetch first" });
     (maybePromise as Promise<any>)
-      .then(response => {
+      .then((response) => {
         runInAction(() => {
-          dataList.replace(_.castArray(response.data.data).map(e => e.id));
+          dataList.replace(_.castArray(response.data.data).map((e) => e.id));
           dispatch({ type: "fetch success", response });
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.warn("error in use query (fetch first)", error);
         dispatch({ type: "fetch error", error });
       });
@@ -145,7 +145,7 @@ export function useQuery<EntityType extends IAnyType>(
 
     dispatch({ type: "fetch next" });
     (maybePromise as Promise<any>)
-      .then(response => {
+      .then((response) => {
         runInAction(() => {
           for (const e of _.castArray(response.data.data)) {
             dataList.push(e.id);
@@ -153,7 +153,7 @@ export function useQuery<EntityType extends IAnyType>(
           dispatch({ type: "fetch success", response });
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.warn("error in use query (fetch next)", error);
         dispatch({ type: "fetch error", error });
       });
@@ -162,7 +162,7 @@ export function useQuery<EntityType extends IAnyType>(
     fetchListFn,
     state.isEndReached,
     state.isLoadingNext,
-    state.params
+    state.params,
   ]);
 
   const refresh = useCallback(() => {
@@ -172,13 +172,13 @@ export function useQuery<EntityType extends IAnyType>(
 
     dispatch({ type: "refresh" });
     (maybePromise as Promise<any>)
-      .then(response => {
+      .then((response) => {
         runInAction(() => {
-          dataList.replace(_.castArray(response.data.data).map(e => e.id));
+          dataList.replace(_.castArray(response.data.data).map((e) => e.id));
           dispatch({ type: "fetch success", response });
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.warn("error in use query (refresh)", error);
         dispatch({ type: "fetch error", error });
       });
@@ -193,7 +193,7 @@ export function useQuery<EntityType extends IAnyType>(
 
   const flatListProps = {
     data: dataListArray,
-    extraData: dataList.map(e => e.id).join(":"),
+    extraData: dataList.map((e) => e.id).join(":"),
     refreshing: state.isRefreshing,
     onRefresh: refresh,
     onEndReached: fetchNext,
@@ -201,7 +201,7 @@ export function useQuery<EntityType extends IAnyType>(
       <View style={{ height: 96 }} centerContent>
         {state.isLoadingNext && <Spinner />}
       </View>
-    )
+    ),
   };
   // // eslint-disable-next-line
   // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.data changed"), [flatListProps.data]);
@@ -220,6 +220,6 @@ export function useQuery<EntityType extends IAnyType>(
     fetchFirst,
     fetchNext,
     refresh,
-    flatListProps
+    flatListProps,
   };
 }

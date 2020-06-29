@@ -9,7 +9,7 @@ import { constants as C } from "~/style";
 
 const NotificationIconWithBadge = observer(function NotificationIconWithBadge({
   size = 28,
-  color = C.colorTextLight
+  color = C.colorTextLight,
 }: {
   size?: IconProps["size"];
   color?: IconProps["color"];

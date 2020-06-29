@@ -13,8 +13,8 @@ const S = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 8,
-    backgroundColor: C.colorBackgroundAccent
-  }
+    backgroundColor: C.colorBackgroundAccent,
+  },
 });
 
 export const CartButton = observer(() => {

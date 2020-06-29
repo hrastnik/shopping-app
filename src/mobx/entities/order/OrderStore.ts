@@ -4,7 +4,7 @@ import {
   getEnv,
   Instance,
   SnapshotIn,
-  SnapshotOut
+  SnapshotOut,
 } from "mobx-state-tree";
 import _ from "lodash";
 import { AxiosResponse } from "axios";
@@ -18,45 +18,45 @@ export interface OrderStoreSnapshotOut extends SnapshotOut<typeof OrderStore> {}
 
 export const OrderStore = types
   .model("OrderStore", {
-    map: types.map(Order)
+    map: types.map(Order),
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       processOrderList(data) {
         for (const entity of _.castArray(data)) {
           self.map.put(entity);
         }
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      createOrder: flow(function*(params): any {
+      createOrder: flow(function* (params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(`/orders`, params);
         self.processOrderList(response.data);
         return response;
       }),
 
-      readOrderList: flow(function*(params): any {
+      readOrderList: flow(function* (params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(`/orders`, {
-          params
+          params,
         });
         self.processOrderList(response.data);
         return response;
       }),
 
-      readOrder: flow(function*(id, params): any {
+      readOrder: flow(function* (id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(`/orders/${id}`, {
-          params
+          params,
         });
         self.processOrderList(response.data);
         return response;
       }),
 
-      updateOrder: flow(function*(id, params): any {
+      updateOrder: flow(function* (id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
           `/orders/${id}`,
@@ -66,7 +66,7 @@ export const OrderStore = types
         return response;
       }),
 
-      deleteOrder: flow(function*(id, params): any {
+      deleteOrder: flow(function* (id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.post(
           `/orders/${id}`,
@@ -74,6 +74,6 @@ export const OrderStore = types
         );
         self.processOrderList(response.data);
         return response;
-      })
+      }),
     };
   });

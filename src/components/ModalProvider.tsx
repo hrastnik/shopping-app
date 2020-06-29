@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import {
   TouchableWithoutFeedback,
   StyleSheet,
-  BackHandler
+  BackHandler,
 } from "react-native";
 import { View } from "~/components/View";
 
@@ -12,10 +12,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [contentList, setContentList] = React.useState([]);
 
   // Create a value to pass to modal
-  const push = React.useRef(content => {
+  const push = React.useRef((content) => {
     const key = Math.random();
-    setContentList(list => [...list, { content, key }]);
-    return () => setContentList(list => list.filter(item => item.key !== key));
+    setContentList((list) => [...list, { content, key }]);
+    return () =>
+      setContentList((list) => list.filter((item) => item.key !== key));
   });
 
   return (
@@ -37,7 +38,7 @@ export interface ModalProps {
 
 export function Modal({
   children,
-  blockHardwareBackButton = true
+  blockHardwareBackButton = true,
 }: ModalProps) {
   const push = React.useContext(ModalContext);
 

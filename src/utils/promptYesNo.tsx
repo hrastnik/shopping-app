@@ -9,13 +9,13 @@ const promptYesNo = (
   { title, message, yesText = "Yes", noText = "No" },
   alert = Alert.alert
 ): Promise<boolean> =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     alert(
       title,
       message,
       [
         { text: noText, style: "cancel", onPress: () => resolve(false) },
-        { text: yesText, style: "default", onPress: () => resolve(true) }
+        { text: yesText, style: "default", onPress: () => resolve(true) },
       ],
       { cancelable: false, onDismiss: () => resolve(false) }
     );

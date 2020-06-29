@@ -1,12 +1,14 @@
-const BASE_URL = "http://192.168.1.102:1337";
+import { environment } from "./environment";
+
+const BASE_URL = environment.API_URL;
 
 const STORAGE_KEYS = {
   FAVORITES: "favorite products",
   CART: "cart",
-  ADDRESS: "address"
+  ADDRESS: "address",
 };
 
 export const constants = {
   BASE_URL,
-  STORAGE_KEYS
+  STORAGE_KEYS,
 };

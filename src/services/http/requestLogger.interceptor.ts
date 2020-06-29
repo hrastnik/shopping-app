@@ -23,7 +23,7 @@ export function requestLogger(config) {
     const dataString = JSON.stringify({ data }, null, 2)
       .split("\n")
       .slice(0, maxLines)
-      .map(line =>
+      .map((line) =>
         line.length > maxLineLenght
           ? line.substr(0, maxLineLenght - 3) + "..."
           : line
@@ -35,7 +35,7 @@ export function requestLogger(config) {
   const pretty = lines
     .join("\n")
     .split("\n")
-    .map(l => "> " + l);
+    .map((l) => "> " + l);
   pretty.push("");
 
   console.groupCollapsed(

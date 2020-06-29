@@ -23,7 +23,7 @@ const validationSchema = yup.object({
     .test({
       name: "username_test",
       test: (value: string) => Boolean(value?.match?.(/^[A-Za-z0-9_-]+$/)),
-      message: `Only alphanumberic characters, '-' and '_' allowed`
+      message: `Only alphanumberic characters, '-' and '_' allowed`,
     }),
   email: yup
     .string()
@@ -35,7 +35,7 @@ const validationSchema = yup.object({
     .min(6, "Phone number too short")
     .max(15, "Phone number too long"),
   city: yup.string().min(2, "City name too short"),
-  address: yup.string().min(2, "Address too short")
+  address: yup.string().min(2, "Address too short"),
 });
 
 export const ProfileEditScreen = observer(() => {
@@ -48,7 +48,7 @@ export const ProfileEditScreen = observer(() => {
     email: user.email ?? "",
     phone: user.phone ?? "",
     city: user.city ?? "",
-    address: user.address ?? ""
+    address: user.address ?? "",
   };
 
   const emailInput = useRef<RNTextInput>();
@@ -62,7 +62,7 @@ export const ProfileEditScreen = observer(() => {
     <Screen>
       <Formik
         initialValues={initialValues}
-        onSubmit={async values => {
+        onSubmit={async (values) => {
           try {
             await user.update(values);
             navigation.goBack();
@@ -79,7 +79,7 @@ export const ProfileEditScreen = observer(() => {
           handleSubmit,
           values,
           errors,
-          touched
+          touched,
         }) => {
           return (
             <View paddingMedium>

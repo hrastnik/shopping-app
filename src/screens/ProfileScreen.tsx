@@ -8,7 +8,6 @@ import { constants } from "~/style";
 import { Spacer } from "~/components/Spacer";
 import { useStore } from "~/mobx/useStore";
 import { MeasureLayout } from "~/components/MeasureLayout";
-import { useNavigation } from "@react-navigation/native";
 
 export const ProfileScreen = observer(() => {
   const store = useStore();
@@ -27,7 +26,7 @@ export const ProfileScreen = observer(() => {
             width: "50%",
             maxWidth: 300,
             borderRadius: 150,
-            backgroundColor: constants.colorBackgroundThemeSofter
+            backgroundColor: constants.colorBackgroundThemeSofter,
           }}
         >
           <MeasureLayout>
@@ -35,7 +34,7 @@ export const ProfileScreen = observer(() => {
               return (
                 <View flex centerContent>
                   <Text style={{ fontSize: width / 2 }}>
-                    {user.username[0].toUpperCase()}
+                    {user.firstName[0].toUpperCase()}
                   </Text>
                 </View>
               );
@@ -46,7 +45,9 @@ export const ProfileScreen = observer(() => {
 
       <View paddingMedium>
         <Text weightLight>Logged in as:</Text>
-        <Text weightBold>{user.username}</Text>
+        <Text weightBold>
+          {user.firstName} {user.lastName}
+        </Text>
 
         <Spacer large />
 
@@ -78,8 +79,8 @@ export const ProfileScreen = observer(() => {
 
         <Spacer large />
 
-        <Text weightLight>Account created</Text>
-        <Text weightBold>{user.created_at.fromNow()}</Text>
+        {/* <Text weightLight>Account created</Text>
+        <Text weightBold>{user.created_at.fromNow()}</Text> */}
       </View>
     </Screen>
   );

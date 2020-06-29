@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { StyleSheet, RefreshControl } from "react-native";
+import { StyleSheet, RefreshControl, Image as RNImage } from "react-native";
 import Carousel from "react-native-snap-carousel";
 
 import { Text } from "~/components/Text";
@@ -13,16 +13,28 @@ import { ImageInstance } from "~/mobx/util-models/Image";
 import { Spacer } from "~/components/Spacer";
 
 const S = StyleSheet.create({
-  image: { width: "100%", aspectRatio: 1 }
+  image: { width: "100%", aspectRatio: 1 },
 });
 
 export const ProductDetailsScreen = observer(() => {
   const store = useStore();
 
+  const [aspectRatio, setAspectRatio] = useState(1);
+
   const product = store.uiStore.activeProduct;
   useEffect(() => {
     product.refresh();
   }, [product]);
+
+  useEffect(() => {
+    RNImage.getSize(
+      product.image.url,
+      (width, height) => setAspectRatio(width / height),
+      (error) => {
+        console.warn("error geting image aspect ratio", error);
+      }
+    );
+  }, [product.image.url]);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -47,7 +59,7 @@ export const ProductDetailsScreen = observer(() => {
             return (
               <Image
                 source={image.source}
-                style={S.image}
+                style={[S.image, { aspectRatio }]}
                 resizeMode="contain"
               />
             );

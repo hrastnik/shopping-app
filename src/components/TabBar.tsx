@@ -13,21 +13,21 @@ const S = StyleSheet.create({
     ...shadow(1),
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
   },
-  icon: {}
+  icon: {},
 });
 
 export const TabBar = observer(() => {
   const icons: { iconName: IconButtonProps["iconName"] }[] = [
     { iconName: "heart" },
     { iconName: "pillar" },
-    { iconName: "photo-camera" }
+    { iconName: "photo-camera" },
   ];
 
   return (
     <View style={S.container}>
-      {icons.map(context => {
+      {icons.map((context) => {
         return (
           <IconButton key={context.iconName} iconName={context.iconName} />
         );

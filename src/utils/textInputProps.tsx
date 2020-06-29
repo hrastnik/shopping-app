@@ -11,7 +11,7 @@ export const textInputProps = {
     placeholder: "Email",
     secureTextEntry: false,
     spellCheck: false,
-    textContentType: "emailAddress"
+    textContentType: "emailAddress",
   } as TextInputProps,
 
   password: {
@@ -19,7 +19,7 @@ export const textInputProps = {
     autoCapitalize: "none",
     secureTextEntry: true,
     spellCheck: false,
-    textContentType: "password"
+    textContentType: "password",
   } as TextInputProps,
 
   phoneNumber: {
@@ -27,7 +27,7 @@ export const textInputProps = {
     keyboardType: "phone-pad",
     textContentType: "telephoneNumber",
     maxLength: 16,
-    spellCheck: false
+    spellCheck: false,
   } as TextInputProps,
 
   name: {
@@ -36,6 +36,6 @@ export const textInputProps = {
     textContentType: "givenName",
     autoCapitalize: "words",
     maxLength: 50,
-    spellCheck: false
-  } as TextInputProps
+    spellCheck: false,
+  } as TextInputProps,
 };

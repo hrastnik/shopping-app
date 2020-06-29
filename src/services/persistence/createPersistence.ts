@@ -27,7 +27,7 @@ export function createPersistence(AsyncStorage = RNAsyncStorage) {
 
     async clear(key) {
       return AsyncStorage.removeItem(key);
-    }
+    },
   };
 }
 

@@ -16,7 +16,7 @@ export function IconWithBadge({
   color = C.colorTextLight,
   name,
   shouldShowBadge,
-  count
+  count,
 }: IconWithBadgeProps) {
   const badgeSize = size * 0.4;
   const badgeRadius = badgeSize * 0.5;
@@ -27,7 +27,7 @@ export function IconWithBadge({
     backgroundColor: C.colorTextDanger,
     borderRadius: badgeRadius,
     right: size * 0.1,
-    top: size * 0.1
+    top: size * 0.1,
   };
 
   const shouldShowCount = typeof count === "string" && count !== "";

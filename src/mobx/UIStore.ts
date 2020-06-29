@@ -6,7 +6,7 @@ import {
   flow,
   getEnv,
   getSnapshot,
-  tryReference
+  tryReference,
 } from "mobx-state-tree";
 
 import { Region } from "./entities/region/Region";
@@ -34,9 +34,9 @@ export const UIStore = types
 
     favoriteProductMap: types.map(
       types.safeReference(Product, { acceptsUndefined: false })
-    )
+    ),
   })
-  .views(self => {
+  .views((self) => {
     return {
       get favoriteProductList(): ProductInstance[] {
         const favorites = Array.from(self.favoriteProductMap.values());
@@ -46,26 +46,26 @@ export const UIStore = types
           if (favorites) resolved.push(product);
         }
         return resolved;
-      }
+      },
     };
   })
-  .views(self => {
+  .views((self) => {
     return {
       get activeRegionId() {
-        return getSnapshot(self).activeRegion as string;
+        return getSnapshot(self).activeRegion as number;
       },
       get activeShopId() {
-        return getSnapshot(self).activeShop as string;
+        return getSnapshot(self).activeShop as number;
       },
       get activeProductId() {
-        return getSnapshot(self).activeProduct as string;
+        return getSnapshot(self).activeProduct as number;
       },
       get activeCategoryId() {
-        return getSnapshot(self).activeCategory as string;
-      }
+        return getSnapshot(self).activeCategory as number;
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       toggleFavorite(id: number) {
         const isAlreadyFavorited = self.favoriteProductMap.has(id.toString());
@@ -78,16 +78,16 @@ export const UIStore = types
       },
       clearFavoriteMap() {
         self.favoriteProductMap.clear();
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       set(key: keyof typeof self, value: any) {
         self[key as string] = value;
       },
 
-      afterAttach: flow(function*(): any {
+      afterAttach: flow(function* (): any {
         const env: Environment = getEnv(self);
         try {
           // yield env.persistence.set(
@@ -113,11 +113,11 @@ export const UIStore = types
         }
 
         autorun(() => {
-          const favorites = self.favoriteProductList.map(product => ({
-            ...product
+          const favorites = self.favoriteProductList.map((product) => ({
+            ...product,
           }));
           env.persistence.set(constants.STORAGE_KEYS.FAVORITES, favorites);
         });
-      })
+      }),
     };
   });

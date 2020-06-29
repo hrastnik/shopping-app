@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const supportedExtensions = Platform.select({
   ios: ["mp4", "3gp", "mov", "m4v"],
-  android: ["mp4", "3gp", "webm", "mov"]
+  android: ["mp4", "3gp", "webm", "mov"],
 });
 
 function isVideo(media) {

@@ -41,7 +41,7 @@
 const createPromiseChain = () => {
   let promiseChain = Promise.resolve();
 
-  const add = action => {
+  const add = (action) => {
     promiseChain = promiseChain.then(action);
     return promiseChain;
   };
@@ -52,13 +52,13 @@ const createPromiseChain = () => {
    * by one. The last method called will wait for all the previous
    * methods to resolve.
    */
-  const create = asyncAction => {
+  const create = (asyncAction) => {
     return (...args) => add(() => asyncAction(...args));
   };
 
   return {
     add,
-    create
+    create,
   };
 };
 

@@ -1,5 +1,5 @@
-const delay = delayMs =>
-  new Promise(resolve => {
+const delay = (delayMs) =>
+  new Promise((resolve) => {
     setTimeout(resolve, delayMs);
   });
 

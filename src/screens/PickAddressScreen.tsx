@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { observer } from "mobx-react";
 import { TextInput as RNTextInput } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Location from "expo-location";
 import * as yup from "yup";
 
@@ -16,17 +16,19 @@ import { Formik } from "formik";
 
 const validationSchema = yup.object({
   city: yup.string().required("City is required"),
-  address: yup.string().required("Address is required")
+  address: yup.string().required("Address is required"),
 });
 
-export const PickAddressScreen = observer(({ route }) => {
+export const PickAddressScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
+  const route = useRoute();
+  const onAccept = route.params?.onAccept;
 
   const initialValues = {
     address:
       (store.cartStore.address || store.authStore.activeUser.address) ?? "",
-    city: (store.cartStore.city || store.authStore.activeUser.city) ?? ""
+    city: (store.cartStore.city || store.authStore.activeUser.city) ?? "",
   };
 
   const addressInput = useRef<RNTextInput>();
@@ -34,19 +36,25 @@ export const PickAddressScreen = observer(({ route }) => {
   const handleDetectAddressPress = (
     onAddress: (address: { city: string; address: string }) => any
   ) => async () => {
-    const result = await Location.getPermissionsAsync();
+    console.warn("getting permissions");
+    const result = await Location.requestPermissionsAsync();
     if (!result.granted) {
+      console.warn("permissions not granted");
+
       return;
     }
     const position = await Location.getCurrentPositionAsync();
+    console.warn("got position, now reverse geocoding");
+
     const [location] = await Location.reverseGeocodeAsync({
       latitude: position.coords.latitude,
-      longitude: position.coords.longitude
+      longitude: position.coords.longitude,
     });
+    console.warn("geocode complete");
     const { city, name, postalCode, region, street } = location;
     onAddress({
       city: `${city}, ${region} (${postalCode})`,
-      address: `${street}, ${name}`
+      address: `${street}, ${name}`,
     });
   };
 
@@ -61,14 +69,13 @@ export const PickAddressScreen = observer(({ route }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={values => {
+        onSubmit={(values) => {
           store.cartStore.setFullAddress(values);
 
-          const onAccept = route?.params?.onAccept;
           if (typeof onAccept === "function") {
             onAccept();
           } else {
-            navigation.replace("Stack.TabNavigator", {});
+            navigation.replace("Stack.TabNavigator");
           }
         }}
       >
@@ -79,7 +86,7 @@ export const PickAddressScreen = observer(({ route }) => {
           handleBlur,
           touched,
           errors,
-          handleSubmit
+          handleSubmit,
         }) => {
           return (
             <View paddingMedium>
@@ -124,7 +131,7 @@ export const PickAddressScreen = observer(({ route }) => {
                 transparent
                 colorLight
                 title="DETECT YOUR LOCATION"
-                onPress={handleDetectAddressPress(values => {
+                onPress={handleDetectAddressPress((values) => {
                   setValues(values);
                 })}
               />

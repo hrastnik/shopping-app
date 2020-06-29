@@ -3,7 +3,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect
+  useEffect,
 } from "react";
 import { observer } from "mobx-react";
 import { StyleSheet } from "react-native";
@@ -23,7 +23,7 @@ import { shadow } from "~/utils/shadow";
 
 export const HeaderContext = createContext(undefined);
 
-export const HeaderProvider = props => {
+export const HeaderProvider = (props) => {
   const [LeftComponent, setLeftComponent] = useState(null);
   const [RightComponent, setRightComponent] = useState(null);
 
@@ -32,7 +32,7 @@ export const HeaderProvider = props => {
       LeftComponent,
       RightComponent,
       setLeftComponent,
-      setRightComponent
+      setRightComponent,
     }),
     [LeftComponent, RightComponent]
   );
@@ -50,20 +50,20 @@ const S = StyleSheet.create({
   headerContainer: {
     height: 52,
     backgroundColor: C.colorBackgroundTheme,
-    ...shadow(2)
+    ...shadow(2),
   },
   backButton: {
     height: "100%",
     aspectRatio: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   headerLeft: { position: "absolute", top: 0, left: 0, bottom: 0 },
   headerRight: { position: "absolute", top: 0, right: 0, bottom: 0 },
-  titleText: { width: "50%" }
+  titleText: { width: "50%" },
 });
 
-export const Header = observer(props => {
+export const Header = observer((props) => {
   const handleBackPress = useCallback(() => {
     props.navigation.goBack();
   }, [props.navigation]);

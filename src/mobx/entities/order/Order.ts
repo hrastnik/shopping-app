@@ -3,7 +3,7 @@ import {
   types,
   Instance,
   SnapshotIn,
-  SnapshotOut
+  SnapshotOut,
 } from "mobx-state-tree";
 import { DateTime } from "~/mobx/util-models/DateTime";
 import { getRoot } from "~/mobx/utils/getRoot";
@@ -16,28 +16,28 @@ export const Order = types
   .model("Order", {
     id: types.identifierNumber,
     created_at: DateTime,
-    updated_at: DateTime
+    updated_at: DateTime,
   })
   .volatile(() => {
     return {
-      cart: undefined
+      cart: undefined,
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      refresh: flow(function*(params): any {
+      refresh: flow(function* (params): any {
         const root = getRoot(self);
         return yield root.orderStore.readOrder(self.id, params);
       }),
 
-      update: flow(function*(params): any {
+      update: flow(function* (params): any {
         const root = getRoot(self);
         return yield root.orderStore.updateOrder(self.id, params);
       }),
 
-      delete: flow(function*(params): any {
+      delete: flow(function* (params): any {
         const root = getRoot(self);
         return yield root.orderStore.deleteOrder(self.id, params);
-      })
+      }),
     };
   });

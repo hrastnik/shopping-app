@@ -4,7 +4,7 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  ListRenderItem
+  ListRenderItem,
 } from "react-native";
 import color from "color";
 
@@ -26,35 +26,35 @@ const S = StyleSheet.create({
   column: {
     width: "33.3333%",
     aspectRatio: 1,
-    padding: C.spacingSmall
+    padding: C.spacingSmall,
   },
   overlay: {
     flex: 1,
-    backgroundColor: color(C.colorBackgroundDark)
-      .alpha(0.15)
-      .string()
+    backgroundColor: color(C.colorBackgroundDark).alpha(0.15).string(),
   },
   image: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: C.colorBackgroundLight
+    backgroundColor: C.colorBackgroundLight,
   },
   categoryText: {
     textShadowColor: C.colorBackgroundDark,
     textShadowRadius: 9,
     textShadowOffset: {
       width: 0,
-      height: 0
-    }
-  }
+      height: 0,
+    },
+  },
 });
 
 export const CategoryListScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
   const query = useQuery(
-    store => store.categoryStore.readCategoryList,
-    store => store.categoryStore.map
+    (store) => store.categoryStore.readCategoryList,
+    (store) => store.categoryStore.map
   );
+
+  const regionId = store.uiStore.activeRegionId;
 
   const renderItem: ListRenderItem<CategoryInstance> = useCallback(
     ({ item: category }) => {
@@ -62,8 +62,10 @@ export const CategoryListScreen = observer(() => {
         <TouchableOpacity
           style={S.column}
           onPress={() => {
-            store.uiStore.set("activeCategory", category.id);
-            navigation.navigate("ProductListScreen");
+            navigation.navigate("ProductListScreen", {
+              categoryId: category.id,
+              regionId,
+            });
           }}
         >
           <View
@@ -72,7 +74,7 @@ export const CategoryListScreen = observer(() => {
               opacity: 0.99,
               borderRadius: 4,
               overflow: "hidden",
-              ...shadow(2)
+              ...shadow(2),
             }}
           >
             <Image
@@ -89,7 +91,7 @@ export const CategoryListScreen = observer(() => {
         </TouchableOpacity>
       );
     },
-    [navigation, store.uiStore]
+    [navigation, regionId]
   );
 
   if (query.isLoadingFirst) {

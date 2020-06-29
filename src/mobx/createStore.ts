@@ -32,18 +32,18 @@ export async function createStore(env: Environment) {
         orderStore: types.optional(OrderStore, {}),
         authStore: types.optional(AuthStore, {}),
         uiStore: types.optional(UIStore, {}),
-        cartStore: types.optional(CartStore, {})
+        cartStore: types.optional(CartStore, {}),
       })
       .volatile(() => {
         return {
-          navigation: undefined
+          navigation: undefined,
         } as { navigation: ReturnType<typeof useNavigation> };
       })
-      .actions(self => {
+      .actions((self) => {
         return {
           setNavigation(navigation) {
             self.navigation = navigation;
-          }
+          },
         };
       }),
     {}

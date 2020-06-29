@@ -11,7 +11,7 @@ function getMimeType(uri) {
     "3gp": "video/3gpp",
     mov: "video/quicktime",
     avi: "video/x-msvideo",
-    wmv: "video/x-ms-wmv"
+    wmv: "video/x-ms-wmv",
   }[extension.toLowerCase()];
 
   const mimeType = knownMimeType || "application/octet-stream";

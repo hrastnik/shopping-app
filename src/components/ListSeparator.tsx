@@ -6,8 +6,8 @@ import { constants as C } from "~/style";
 
 const S = StyleSheet.create({
   separator: {
-    height: C.spacingSmall
-  }
+    height: C.spacingSmall,
+  },
 });
 
 function ListSeparator({ style, ...props }) {

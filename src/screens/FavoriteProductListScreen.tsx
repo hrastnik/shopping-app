@@ -10,7 +10,7 @@ import { ProductInstance } from "~/mobx/entities/product/Product";
 import { constants as C } from "~/style";
 import {
   ProductListItemProps,
-  ProductListItem
+  ProductListItem,
 } from "~/components/ProductListItem";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
@@ -20,8 +20,8 @@ const S = StyleSheet.create({
   contentContainer: { padding: C.spacingSmall },
   column: {
     width: "50%",
-    padding: C.spacingSmall
-  }
+    padding: C.spacingSmall,
+  },
 });
 
 export const FavoriteProductListScreen = observer(() => {
@@ -29,7 +29,7 @@ export const FavoriteProductListScreen = observer(() => {
   const store = useStore();
 
   const handlePress: ProductListItemProps["onPress"] = useCallback(
-    product => {
+    (product) => {
       store.uiStore.set("activeProduct", product.id);
       navigation.navigate("ProductDetailsScreen");
     },

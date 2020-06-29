@@ -4,7 +4,7 @@ import {
   AlertButton,
   TouchableWithoutFeedback,
   AlertOptions,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 
 import { Button } from "~/components/Button";
@@ -30,7 +30,7 @@ export const AlertContext = createContext<ContextType>(undefined);
 const defaultOptions = {
   cancelable: false,
   onDismiss: () => {},
-  buttonsContainerStyle: {}
+  buttonsContainerStyle: {},
 };
 
 const MODAL_BACKDROP_COLOR = "rgba(0,0,0,0.2)";
@@ -40,15 +40,15 @@ const S = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: MODAL_BACKDROP_COLOR,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   alertWrap: {
     ...shadow(4),
     backgroundColor: C.colorBackgroundLight,
     borderRadius: 8,
     width: "80%",
-    padding: C.spacingMedium
-  }
+    padding: C.spacingMedium,
+  },
 });
 
 export function AlertProvider(props) {
@@ -57,7 +57,7 @@ export function AlertProvider(props) {
     title: "",
     body: "",
     buttons: [],
-    options: defaultOptions
+    options: defaultOptions,
   });
 
   const alert: ContextType["alert"] = useCallback(
@@ -77,7 +77,7 @@ export function AlertProvider(props) {
 
   const { onDismiss, cancelable, buttonsContainerStyle } = options;
 
-  const handleButtonPress = button => () => {
+  const handleButtonPress = (button) => () => {
     button.onPress();
     setAlertVisible(false);
   };
@@ -99,7 +99,7 @@ export function AlertProvider(props) {
       onPress: handleButtonPress(button),
       key: button.text,
       // containerStyle: defaultButtonStyle,
-      colorDanger: buttonStyle === "destructive"
+      colorDanger: buttonStyle === "destructive",
     };
 
     return (

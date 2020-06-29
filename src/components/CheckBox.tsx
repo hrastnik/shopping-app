@@ -18,7 +18,7 @@ function CheckBox({
   size = 28,
   contentContainerStyle,
   children,
-  onChange
+  onChange,
 }: CheckBoxProps) {
   return (
     <TouchableOpacity

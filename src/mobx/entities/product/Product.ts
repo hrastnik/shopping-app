@@ -3,10 +3,9 @@ import {
   types,
   Instance,
   SnapshotIn,
-  SnapshotOut
+  SnapshotOut,
 } from "mobx-state-tree";
 
-import { DateTime } from "~/mobx/util-models/DateTime";
 import { getRoot } from "~/mobx/utils/getRoot";
 import { Image } from "~/mobx/util-models/Image";
 import { Category } from "../category/Category";
@@ -20,15 +19,15 @@ export const Product = types
   .model("Product", {
     id: types.identifierNumber,
     name: types.string,
-    // description: types.string,
+    description: types.string,
     price: types.number,
     categories: types.array(
       types.safeReference(Category, { acceptsUndefined: false })
     ),
     images: types.array(Image),
-    shop: types.reference(Shop)
+    shop: types.reference(Shop),
   })
-  .views(self => {
+  .views((self) => {
     return {
       get priceText() {
         return self.price.toFixed(2) + "$";
@@ -42,29 +41,19 @@ export const Product = types
         const root = getRoot(self);
         const isFave = root.uiStore.favoriteProductMap.has(self.id.toString());
         return isFave;
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       toggleFavorite() {
         const root = getRoot(self);
         root.uiStore.toggleFavorite(self.id);
       },
 
-      refresh: flow(function*(params = undefined): any {
+      refresh: flow(function* (params = undefined): any {
         const root = getRoot(self);
         yield root.productStore.readProduct(self.id, params);
       }),
-
-      update: flow(function*(params): any {
-        const root = getRoot(self);
-        yield root.productStore.updateProduct(self.id, params);
-      }),
-
-      delete: flow(function*(params): any {
-        const root = getRoot(self);
-        yield root.productStore.deleteProduct(self.id, params);
-      })
     };
   });

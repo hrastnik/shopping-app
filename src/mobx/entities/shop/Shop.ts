@@ -3,11 +3,11 @@ import {
   types,
   Instance,
   SnapshotIn,
-  SnapshotOut
+  SnapshotOut,
 } from "mobx-state-tree";
-import { DateTime } from "~/mobx/util-models/DateTime";
 import { getRoot } from "~/mobx/utils/getRoot";
 import { Image } from "~/mobx/util-models/Image";
+import { Region } from "../region/Region";
 
 export interface ShopInstance extends Instance<typeof Shop> {}
 export interface ShopSnapshotIn extends SnapshotIn<typeof Shop> {}
@@ -18,41 +18,29 @@ export const Shop = types
     id: types.identifierNumber,
     name: types.string,
     description: types.string,
-    images: types.array(Image)
+    image: Image,
+    location: types.frozen({
+      lat: types.number,
+      lng: types.number,
+    }),
+    region: types.safeReference(Region),
   })
-  .views(self => {
+  .actions((self) => {
     return {
-      get image() {
-        return self.images?.[0];
-      }
-    };
-  })
-  .actions(self => {
-    return {
-      refresh: flow(function*(params): any {
+      refresh: flow(function* (params): any {
         const root = getRoot(self);
         yield root.shopStore.readShop(self.id, params);
       }),
-
-      update: flow(function*(params): any {
-        const root = getRoot(self);
-        yield root.shopStore.updateShop(self.id, params);
-      }),
-
-      delete: flow(function*(params): any {
-        const root = getRoot(self);
-        yield root.shopStore.deleteShop(self.id, params);
-      })
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      readProductList: flow(function*(params): any {
+      readProductList: flow(function* (params): any {
         const root = getRoot(self);
         return yield root.productStore.readProductList({
           shop: self.id,
-          ...params
+          ...params,
         });
-      })
+      }),
     };
   });

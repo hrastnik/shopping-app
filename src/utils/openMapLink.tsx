@@ -3,7 +3,7 @@ import { Platform, Linking } from "~core/components";
 function openMapLink({
   latitude,
   longitude,
-  formattedAddress = "Unknown Location"
+  formattedAddress = "Unknown Location",
 }) {
   const resolvedScheme =
     Platform.OS === "ios"

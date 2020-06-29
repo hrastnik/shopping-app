@@ -9,8 +9,8 @@ const S = StyleSheet.create({
   base: { backgroundColor: C.colorBackgroundTheme, flex: 1 },
   contentContainer: {
     flexGrow: 1,
-    backgroundColor: C.colorBackgroundTheme
-  }
+    backgroundColor: C.colorBackgroundTheme,
+  },
 });
 
 interface ScreenCommonProps {

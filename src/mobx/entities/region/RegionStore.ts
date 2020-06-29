@@ -7,67 +7,38 @@ import { Environment } from "~/mobx/createStore";
 
 export const RegionStore = types
   .model("RegionStore", {
-    map: types.map(Region)
+    map: types.map(Region),
   })
-  .actions(self => {
+  .actions((self) => {
     return {
       processRegionList(data) {
         for (const entity of _.castArray(data)) {
-          entity.lat = entity.location.lat;
-          entity.lng = entity.location.lng;
           self.map.put(entity);
         }
-      }
+      },
     };
   })
-  .actions(self => {
+  .actions((self) => {
     return {
-      createRegion: flow(function*(params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(`/regions`, params);
-        self.processRegionList(response.data.data);
-        return response;
-      }),
-
-      readRegionList: flow(function*(params): any {
+      readRegionList: flow(function* (params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(`/items/region`, {
-          params
+          params: { ...params, fields: "*,image.filename_disk" },
         });
         self.processRegionList(response.data.data);
         return response;
       }),
 
-      readRegion: flow(function*(id, params): any {
+      readRegion: flow(function* (id, params): any {
         const env: Environment = getEnv(self);
         const response: AxiosResponse = yield env.http.get(
           `/items/region/${id}`,
           {
-            params
+            params: { ...params, fields: "*,image.data" },
           }
         );
         self.processRegionList(response.data.data);
         return response;
       }),
-
-      updateRegion: flow(function*(id, params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/regions/${id}`,
-          params
-        );
-        self.processRegionList(response.data.data);
-        return response;
-      }),
-
-      deleteRegion: flow(function*(id, params): any {
-        const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(
-          `/regions/${id}`,
-          params
-        );
-        self.processRegionList(response.data.data);
-        return response;
-      })
     };
   });

@@ -18,7 +18,7 @@ function Markdown({
   const alert = useAlert();
   const store = useStore();
   const { t } = store.i18n;
-  const handleOnLink = async url => {
+  const handleOnLink = async (url) => {
     WebBrowser.openBrowserAsync(url).catch(() => {
       alert(t("Warning"), `${t("Cannot not open link address")} (${url})`);
     });

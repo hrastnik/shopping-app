@@ -17,7 +17,7 @@ import { promptYesNo } from "~/utils/promptYesNo";
 import { useAlert } from "~/components/AlertProvider";
 import {
   ProductListItemProps,
-  ProductListItem
+  ProductListItem,
 } from "~/components/ProductListItem";
 
 const S = StyleSheet.create({
@@ -29,8 +29,8 @@ const S = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     paddingTop: C.spacingExtraLarge,
-    ...shadow(2)
-  }
+    ...shadow(2),
+  },
 });
 
 export const CartScreen = observer(() => {
@@ -39,7 +39,7 @@ export const CartScreen = observer(() => {
   const alert = useAlert();
 
   const handlePress: ProductListItemProps["onPress"] = useCallback(
-    product => {
+    (product) => {
       store.uiStore.set("activeProduct", product.id);
       navigation.navigate("ProductDetailsScreen");
     },
@@ -49,11 +49,11 @@ export const CartScreen = observer(() => {
   const handleRemoveFromCart = useCallback<
     ProductListItemProps["onRemoveFromCart"]
   >(
-    cartItem => {
+    (cartItem) => {
       return promptYesNo(
         {
           title: "Confirm",
-          message: `Are you sure you want to remove "${cartItem.product.name}" from your cart?`
+          message: `Are you sure you want to remove "${cartItem.product.name}" from your cart?`,
         },
         alert
       );
@@ -92,7 +92,7 @@ export const CartScreen = observer(() => {
       />
 
       <View paddingMedium style={S.bottomCard}>
-        {store.cartStore.priceByShop.map(data => {
+        {store.cartStore.priceByShop.map((data) => {
           const numItemsText =
             data.numItems === 1 ? "1 product" : `${data.numItems} products`;
           const numProductText = `${data.numProducts} unique`;
@@ -114,7 +114,7 @@ export const CartScreen = observer(() => {
           style={{
             marginBottom: C.spacingLarge,
             backgroundColor: C.colorTextLightSofter,
-            height: 1
+            height: 1,
           }}
         />
 

@@ -1,4 +1,6 @@
 import "react-native-gesture-handler";
+import "mobx-react-lite/batchingForReactNative";
+
 import { enableScreens } from "react-native-screens";
 
 import { StatusBar, Platform, StyleSheet, View, Text } from "react-native";
@@ -23,9 +25,13 @@ enableScreens();
 const S = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: constants.colorBackgroundThemeHarder
+    backgroundColor: constants.colorBackgroundThemeHarder,
   },
-  flexCenterContent: { flex: 1, justifyContent: "center", alignItems: "center" }
+  flexCenterContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 async function loadFonts() {
@@ -33,7 +39,7 @@ async function loadFonts() {
     "SignikaNegative-Light": require("./assets/Signika_Negative/SignikaNegative-Light.ttf"),
     "SignikaNegative-SemiBold": require("./assets/Signika_Negative/SignikaNegative-SemiBold.ttf"),
     "SignikaNegative-Bold": require("./assets/Signika_Negative/SignikaNegative-Bold.ttf"),
-    "SignikaNegative-Regular": require("./assets/Signika_Negative/SignikaNegative-Regular.ttf")
+    "SignikaNegative-Regular": require("./assets/Signika_Negative/SignikaNegative-Regular.ttf"),
   });
 }
 
@@ -57,7 +63,7 @@ export function AppEntry() {
   const store = useRef(undefined);
 
   useEffect(() => {
-    initialize().then(context => {
+    initialize().then((context) => {
       store.current = context.store;
       setIsReady(true);
     });

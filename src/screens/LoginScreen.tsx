@@ -12,7 +12,7 @@ import { Screen } from "~/components/Screen";
 import { View } from "~/components/View";
 import { useStore } from "~/mobx/useStore";
 import { Spacer } from "~/components/Spacer";
-import { textInputProps } from "~/utils/textInputProps";
+import { environment } from "~/environment";
 
 const validationSchema = yup.object({
   email: yup
@@ -22,7 +22,7 @@ const validationSchema = yup.object({
   password: yup
     .string()
     .required("Password is required")
-    .min(8, "Password too short")
+    .min(8, "Password too short"),
 });
 
 export const LoginScreen = observer(() => {
@@ -37,16 +37,16 @@ export const LoginScreen = observer(() => {
     <Screen>
       <Formik
         initialValues={{
-          email: "",
-          password: ""
+          email: environment.LOGIN_SCREEN_INITIAL_EMAIL,
+          password: environment.LOGIN_SCREEN_INITIAL_PASSWORD,
         }}
         validationSchema={validationSchema}
-        onSubmit={async values => {
+        onSubmit={async (values) => {
           try {
             setError(undefined);
             await store.authStore.login({
               email: values.email,
-              password: values.password
+              password: values.password,
             });
             // navigation.navigate("RegionListScreen");
           } catch (error) {
@@ -61,7 +61,7 @@ export const LoginScreen = observer(() => {
           values,
           errors,
           touched,
-          isSubmitting
+          isSubmitting,
         }) => {
           return (
             <View paddingMedium justifyContentCenter>
@@ -73,12 +73,19 @@ export const LoginScreen = observer(() => {
               </View>
               <Spacer small />
               <TextInput
-                {...textInputProps.email}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                autoCorrect
                 autoFocus
-                value={values.email}
-                onChangeText={handleChange("email")}
+                dataDetectorTypes="none"
+                keyboardType="email-address"
+                maxLength={50}
                 onBlur={handleBlur("email")}
+                onChangeText={handleChange("email")}
                 onSubmitEditing={passwordInput.current?.focus}
+                placeholder="Email"
+                secureTextEntry={false}
+                value={values.email}
               />
               <Spacer />
               <View flexDirectionRow justifyContentSpaceBetween>
@@ -90,7 +97,10 @@ export const LoginScreen = observer(() => {
               <Spacer small />
               <TextInput
                 ref={passwordInput}
-                {...textInputProps.password}
+                autoCapitalize="none"
+                secureTextEntry
+                spellCheck={false}
+                textContentType="password"
                 placeholder="Password"
                 value={values.password}
                 onChangeText={handleChange("password")}

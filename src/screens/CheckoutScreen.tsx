@@ -28,7 +28,7 @@ export const CheckoutScreen = observer(() => {
           store.cartStore.address
         }.\n\nOrder price: ${store.cartStore.totalPrice.toFixed(
           2
-        )}$\n\nDo you want to proceed?`
+        )}$\n\nDo you want to proceed?`,
       },
       alert
     );
@@ -46,7 +46,7 @@ export const CheckoutScreen = observer(() => {
   return (
     <Screen>
       <View paddingVerticalMedium>
-        {store.cartStore.priceByShop.map(context => {
+        {store.cartStore.priceByShop.map((context) => {
           return (
             <View key={context.shop.id}>
               <View
@@ -101,7 +101,7 @@ export const CheckoutScreen = observer(() => {
                       backgroundColor:
                         index % 2
                           ? constants.colorBackgroundThemeHard
-                          : constants.colorBackgroundThemeHarder
+                          : constants.colorBackgroundThemeHarder,
                     }}
                   >
                     <Text style={{ flex: 3 }}>{cartItem.product.name}</Text>
@@ -123,7 +123,7 @@ export const CheckoutScreen = observer(() => {
                 flexDirectionRow
                 paddingMedium
                 style={{
-                  backgroundColor: constants.colorBackgroundThemeHarder
+                  backgroundColor: constants.colorBackgroundThemeHarder,
                 }}
               >
                 <Text style={{ flex: 4 }} weightSemiBold>
@@ -163,7 +163,7 @@ export const CheckoutScreen = observer(() => {
                 title="CHANGE"
                 onPress={() =>
                   navigation.navigate("PickAddressScreen", {
-                    onAccept: () => navigation.goBack()
+                    onAccept: () => navigation.goBack(),
                   })
                 }
               />

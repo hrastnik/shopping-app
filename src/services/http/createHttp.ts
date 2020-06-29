@@ -6,7 +6,7 @@ import { errorLogger } from "./errorLogger.interceptor";
 
 export function createHttp(axios = Axios) {
   const http = axios.create({
-    baseURL: "http://192.168.1.102:8080/directus/"
+    baseURL: "http://192.168.1.104:8080/directus/",
   });
 
   http.interceptors.request.use(requestLogger);

@@ -17,15 +17,15 @@ const S = StyleSheet.create({
   flex: { flex: 1 },
   column: {
     width: "50%",
-    padding: C.spacingSmall
+    padding: C.spacingSmall,
   },
   card: {
     ...shadow(2),
     overflow: "hidden",
     borderRadius: 4,
-    backgroundColor: C.colorBackgroundTheme
+    backgroundColor: C.colorBackgroundTheme,
   },
-  productImage: { width: "100%", aspectRatio: 1.6 }
+  productImage: { width: "100%", aspectRatio: 1.6 },
 });
 
 export interface ProductListItemProps {
@@ -43,7 +43,7 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
 
   const cartItem = cart.get(props.product.id.toString());
 
-  const handleQuantityChange = async quantity => {
+  const handleQuantityChange = async (quantity) => {
     if (cartItem) {
       if (quantity <= 0) {
         if (props.onRemoveFromCart) {
@@ -63,7 +63,7 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
         <Image
           source={
             props.product.image?.source ?? {
-              uri: "https://placebear.com/300/300"
+              uri: "https://placebear.com/300/300",
             }
           }
           style={S.productImage}
@@ -84,7 +84,7 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
 
           <View flexDirectionRow alignItemsFlexEnd>
             <Text sizeExtraSmall style={S.flex}>
-              {props.product.categories.map(c => c.name).join(", ")}
+              {props.product.categories.map((c) => c.name).join(", ")}
             </Text>
             <Spacer small />
             <QuantityPicker
