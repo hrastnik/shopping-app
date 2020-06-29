@@ -7,13 +7,10 @@ import {
   SnapshotOut,
 } from "mobx-state-tree";
 import _ from "lodash";
-import { Image as RNImage } from "react-native";
 import { AxiosResponse } from "axios";
 
 import { Category } from "~/mobx/entities/category/Category";
 import { Environment } from "~/mobx/createStore";
-import { when } from "mobx";
-import { getRoot } from "~/mobx/utils/getRoot";
 
 export interface CategoryStoreInstance extends Instance<typeof CategoryStore> {}
 export interface CategoryStoreSnapshotIn
@@ -58,18 +55,6 @@ export const CategoryStore = types
         );
         self.processCategoryList(response.data.data);
         return response;
-      }),
-    };
-  })
-  .actions((self) => {
-    return {
-      afterAttach: flow(function* (): any {
-        const root = getRoot(self);
-        yield when(() => root.authStore.isLoggedIn);
-        yield self.readCategoryList({});
-        for (const category of self.map.values()) {
-          RNImage.prefetch(category.image.source.uri);
-        }
       }),
     };
   });

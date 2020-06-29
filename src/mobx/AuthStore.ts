@@ -6,6 +6,7 @@ import {
   SnapshotIn,
   SnapshotOut,
 } from "mobx-state-tree";
+import { Image as RNImage } from "react-native";
 
 import { getRoot } from "./utils/getRoot";
 import { Environment } from "./createStore";
@@ -37,6 +38,19 @@ export const AuthStore = types
       get isLoggedIn() {
         return self.token !== undefined && self.activeUser != null;
       },
+    };
+  })
+  .actions((self) => {
+    return {
+      afterLogin: flow(function* (): any {
+        const root = getRoot(self);
+
+        // Prefetch categories
+        yield root.categoryStore.readCategoryList({});
+        for (const category of root.categoryStore.map.values()) {
+          RNImage.prefetch(category.image.source.uri);
+        }
+      }),
     };
   })
   .actions((self) => {
@@ -75,6 +89,8 @@ export const AuthStore = types
 
           self.activeUser = user.id;
           self.token = token;
+
+          yield self.afterLogin();
         } catch (error) {
           env.http.defaults.headers.authorization = authorization;
           throw error;
@@ -128,6 +144,8 @@ export const AuthStore = types
             },
           }
         );
+
+        yield self.afterLogin();
 
         return response;
       }),
@@ -189,6 +207,7 @@ export const AuthStore = types
           try {
             yield delay(0); // wait for token to set
             yield self.me();
+            yield self.afterLogin();
             root.uiStore.set("initialScreen", "RegionList");
           } catch (error) {
             console.warn("error /me", error);

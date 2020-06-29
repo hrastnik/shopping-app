@@ -27,10 +27,6 @@ export const ProductStore = types
   .actions((self) => {
     return {
       processProductList(data) {
-        // const root = getRoot(self);
-        // const { processShopList } = root.shopStore;
-        // const { processCategoryList } = root.categoryStore;
-
         const root = getRoot(self);
 
         for (const entity of _.castArray(data)) {

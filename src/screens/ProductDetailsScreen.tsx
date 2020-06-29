@@ -22,6 +22,7 @@ export const ProductDetailsScreen = observer(() => {
   const [aspectRatio, setAspectRatio] = useState(1);
 
   const product = store.uiStore.activeProduct;
+
   useEffect(() => {
     product.refresh();
   }, [product]);

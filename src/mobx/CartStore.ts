@@ -213,14 +213,26 @@ export const CartStore = types
       confirmOrder: flow(function* (): any {
         const root = getRoot(self);
         const response = yield root.orderStore.createOrder({
-          cart: JSON.stringify(
-            self.cartItemList.map((cartItem) => ({
-              ...cartItem,
-              product: cartItem.product,
-              price: cartItem.price,
-            }))
-          ),
-          price: self.totalPrice,
+          data: {
+            delivery_data: {
+              city: self.city,
+              address: self.address,
+              phone_number: root.authStore.activeUser.phone,
+            },
+            cart_items: self.cartItemList.map((cartItem) => {
+              return {
+                product: {
+                  name: cartItem.product.name,
+                  shop: cartItem.product.shop.name,
+                  price: cartItem.product.price,
+                  categories: cartItem.product.categories.map(
+                    (category) => category.name
+                  ),
+                },
+                quantity: cartItem.quantity,
+              };
+            }),
+          },
         });
 
         return response;

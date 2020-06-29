@@ -34,7 +34,7 @@ export const Region = types
       readShopList: flow(function* (params): any {
         const root = getRoot(self);
         return yield root.shopStore.readShopList({
-          region: self.id,
+          "filter[region][eq]": self.id,
           ...params,
         });
       }),
