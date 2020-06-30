@@ -11,7 +11,7 @@ import { Image as RNImage } from "react-native";
 import { getRoot } from "./utils/getRoot";
 import { Environment } from "./createStore";
 import { User } from "./entities/user/User";
-import { autorun } from "mobx";
+import { autorun, when } from "mobx";
 import { AxiosRequestConfig } from "axios";
 import { delay } from "~/utils/delay";
 
@@ -182,6 +182,17 @@ export const AuthStore = types
 
         self.activeUser = user.id;
       }),
+
+      refreshToken: flow(function* (): any {
+        const env: Environment = getEnv(self);
+        const response = yield env.http.post("/auth/refresh", {
+          token: self.token,
+        });
+
+        const token = response.data.data.token;
+
+        self.token = token;
+      }),
     };
   })
   .actions((self) => {
@@ -202,6 +213,22 @@ export const AuthStore = types
         autorun(() => {
           env.persistence.set("token", self.token);
         });
+
+        // Refresh access token every 30 seconds
+        when(
+          () => Boolean(self.token && self.activeUser),
+          () => {
+            const intervalId = setInterval(() => {
+              self.refreshToken();
+            }, 30000);
+            when(
+              () => !self.token,
+              () => {
+                clearInterval(intervalId);
+              }
+            );
+          }
+        );
 
         if (self.token) {
           try {

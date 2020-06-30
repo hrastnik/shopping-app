@@ -31,24 +31,24 @@ export const ProductListScreen = observer(() => {
     shopId: number;
   };
 
-  const query = useQuery(
-    (store) => (params) => {
-      const filters = {};
-      if (shopId != null) {
-        filters["filter[shop.id][eq]"] = shopId;
-      }
-      if (regionId != null) {
-        filters["filter[shop.region][eq]"] = regionId;
-      }
-      if (categoryId != null) {
-        filters["filter[category_list.category_id][eq]"] = categoryId;
-      }
-      console.warn(filters);
-
-      return store.productStore.readProductList({ ...params, ...filters });
-    },
-    (store) => store.productStore.map
-  );
+  const query = useQuery((store) => {
+    return {
+      query(params) {
+        const filters = {};
+        if (shopId != null) {
+          filters["filter[shop.id][eq]"] = shopId;
+        }
+        if (regionId != null) {
+          filters["filter[shop.region][eq]"] = regionId;
+        }
+        if (categoryId != null) {
+          filters["filter[category_list.category_id][eq]"] = categoryId;
+        }
+        return store.productStore.readProductList({ ...params, ...filters });
+      },
+      resourceMap: store.productStore.map,
+    };
+  });
 
   const handlePress: ProductListItemProps["onPress"] = useCallback(
     (product) => {
@@ -65,7 +65,7 @@ export const ProductListScreen = observer(() => {
     [handlePress]
   );
 
-  if (query.isLoadingFirst) {
+  if (query.isFirstLoad) {
     return (
       <Screen preventScroll>
         <View aspectRatioOne centerContent>

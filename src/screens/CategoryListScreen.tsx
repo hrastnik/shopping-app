@@ -49,10 +49,12 @@ const S = StyleSheet.create({
 export const CategoryListScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
-  const query = useQuery(
-    (store) => store.categoryStore.readCategoryList,
-    (store) => store.categoryStore.map
-  );
+  const query = useQuery((store) => {
+    return {
+      query: store.categoryStore.readCategoryList,
+      resourceMap: store.categoryStore.map,
+    };
+  });
 
   const regionId = store.uiStore.activeRegionId;
 
@@ -94,7 +96,7 @@ export const CategoryListScreen = observer(() => {
     [navigation, regionId]
   );
 
-  if (query.isLoadingFirst) {
+  if (query.isFirstLoad) {
     return (
       <Screen preventScroll>
         <View aspectRatioOne centerContent>

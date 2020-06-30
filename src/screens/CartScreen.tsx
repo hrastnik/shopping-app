@@ -130,6 +130,7 @@ export const CartScreen = observer(() => {
         <Button
           colorAccent
           title="CONTINUE TO CHECKOUT"
+          disabled={store.cartStore.numCartItems === 0}
           onPress={() => {
             navigation.navigate("CheckoutScreen");
           }}

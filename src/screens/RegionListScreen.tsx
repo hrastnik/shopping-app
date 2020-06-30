@@ -48,10 +48,12 @@ const S = StyleSheet.create({
 export const RegionListScreen = observer(() => {
   const navigation = useNavigation();
   const store = useStore();
-  const query = useQuery(
-    (store) => store.regionStore.readRegionList,
-    (store) => store.regionStore.map
-  );
+  const query = useQuery((store) => {
+    return {
+      query: store.regionStore.readRegionList,
+      resourceMap: store.regionStore.map,
+    };
+  });
 
   const renderItem: ListRenderItem<RegionInstance> = useCallback(
     ({ item: region }) => {
@@ -88,7 +90,7 @@ export const RegionListScreen = observer(() => {
     [navigation, store.uiStore]
   );
 
-  if (query.isLoadingFirst) {
+  if (query.isFirstLoad) {
     return (
       <Screen preventScroll>
         <View aspectRatioOne centerContent>

@@ -50,19 +50,22 @@ export const OrderStore = types
         };
       }): any {
         const env: Environment = getEnv(self);
-        const response: AxiosResponse = yield env.http.post(`/orders`, params);
-        self.processOrderList(response.data);
+        const response: AxiosResponse = yield env.http.post(
+          `/items/order`,
+          params
+        );
+        self.processOrderList(response.data.data);
         return response;
       }),
 
-      // readOrderList: flow(function* (params): any {
-      //   const env: Environment = getEnv(self);
-      //   const response: AxiosResponse = yield env.http.get(`/orders`, {
-      //     params,
-      //   });
-      //   self.processOrderList(response.data);
-      //   return response;
-      // }),
+      readOrderList: flow(function* (params): any {
+        const env: Environment = getEnv(self);
+        const response: AxiosResponse = yield env.http.get(`/items/order`, {
+          params,
+        });
+        self.processOrderList(response.data.data);
+        return response;
+      }),
 
       // readOrder: flow(function* (id, params): any {
       //   const env: Environment = getEnv(self);

@@ -235,6 +235,8 @@ export const CartStore = types
           },
         });
 
+        self.clearCart();
+
         return response;
       }),
     };

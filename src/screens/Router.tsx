@@ -19,6 +19,7 @@ import { FavoriteProductListScreen } from "~/screens/FavoriteProductListScreen";
 import { CartScreen } from "~/screens/CartScreen";
 import { CheckoutScreen } from "~/screens/CheckoutScreen";
 import { PickAddressScreen } from "~/screens/PickAddressScreen";
+import { MyOrderListScreen } from "~/screens/MyOrderListScreen";
 
 import { constants as C } from "~/style";
 import { Icon } from "~/components/Icon";
@@ -234,6 +235,11 @@ const MainStack = () => {
         name="CheckoutScreen"
         component={CheckoutScreen}
         options={{ title: "Checkout", headerRight: undefined }}
+      />
+      <Stack.Screen
+        name="MyOrderListScreen"
+        component={MyOrderListScreen}
+        options={{ title: "My Orders" }}
       />
     </>
   );

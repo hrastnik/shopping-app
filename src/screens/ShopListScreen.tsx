@@ -33,10 +33,12 @@ export const ShopListScreen = observer(() => {
 
   const regionId = store.uiStore.activeRegionId;
 
-  const query = useQuery(
-    (store) => store.uiStore.activeRegion.readShopList,
-    (store) => store.shopStore.map
-  );
+  const query = useQuery((store) => {
+    return {
+      query: store.uiStore.activeRegion.readShopList,
+      resourceMap: store.shopStore.map,
+    };
+  });
 
   const renderItem: ListRenderItem<ShopInstance> = useCallback(
     ({ item: shop }) => {
@@ -70,7 +72,7 @@ export const ShopListScreen = observer(() => {
     [navigation, regionId, store.uiStore]
   );
 
-  if (query.isLoadingFirst) {
+  if (query.isFirstLoad) {
     return (
       <Screen preventScroll>
         <View aspectRatioOne centerContent>

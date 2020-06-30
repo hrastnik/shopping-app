@@ -1,28 +1,43 @@
-import React, { useEffect, useCallback, useMemo, useReducer } from "react";
 import _ from "lodash";
+import { useCallback, useMemo, useReducer, useLayoutEffect } from "react";
 import { runInAction } from "mobx";
+import { getChildType, IMSTMap, IAnyModelType } from "mobx-state-tree";
+
+import { isPromise } from "~/utils/isPromise";
+import { useStore } from "~/mobx/useStore";
 import {
-  getChildType,
-  types,
-  unprotect,
-  IAnyType,
-  IMSTMap,
-} from "mobx-state-tree";
+  createRefList,
+  RefListInstance,
+} from "~/mobx/util-models/createRefList";
 
-import { useStore } from "./useStore";
-import { StoreInstance } from "./createStore";
-import { View } from "~/components/View";
-import { Spinner } from "~/components/Spinner";
+import type { StoreInstance } from "./createStore";
 
-const resultsPerPage = 32;
+type Meta = { page: number; limit: number };
+
+const limit = 32;
+
+const getResourceListFromResponse = (response: any): any[] => {
+  return response.data.data;
+};
+
+const getNextMetaFromResponse = (response: any): Meta => {
+  const page = (response.data.meta?.page ?? 0) + 1;
+  return { page, limit };
+};
+
+const getIsEndReachedFromResponse = (response: any): boolean => {
+  const nextLinkExists = Boolean(response.data.meta?.links?.next);
+  return nextLinkExists === false;
+};
 
 const initialState = {
-  params: { page: 0, limit: resultsPerPage },
+  meta: { page: 1, limit },
   isLoading: true,
   isRefreshing: false,
-  isLoadingFirst: true,
-  isLoadingNext: false,
+  isFirstLoad: true,
+  isFetchingNext: false,
   isEndReached: false,
+  error: undefined,
 };
 type Action =
   | { type: "fetch first" }
@@ -30,196 +45,198 @@ type Action =
   | { type: "fetch next" }
   | { type: "fetch success"; response: any }
   | { type: "fetch error"; error: Error };
-const reducer = (state: typeof initialState, action: Action) => {
+
+const reducer = (
+  state: typeof initialState,
+  action: Action
+): typeof initialState => {
   switch (action.type) {
     case "fetch first": {
-      if (state.isLoadingFirst) return state;
-      return { ...state, isLoadingFirst: true, isLoading: true };
+      if (state.isFirstLoad) return state;
+      return { ...state, isFirstLoad: true, isLoading: true };
     }
     case "fetch next": {
-      if (state.isRefreshing && !state.isLoadingFirst && !state.isLoadingNext)
+      if (state.isRefreshing && !state.isFirstLoad && !state.isFetchingNext)
         return state;
+
       return {
         ...state,
         isLoading: true,
         isRefreshing: false,
-        isLoadingFirst: false,
-        isLoadingNext: true,
+        isFirstLoad: false,
+        isFetchingNext: true,
       };
     }
     case "refresh": {
-      if (state.isRefreshing && !state.isLoadingFirst && !state.isLoadingNext)
+      if (state.isRefreshing && !state.isFirstLoad && !state.isFetchingNext)
         return state;
+
       return {
         ...state,
         isLoading: true,
         isRefreshing: true,
-        isLoadingFirst: false,
-        isLoadingNext: false,
+        isFirstLoad: false,
+        isFetchingNext: false,
       };
     }
     case "fetch success": {
-      const { response } = action;
       return {
         ...state,
-        params: {
-          page: state.params.page + resultsPerPage,
-          limit: resultsPerPage,
-        },
-        isEndReached:
-          response?.data?.data.length === 0 ||
-          response?.data?.data?.length < resultsPerPage,
+        meta: getNextMetaFromResponse(action.response),
+        isEndReached: getIsEndReachedFromResponse(action.response),
         isLoading: false,
         isRefreshing: false,
-        isLoadingFirst: false,
-        isLoadingNext: false,
-        data: _.castArray(response.data),
+        isFirstLoad: false,
+        isFetchingNext: false,
       };
     }
     case "fetch error": {
-      const { error } = action;
       return {
         ...state,
         isLoading: false,
         isRefreshing: false,
-        isLoadingFirst: false,
-        isLoadingNext: false,
-        error,
+        isFirstLoad: false,
+        isFetchingNext: false,
+        error: action.error,
       };
     }
   }
 };
 
-export function useQuery<EntityType extends IAnyType>(
-  getFetchFn: (store: StoreInstance) => (...args: any[]) => Promise<any>,
-  // getProcessorFn: (store: StoreInstance) => (entity: EntityType) => any,
-  getResourceMap: (store: StoreInstance) => IMSTMap<EntityType>,
-  deps = []
+export function useQuery<ResourceModel extends IAnyModelType>(
+  resolver: (
+    store: StoreInstance
+  ) => {
+    query: (...args: any[]) => any;
+    resourceMap: IMSTMap<ResourceModel>;
+    refList?: RefListInstance<ResourceModel>;
+  },
+  deps: any[] = []
 ) {
   const store = useStore();
-  const [state, dispatch] = useReducer(reducer, initialState);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchListFn = useMemo(() => getFetchFn(store), [store, ...deps]);
-  const resourceMap = getResourceMap(store);
-  // const processorFn = getProcessorFn(store);
-  const EntityModel = getChildType(resourceMap);
-  const dataList = useMemo(() => {
-    const dataList = types
-      .array(
-        types.safeReference<EntityType>(EntityModel as EntityType, {
-          acceptsUndefined: false,
-          get: (id) => resourceMap.get(id as string),
-          set: (e) => e.id,
-        })
-      )
-      .create();
-    unprotect(dataList);
-    return dataList;
-  }, [EntityModel, resourceMap]);
-  const fetchFirst = useCallback(() => {
-    const maybePromise = fetchListFn(initialState.params);
-    const isValid = maybePromise && maybePromise.then;
-    if (!isValid) return;
-    dispatch({ type: "fetch first" });
-    (maybePromise as Promise<any>)
-      .then((response) => {
-        runInAction(() => {
-          dataList.replace(_.castArray(response.data.data).map((e) => e.id));
-          dispatch({ type: "fetch success", response });
-        });
-      })
-      .catch((error) => {
-        console.warn("error in use query (fetch first)", error);
-        dispatch({ type: "fetch error", error });
-      });
-  }, [dataList, fetchListFn]);
+  const context = useMemo(() => resolver(store), deps);
+  const { query, resourceMap } = context;
+  const isFetchListFnReady = typeof query === "function";
 
-  const fetchNext = useCallback(() => {
-    if (state.isEndReached || state.isLoadingNext) {
+  const [state, dispatch] = useReducer(
+    reducer,
+    isFetchListFnReady
+      ? initialState
+      : { ...initialState, isLoading: false, isFirstLoad: false }
+  );
+
+  const localRefList = useMemo(() => {
+    if (context.refList) return;
+
+    const Resource = getChildType(resourceMap) as ResourceModel;
+    const refListName = "RefList_" + Math.random();
+    const refList = createRefList(refListName, Resource, {
+      get: (id) => resourceMap.get(id.toString()),
+      set: (e) => e.id,
+    }).create();
+
+    return refList;
+  }, [context.refList, resourceMap]);
+
+  const refList = context.refList ?? localRefList;
+
+  const fetchFirst = useCallback(async () => {
+    if (!isFetchListFnReady) return;
+    const promise = query(initialState.meta);
+    if (!isPromise(promise)) {
+      // this clears the loading state when response fetchFn isn't ready
+      // example: search term is to short so we get null from context.query;
+      dispatch({ type: "fetch success", response: {} });
       return;
     }
 
-    const maybePromise = fetchListFn(state.params);
-    const isValid = maybePromise && maybePromise.then;
-    if (!isValid) return;
+    dispatch({ type: "fetch first" });
+    try {
+      const response = await promise;
+      runInAction(() => {
+        refList.replace(
+          _.castArray(getResourceListFromResponse(response)).map((e) => e.id)
+        );
+        dispatch({ type: "fetch success", response });
+      });
+    } catch (error) {
+      console.warn("error in useQuery::fetchFirst", error);
+      dispatch({ type: "fetch error", error });
+    }
+  }, [refList, query, isFetchListFnReady]);
+
+  const fetchNext = useCallback(async () => {
+    if (state.isEndReached || state.isFetchingNext) return;
+    if (!isFetchListFnReady) return;
+
+    const promise = query(state.meta);
+    if (!isPromise(promise)) return;
 
     dispatch({ type: "fetch next" });
-    (maybePromise as Promise<any>)
-      .then((response) => {
-        runInAction(() => {
-          for (const e of _.castArray(response.data.data)) {
-            dataList.push(e.id);
-          }
-          dispatch({ type: "fetch success", response });
-        });
-      })
-      .catch((error) => {
-        console.warn("error in use query (fetch next)", error);
-        dispatch({ type: "fetch error", error });
+    try {
+      const response = await promise;
+      runInAction(() => {
+        for (const e of _.castArray(getResourceListFromResponse(response))) {
+          refList.push(e.id);
+        }
+        dispatch({ type: "fetch success", response });
       });
+    } catch (error) {
+      console.warn("error in useQuery::fetchNext", error);
+      dispatch({ type: "fetch error", error });
+    }
   }, [
-    dataList,
-    fetchListFn,
+    refList,
+    query,
+    isFetchListFnReady,
     state.isEndReached,
-    state.isLoadingNext,
-    state.params,
+    state.isFetchingNext,
+    state.meta,
   ]);
 
-  const refresh = useCallback(() => {
-    const maybePromise = fetchListFn(initialState.params);
-    const isValid = maybePromise && maybePromise.then;
-    if (!isValid) return;
+  const refresh = useCallback(async () => {
+    if (!isFetchListFnReady) return;
+    const promise = query(initialState.meta);
+    if (!isPromise(promise)) return;
 
     dispatch({ type: "refresh" });
-    (maybePromise as Promise<any>)
-      .then((response) => {
-        runInAction(() => {
-          dataList.replace(_.castArray(response.data.data).map((e) => e.id));
-          dispatch({ type: "fetch success", response });
-        });
-      })
-      .catch((error) => {
-        console.warn("error in use query (refresh)", error);
-        dispatch({ type: "fetch error", error });
+    try {
+      const response = await promise;
+      runInAction(() => {
+        refList.replace(
+          _.castArray(getResourceListFromResponse(response)).map((e) => e.id)
+        );
+        dispatch({ type: "fetch success", response });
       });
-  }, [dataList, fetchListFn]);
+    } catch (error) {
+      console.warn("error in useQuery::refresh", error);
+      dispatch({ type: "fetch error", error });
+    }
+  }, [refList, query, isFetchListFnReady]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchFirst();
   }, [fetchFirst]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const dataListArray = useMemo(() => dataList.toJS(), [dataList.toJS()]);
-
-  const flatListProps = {
-    data: dataListArray,
-    extraData: dataList.map((e) => e.id).join(":"),
-    refreshing: state.isRefreshing,
-    onRefresh: refresh,
-    onEndReached: fetchNext,
-    ListFooterComponent: (
-      <View style={{ height: 96 }} centerContent>
-        {state.isLoadingNext && <Spinner />}
-      </View>
-    ),
-  };
-  // // eslint-disable-next-line
-  // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.data changed"), [flatListProps.data]);
-  // // eslint-disable-next-line
-  // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.extraData changed"), [flatListProps.extraData]);
-  // // eslint-disable-next-line
-  // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.refreshing changed"), [flatListProps.refreshing]);
-  // // eslint-disable-next-line
-  // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.onRefresh changed"), [flatListProps.onRefresh]);
-  // // eslint-disable-next-line
-  // useMemo(() => void console.log(Math.random().toFixed(3), "flatListProps.onEndReached changed"), [flatListProps.onEndReached]);
-
   return {
-    ...state,
-    data: dataList,
+    meta: state.meta,
+    isLoading: state.isLoading,
+    isRefreshing: state.isRefreshing,
+    isFirstLoad: state.isFirstLoad,
+    isFetchingNext: state.isFetchingNext,
+    isEndReached: state.isEndReached,
+    data: refList.array,
+    fetch,
     fetchFirst,
     fetchNext,
     refresh,
-    flatListProps,
+    flatListProps: {
+      data: refList.array,
+      extraData: refList.map((e) => e.id).join(":") as string,
+      refreshing: state.isRefreshing,
+      onRefresh: refresh,
+      onEndReached: fetchNext,
+    },
   };
 }

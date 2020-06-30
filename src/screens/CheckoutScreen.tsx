@@ -35,8 +35,16 @@ export const CheckoutScreen = observer(() => {
     if (!shouldProceed) return;
     try {
       await store.cartStore.confirmOrder();
-      alert("Success", "Your order is on the way!");
       navigation.popToTop();
+
+      alert("Success", "Your order is on the way!", [
+        {
+          text: "Dismiss",
+          onPress() {
+            navigation.navigate("MyOrderListScreen");
+          },
+        },
+      ]);
     } catch (error) {
       alert("Error", `Something went wrong:\n${error.message}`);
       console.warn(error);
@@ -88,7 +96,7 @@ export const CheckoutScreen = observer(() => {
                 </Text>
               </View>
 
-              {context.cartItems.map((cartItem, index) => {
+              {context.cartItems.map((cartItem) => {
                 return (
                   <View
                     key={cartItem.product.id}
@@ -98,10 +106,10 @@ export const CheckoutScreen = observer(() => {
                     paddingHorizontalMedium
                     paddingVerticalSmall
                     style={{
-                      backgroundColor:
-                        index % 2
-                          ? constants.colorBackgroundThemeHard
-                          : constants.colorBackgroundThemeHarder,
+                      backgroundColor: constants.colorBackgroundThemeHard,
+                      // index % 2
+                      //   ? constants.colorBackgroundThemeHard
+                      //   : constants.colorBackgroundThemeHarder,
                     }}
                   >
                     <Text style={{ flex: 3 }}>{cartItem.product.name}</Text>

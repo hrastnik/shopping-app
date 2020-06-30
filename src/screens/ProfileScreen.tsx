@@ -8,9 +8,12 @@ import { constants } from "~/style";
 import { Spacer } from "~/components/Spacer";
 import { useStore } from "~/mobx/useStore";
 import { MeasureLayout } from "~/components/MeasureLayout";
+import { Button } from "~/components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export const ProfileScreen = observer(() => {
   const store = useStore();
+  const navigation = useNavigation();
   const user = store.authStore.activeUser;
 
   if (!user) {
@@ -78,6 +81,13 @@ export const ProfileScreen = observer(() => {
         )}
 
         <Spacer large />
+
+        <Button
+          title="MY ORDERS"
+          onPress={() => {
+            navigation.navigate("MyOrderListScreen");
+          }}
+        />
 
         {/* <Text weightLight>Account created</Text>
         <Text weightBold>{user.created_at.fromNow()}</Text> */}
