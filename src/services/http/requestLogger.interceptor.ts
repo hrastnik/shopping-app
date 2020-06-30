@@ -1,4 +1,7 @@
+import moment from "moment";
+
 export function requestLogger(config) {
+  const timestamp = moment().format("HH:mm:ss");
   const lines = [];
 
   const { url, data, method, params = {} } = config;
@@ -39,7 +42,9 @@ export function requestLogger(config) {
   pretty.push("");
 
   console.groupCollapsed(
-    `> ${method.toUpperCase()} ${url.replace(config.baseURL, "") + queryParams}`
+    `> ${timestamp} ${method.toUpperCase()} ${
+      url.replace(config.baseURL, "") + queryParams
+    }`
   );
   console.log(pretty.join("\n"));
   console.groupEnd();
