@@ -7,13 +7,13 @@ import { observer } from "mobx-react";
 import { useStore } from "~/mobx/useStore";
 import { Header } from "~/components/Header";
 import { LoginScreen } from "~/screens/LoginScreen";
-import { SignUpScreen } from "~/screens/SignUpScreen";
+import { CreateAccountScreen } from "~/screens/CreateAccountScreen";
 import { RegionListScreen } from "~/screens/RegionListScreen";
 import { ShopListScreen } from "~/screens/ShopListScreen";
 import { ProductListScreen } from "~/screens/ProductListScreen";
 import { ProductDetailsScreen } from "~/screens/ProductDetailsScreen";
 import { ProfileScreen } from "~/screens/ProfileScreen";
-import { ProfileEditScreen } from "~/screens/ProfileEditScreen";
+import { UpdateAccountScreen } from "~/screens/UpdateAccountScreen";
 import { CategoryListScreen } from "~/screens/CategoryListScreen";
 import { FavoriteProductListScreen } from "~/screens/FavoriteProductListScreen";
 import { CartScreen } from "~/screens/CartScreen";
@@ -41,8 +41,8 @@ const AuthStack = () => {
         options={{ headerRight: undefined, title: "Login" }}
       />
       <Stack.Screen
-        name="SignUpScreen"
-        component={SignUpScreen}
+        name="CreateAccountScreen"
+        component={CreateAccountScreen}
         options={{ headerRight: undefined, title: "Sign Up" }}
       />
     </>
@@ -222,8 +222,8 @@ const MainStack = () => {
         }}
       />
       <Stack.Screen
-        name="ProfileEditScreen"
-        component={ProfileEditScreen}
+        name="UpdateAccountScreen"
+        component={UpdateAccountScreen}
         options={{ title: "Edit Profile" }}
       />
       <Stack.Screen

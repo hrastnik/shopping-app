@@ -41,7 +41,6 @@ export const ProductDetailsScreen = observer(() => {
 
   return (
     <Screen
-      preventScroll={false}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}

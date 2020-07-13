@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import { FlatList, StyleSheet, ListRenderItem } from "react-native";
 
-import { Screen } from "~/components/Screen";
+import { ScreenNoScroll } from "~/components/Screen";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
@@ -75,7 +75,7 @@ export const CartScreen = observer(() => {
   );
 
   return (
-    <Screen preventScroll>
+    <ScreenNoScroll>
       <FlatList
         data={store.cartStore.cartProducts}
         numColumns={2}
@@ -136,6 +136,6 @@ export const CartScreen = observer(() => {
           }}
         />
       </View>
-    </Screen>
+    </ScreenNoScroll>
   );
 });

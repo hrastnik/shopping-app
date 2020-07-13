@@ -25,7 +25,7 @@ module.exports = {
   parserOptions: {
     ecmaFeatures: { jsx: true },
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    extraFileExtensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+    extraFileExtensions: [".json"],
     project: "./tsconfig.json",
     sourceType: "module", // Allows for the use of imports
     useJSXTextNode: false

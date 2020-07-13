@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import color from "color";
 
-import { Screen } from "~/components/Screen";
+import { ScreenNoScroll } from "~/components/Screen";
 import { Image } from "~/components/Image";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
@@ -98,16 +98,16 @@ export const CategoryListScreen = observer(() => {
 
   if (query.isFirstLoad) {
     return (
-      <Screen preventScroll>
+      <ScreenNoScroll>
         <View aspectRatioOne centerContent>
           <Text>Loading...</Text>
         </View>
-      </Screen>
+      </ScreenNoScroll>
     );
   }
 
   return (
-    <Screen preventScroll>
+    <ScreenNoScroll>
       <FlatList
         {...query.flatListProps}
         contentContainerStyle={S.contentContainer}
@@ -116,6 +116,6 @@ export const CategoryListScreen = observer(() => {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
       />
-    </Screen>
+    </ScreenNoScroll>
   );
 });

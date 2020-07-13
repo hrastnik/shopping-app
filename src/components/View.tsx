@@ -1,6 +1,6 @@
+import { View as RNView, ViewProps as RNViewProps } from "react-native";
 import { withLayoutProps } from "~/utils/withLayoutProps";
-import { View as RNView } from "react-native";
 
 export type View = typeof View;
-export const View = withLayoutProps(RNView);
+export const View = withLayoutProps<RNView, RNViewProps>(RNView);
 export type ViewProps = React.ComponentProps<View>;

@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { FlatList, StyleSheet, ListRenderItem } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Screen } from "~/components/Screen";
+import { ScreenNoScroll } from "~/components/Screen";
 import { TouchableOpacity } from "~/components/TouchableOpacity";
 import { Image } from "~/components/Image";
 import { View } from "~/components/View";
@@ -74,22 +74,22 @@ export const ShopListScreen = observer(() => {
 
   if (query.isFirstLoad) {
     return (
-      <Screen preventScroll>
+      <ScreenNoScroll>
         <View aspectRatioOne centerContent>
           <Text>Loading...</Text>
         </View>
-      </Screen>
+      </ScreenNoScroll>
     );
   }
 
   return (
-    <Screen preventScroll>
+    <ScreenNoScroll>
       <FlatList
         {...query.flatListProps}
         style={S.flex}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
       />
-    </Screen>
+    </ScreenNoScroll>
   );
 });

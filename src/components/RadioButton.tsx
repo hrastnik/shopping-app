@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native";
 
 import { Icon } from "~/components/Icon";
 import { RadioGroupContext } from "~/components/RadioGroup";
-import { View } from "~/components/View";
+import { View, ViewProps } from "~/components/View";
 
 import { constants as C } from "~/style";
 
@@ -11,10 +11,10 @@ interface RadioButtonProps<T> {
   size?: number;
   value: T;
   children?: ReactNode;
-  contentContainerStyle?: object | undefined;
+  contentContainerStyle?: ViewProps["style"];
 }
 
-function RadioButton<T>({
+export function RadioButton<T>({
   value,
   size = 28,
   contentContainerStyle,
@@ -39,5 +39,3 @@ function RadioButton<T>({
     </TouchableOpacity>
   );
 }
-
-export { RadioButton };

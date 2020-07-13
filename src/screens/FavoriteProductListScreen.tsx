@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { FlatList, StyleSheet, ListRenderItem } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Screen } from "~/components/Screen";
+import { ScreenNoScroll } from "~/components/Screen";
 import { useStore } from "~/mobx/useStore";
 import { keyExtractor } from "~/utils/keyExtractor";
 import { ProductInstance } from "~/mobx/entities/product/Product";
@@ -44,7 +44,7 @@ export const FavoriteProductListScreen = observer(() => {
   );
 
   return (
-    <Screen preventScroll>
+    <ScreenNoScroll>
       <FlatList
         data={store.uiStore.favoriteProductList}
         numColumns={2}
@@ -60,6 +60,6 @@ export const FavoriteProductListScreen = observer(() => {
           </View>
         }
       />
-    </Screen>
+    </ScreenNoScroll>
   );
 });

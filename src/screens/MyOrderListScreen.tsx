@@ -1,7 +1,7 @@
 import React from "react";
 
 import { observer } from "mobx-react";
-import { Screen } from "~/components/Screen";
+import { ScreenNoScroll } from "~/components/Screen";
 import { Text } from "~/components/Text";
 import { View } from "~/components/View";
 import { useQuery } from "~/mobx/useQuery";
@@ -23,7 +23,7 @@ export const MyOrderListScreen = observer(() => {
   });
 
   return (
-    <Screen preventScroll>
+    <ScreenNoScroll>
       <FlatList
         {...query.flatListProps}
         keyExtractor={keyExtractor}
@@ -72,6 +72,6 @@ export const MyOrderListScreen = observer(() => {
           );
         }}
       />
-    </Screen>
+    </ScreenNoScroll>
   );
 });

@@ -45,6 +45,8 @@ export const AuthStore = types
       afterLogin: flow(function* (): any {
         const root = getRoot(self);
 
+        yield delay(1);
+
         // Prefetch categories
         yield root.categoryStore.readCategoryList({});
         for (const category of root.categoryStore.map.values()) {
@@ -215,20 +217,18 @@ export const AuthStore = types
         });
 
         // Refresh access token every 30 seconds
-        when(
-          () => Boolean(self.token && self.activeUser),
-          () => {
+        autorun(() => {
+          if (self.isLoggedIn) {
             const intervalId = setInterval(() => {
               self.refreshToken();
             }, 30000);
+
             when(
-              () => !self.token,
-              () => {
-                clearInterval(intervalId);
-              }
+              () => self.isLoggedIn === false,
+              () => clearInterval(intervalId)
             );
           }
-        );
+        });
 
         if (self.token) {
           try {

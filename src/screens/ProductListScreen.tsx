@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import { FlatList, StyleSheet, ListRenderItem } from "react-native";
 
-import { Screen } from "~/components/Screen";
+import { ScreenNoScroll } from "~/components/Screen";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
@@ -67,16 +67,16 @@ export const ProductListScreen = observer(() => {
 
   if (query.isFirstLoad) {
     return (
-      <Screen preventScroll>
+      <ScreenNoScroll>
         <View aspectRatioOne centerContent>
           <Text>Loading...</Text>
         </View>
-      </Screen>
+      </ScreenNoScroll>
     );
   }
 
   return (
-    <Screen preventScroll>
+    <ScreenNoScroll>
       <FlatList
         {...query.flatListProps}
         numColumns={2}
@@ -86,6 +86,6 @@ export const ProductListScreen = observer(() => {
         renderItem={renderItem}
         onEndReachedThreshold={0.1}
       />
-    </Screen>
+    </ScreenNoScroll>
   );
 });

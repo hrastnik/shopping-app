@@ -3,11 +3,12 @@ import "mobx-react-lite/batchingForReactNative";
 
 import { enableScreens } from "react-native-screens";
 
-import { StatusBar, Platform, StyleSheet, View, Text } from "react-native";
+import { StatusBar, Platform, StyleSheet } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Provider } from "mobx-react";
 import * as Font from "expo-font";
+import { AppLoading } from "expo";
 
 import { createPersistence } from "~/services/persistence/createPersistence";
 import { createHttp } from "~/services/http/createHttp";
@@ -26,11 +27,6 @@ const S = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: constants.colorBackgroundThemeHarder,
-  },
-  flexCenterContent: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 
@@ -62,18 +58,19 @@ export function AppEntry() {
   const [isReady, setIsReady] = useState(false);
   const store = useRef(undefined);
 
-  useEffect(() => {
-    initialize().then((context) => {
-      store.current = context.store;
-      setIsReady(true);
-    });
-  }, []);
-
   if (!isReady) {
     return (
-      <View style={S.flexCenterContent}>
-        <Text>Loading...</Text>
-      </View>
+      <AppLoading
+        startAsync={() =>
+          initialize().then((context) => {
+            store.current = context.store;
+          })
+        }
+        onFinish={() => {
+          setIsReady(true);
+        }}
+        onError={console.warn}
+      />
     );
   }
 

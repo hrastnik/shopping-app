@@ -6,6 +6,8 @@ const window = Dimensions.get("window");
 export const windowWidth = window.width;
 export const windowHeight = window.height;
 
+export const colorTransparent = "transparent";
+
 export const colorBackgroundTheme = "#587f8d";
 export const colorBackgroundAccent = "#ef8f79";
 export const colorBackgroundLight = "#f5fcff";

@@ -9,7 +9,7 @@ export const EditProfileButton = observer(() => {
   const navigation = useNavigation();
 
   const handleEditPress = useCallback(async () => {
-    navigation.navigate("ProfileEditScreen");
+    navigation.navigate("UpdateAccountScreen");
   }, [navigation]);
 
   return (

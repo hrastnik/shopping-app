@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ScrollView as RNScrollView } from "react-native";
 
 import { ViewProps, View } from "~/components/View";
 import { ScrollViewProps, ScrollView } from "~/components/ScrollView";
@@ -30,15 +30,11 @@ interface ScreenCommonProps {
   colorBackgroundDarkLighter?: boolean;
 }
 
-type ScreenProps = { preventScroll?: boolean } & ViewProps &
-  ScrollViewProps &
-  ScreenCommonProps;
-
+export type ScreenProps = ScreenCommonProps & ScrollViewProps;
 export type Screen = typeof Screen;
-export const Screen = React.forwardRef<ScrollView | View, ScreenProps>(
+export const Screen = React.forwardRef<RNScrollView, ScreenProps>(
   (
     {
-      preventScroll = false,
       colorBackgroundTheme,
       colorBackgroundAccent,
       colorBackgroundLight,
@@ -57,40 +53,99 @@ export const Screen = React.forwardRef<ScrollView | View, ScreenProps>(
     },
     ref
   ) => {
-    const screenStyle = [S.base, style];
-
-    const resolveBackgroundColor = () => {
-      if (colorBackgroundTheme) return C.colorBackgroundTheme;
-      if (colorBackgroundAccent) return C.colorBackgroundAccent;
-      if (colorBackgroundLight) return C.colorBackgroundLight;
-      if (colorBackgroundDark) return C.colorBackgroundDark;
-      if (colorBackgroundDanger) return C.colorBackgroundDanger;
-      if (colorBackgroundThemeSoft) return C.colorBackgroundThemeSoft;
-      if (colorBackgroundThemeSofter) return C.colorBackgroundThemeSofter;
-      if (colorBackgroundThemeHard) return C.colorBackgroundThemeHard;
-      if (colorBackgroundThemeHarder) return C.colorBackgroundThemeHarder;
-      if (colorBackgroundLightDark) return C.colorBackgroundLightDark;
-      if (colorBackgroundLightDarker) return C.colorBackgroundLightDarker;
-      if (colorBackgroundDarkLight) return C.colorBackgroundDarkLight;
-      if (colorBackgroundDarkLighter) return C.colorBackgroundDarkLighter;
-      return C.colorBackgroundThemeHard;
-    };
-
-    const backgroundColor = resolveBackgroundColor();
-
-    if (preventScroll === true)
-      return (
-        <View ref={ref} style={[screenStyle, { backgroundColor }]} {...props} />
-      );
+    const backgroundColor = colorBackgroundTheme
+      ? C.colorBackgroundTheme
+      : colorBackgroundAccent
+      ? C.colorBackgroundAccent
+      : colorBackgroundLight
+      ? C.colorBackgroundLight
+      : colorBackgroundDark
+      ? C.colorBackgroundDark
+      : colorBackgroundDanger
+      ? C.colorBackgroundDanger
+      : colorBackgroundThemeSoft
+      ? C.colorBackgroundThemeSoft
+      : colorBackgroundThemeSofter
+      ? C.colorBackgroundThemeSofter
+      : colorBackgroundThemeHard
+      ? C.colorBackgroundThemeHard
+      : colorBackgroundThemeHarder
+      ? C.colorBackgroundThemeHarder
+      : colorBackgroundLightDark
+      ? C.colorBackgroundLightDark
+      : colorBackgroundLightDarker
+      ? C.colorBackgroundLightDarker
+      : colorBackgroundDarkLight
+      ? C.colorBackgroundDarkLight
+      : colorBackgroundDarkLighter
+      ? C.colorBackgroundDarkLighter
+      : C.colorBackgroundThemeHard;
 
     return (
       <ScrollView
         ref={ref}
-        style={[screenStyle, { backgroundColor }]}
+        style={[S.base, { backgroundColor }, style]}
         contentContainerStyle={[S.contentContainer, { backgroundColor }]}
         keyboardShouldPersistTaps="handled"
         {...props}
       />
+    );
+  }
+);
+
+export type ScreenNoScrollProps = ScreenCommonProps & ViewProps;
+export type ScreenNoScroll = typeof ScreenNoScroll;
+export const ScreenNoScroll = React.forwardRef<View, ScreenNoScrollProps>(
+  (
+    {
+      colorBackgroundTheme,
+      colorBackgroundAccent,
+      colorBackgroundLight,
+      colorBackgroundDark,
+      colorBackgroundDanger,
+      colorBackgroundThemeSoft,
+      colorBackgroundThemeSofter,
+      colorBackgroundThemeHard,
+      colorBackgroundThemeHarder,
+      colorBackgroundLightDark,
+      colorBackgroundLightDarker,
+      colorBackgroundDarkLight,
+      colorBackgroundDarkLighter,
+      style,
+      ...props
+    },
+    ref
+  ) => {
+    const backgroundColor = colorBackgroundTheme
+      ? C.colorBackgroundTheme
+      : colorBackgroundAccent
+      ? C.colorBackgroundAccent
+      : colorBackgroundLight
+      ? C.colorBackgroundLight
+      : colorBackgroundDark
+      ? C.colorBackgroundDark
+      : colorBackgroundDanger
+      ? C.colorBackgroundDanger
+      : colorBackgroundThemeSoft
+      ? C.colorBackgroundThemeSoft
+      : colorBackgroundThemeSofter
+      ? C.colorBackgroundThemeSofter
+      : colorBackgroundThemeHard
+      ? C.colorBackgroundThemeHard
+      : colorBackgroundThemeHarder
+      ? C.colorBackgroundThemeHarder
+      : colorBackgroundLightDark
+      ? C.colorBackgroundLightDark
+      : colorBackgroundLightDarker
+      ? C.colorBackgroundLightDarker
+      : colorBackgroundDarkLight
+      ? C.colorBackgroundDarkLight
+      : colorBackgroundDarkLighter
+      ? C.colorBackgroundDarkLighter
+      : C.colorBackgroundThemeHard;
+
+    return (
+      <View ref={ref} style={[S.base, { backgroundColor }, style]} {...props} />
     );
   }
 );

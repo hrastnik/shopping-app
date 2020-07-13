@@ -46,7 +46,7 @@ export const ProfileScreen = observer(() => {
         </View>
       </View>
 
-      <View paddingMedium>
+      <View paddingHorizontalExtraLarge>
         <Text weightLight>Logged in as:</Text>
         <Text weightBold>
           {user.firstName} {user.lastName}
@@ -80,7 +80,7 @@ export const ProfileScreen = observer(() => {
           </>
         )}
 
-        <Spacer large />
+        <Spacer extraLarge />
 
         <Button
           title="MY ORDERS"
@@ -88,9 +88,6 @@ export const ProfileScreen = observer(() => {
             navigation.navigate("MyOrderListScreen");
           }}
         />
-
-        {/* <Text weightLight>Account created</Text>
-        <Text weightBold>{user.created_at.fromNow()}</Text> */}
       </View>
     </Screen>
   );

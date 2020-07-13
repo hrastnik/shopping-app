@@ -57,11 +57,12 @@ export interface WithLayoutProps {
   children?: ReactNode;
 }
 
-export function withLayoutProps<Props extends { style?: any }>(
-  Component: React.ComponentType<Props>
-) {
+export function withLayoutProps<
+  OriginalComponent,
+  Props extends { style?: any }
+>(Component: React.ComponentType<Props>) {
   type NewProps = Omit<Props, keyof WithLayoutProps> & WithLayoutProps;
-  return forwardRef<typeof Component, NewProps>(
+  return forwardRef<OriginalComponent, NewProps>(
     (
       {
         paddingSmall,

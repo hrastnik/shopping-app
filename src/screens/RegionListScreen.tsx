@@ -9,7 +9,7 @@ import {
 import color from "color";
 import { useNavigation } from "@react-navigation/native";
 
-import { Screen } from "~/components/Screen";
+import { ScreenNoScroll } from "~/components/Screen";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
 import { useStore } from "~/mobx/useStore";
@@ -92,16 +92,16 @@ export const RegionListScreen = observer(() => {
 
   if (query.isFirstLoad) {
     return (
-      <Screen preventScroll>
+      <ScreenNoScroll>
         <View aspectRatioOne centerContent>
           <Text>Loading...</Text>
         </View>
-      </Screen>
+      </ScreenNoScroll>
     );
   }
 
   return (
-    <Screen preventScroll>
+    <ScreenNoScroll>
       <FlatList
         {...query.flatListProps}
         style={S.flex}
@@ -113,6 +113,6 @@ export const RegionListScreen = observer(() => {
         }
         renderItem={renderItem}
       />
-    </Screen>
+    </ScreenNoScroll>
   );
 });

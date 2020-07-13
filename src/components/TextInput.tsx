@@ -8,15 +8,23 @@ import {
 } from "react-native";
 
 import { constants as C } from "~/style";
+import { Spacer } from "./Spacer";
+import { View } from "./View";
+import { Text } from "./Text";
 
 const S = StyleSheet.create({
   baseStyle: {
+    flex: 1,
     margin: 0,
     backgroundColor: C.colorBackgroundLightDark,
   },
 });
 
 export interface TextInputProps extends RNTextInputProps {
+  label: string;
+  caption: string;
+  error;
+
   sizeExtraSmall?: boolean;
   sizeSmall?: boolean;
   sizeMedium?: boolean;
@@ -42,6 +50,10 @@ export type TextInput = typeof TextInput;
 export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
   (
     {
+      label,
+      caption,
+      error,
+
       sizeExtraSmall,
       sizeSmall,
       sizeMedium,
@@ -103,57 +115,69 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
     }
 
     return (
-      <RNTextInput
-        ref={ref}
-        selectionColor={C.colorBackgroundThemeSofter}
-        style={[
-          S.baseStyle,
-          { textAlignVertical: "top" },
-          Platform.select({
-            ios: sizeSmall
-              ? {
-                  lineHeight: 17,
-                  paddingTop: 2,
-                  paddingBottom: 6,
-                  paddingHorizontal: C.spacingSmall,
-                }
-              : {
-                  lineHeight: 20,
-                  paddingTop: 9,
-                  paddingBottom: 9,
-                  paddingHorizontal: C.spacingMedium,
-                },
-            android: sizeSmall
-              ? {
-                  paddingHorizontal: C.spacingSmall,
-                  lineHeight: 24,
-                  textAlignVertical: "center",
-                  paddingBottom: 0,
-                  margin: 0,
-                  marginTop: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                  marginLeft: 0,
-                  maxHeight: 24,
-                }
-              : {
-                  lineHeight: 20,
-                  paddingTop: 9,
-                  paddingBottom: 0,
-                  paddingHorizontal: C.spacingMedium,
-                },
-          }),
-          {
-            borderRadius,
-            fontSize,
-            color,
-            fontWeight,
-            fontFamily,
-          },
-          style,
-        ]}
-        {...props}
-      />
+      <View>
+        <Text sizeSmall>{label}</Text>
+        <Spacer small />
+        <RNTextInput
+          ref={ref}
+          selectionColor={C.colorBackgroundThemeSofter}
+          style={[
+            S.baseStyle,
+            { textAlignVertical: "top" },
+            error
+              ? { borderColor: C.colorTextDanger, borderWidth: 1 }
+              : { borderColor: C.colorTransparent, borderWidth: 1 },
+            Platform.select({
+              ios: sizeSmall
+                ? {
+                    lineHeight: 17,
+                    paddingTop: 2,
+                    paddingBottom: 6,
+                    paddingHorizontal: C.spacingSmall,
+                  }
+                : {
+                    lineHeight: 20,
+                    paddingTop: 9,
+                    paddingBottom: 9,
+                    paddingHorizontal: C.spacingMedium,
+                  },
+              android: sizeSmall
+                ? {
+                    paddingHorizontal: C.spacingSmall,
+                    lineHeight: 24,
+                    textAlignVertical: "center",
+                    paddingBottom: 0,
+                    margin: 0,
+                    marginTop: 0,
+                    marginRight: 0,
+                    marginBottom: 0,
+                    marginLeft: 0,
+                    maxHeight: 24,
+                  }
+                : {
+                    lineHeight: 20,
+                    paddingTop: 9,
+                    paddingBottom: 0,
+                    paddingHorizontal: C.spacingMedium,
+                  },
+            }),
+            {
+              borderRadius,
+              fontSize,
+              color,
+              fontWeight,
+              fontFamily,
+            },
+            style,
+          ]}
+          {...props}
+        />
+        <Spacer small />
+
+        <Text sizeSmall colorDanger={error}>
+          This is an error{caption}
+        </Text>
+      </View>
     );
   }
 );
