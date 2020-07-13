@@ -1,5 +1,9 @@
 import React, { ReactNode } from "react";
-import { StyleSheet, ScrollView as RNScrollView } from "react-native";
+import {
+  StyleSheet,
+  ScrollView as RNScrollView,
+  View as RNView,
+} from "react-native";
 
 import { ViewProps, View } from "~/components/View";
 import { ScrollViewProps, ScrollView } from "~/components/ScrollView";
@@ -95,7 +99,7 @@ export const Screen = React.forwardRef<RNScrollView, ScreenProps>(
 
 export type ScreenNoScrollProps = ScreenCommonProps & ViewProps;
 export type ScreenNoScroll = typeof ScreenNoScroll;
-export const ScreenNoScroll = React.forwardRef<View, ScreenNoScrollProps>(
+export const ScreenNoScroll = React.forwardRef<RNView, ScreenNoScrollProps>(
   (
     {
       colorBackgroundTheme,

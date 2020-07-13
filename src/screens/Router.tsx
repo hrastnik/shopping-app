@@ -72,7 +72,6 @@ const TabNavigator = () => {
         activeBackgroundColor: C.colorBackgroundTheme,
         inactiveBackgroundColor: C.colorBackgroundTheme,
         showLabel: false,
-        showIcon: true,
         style: { borderTopWidth: 0 },
         // labelStyle :,
         // labelPosition :,

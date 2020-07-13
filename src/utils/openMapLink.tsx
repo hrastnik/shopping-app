@@ -1,6 +1,6 @@
-import { Platform, Linking } from "~core/components";
+import { Platform, Linking } from "react-native";
 
-function openMapLink({
+export function openMapLink({
   latitude,
   longitude,
   formattedAddress = "Unknown Location",
@@ -14,5 +14,3 @@ function openMapLink({
     Linking.openURL(resolvedScheme);
   }
 }
-
-export { openMapLink };

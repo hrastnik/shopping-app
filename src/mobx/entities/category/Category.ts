@@ -26,14 +26,14 @@ export const Category = types
         return yield root.categoryStore.readCategory(self.id, params);
       }),
 
-      update: flow(function* (params): any {
-        const root = getRoot(self);
-        return yield root.categoryStore.updateCategory(self.id, params);
-      }),
+      // update: flow(function* (params): any {
+      //   const root = getRoot(self);
+      //   return yield root.categoryStore.updateCategory(self.id, params);
+      // }),
 
-      delete: flow(function* (params): any {
-        const root = getRoot(self);
-        return yield root.categoryStore.deleteCategory(self.id, params);
-      }),
+      // delete: flow(function* (params): any {
+      //   const root = getRoot(self);
+      //   return yield root.categoryStore.deleteCategory(self.id, params);
+      // }),
     };
   });

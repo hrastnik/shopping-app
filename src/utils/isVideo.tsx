@@ -1,4 +1,4 @@
-import { Platform } from "~core/components";
+import { Platform } from "react-native";
 import _ from "lodash";
 
 const supportedExtensions = Platform.select({
@@ -6,7 +6,7 @@ const supportedExtensions = Platform.select({
   android: ["mp4", "3gp", "webm", "mov"],
 });
 
-function isVideo(media) {
+export function isVideo(media) {
   if (typeof media !== "string") return false;
 
   const ext = _.last(media.split("."));
@@ -15,5 +15,3 @@ function isVideo(media) {
 
   return false;
 }
-
-export { isVideo };
