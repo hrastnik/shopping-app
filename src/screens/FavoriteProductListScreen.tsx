@@ -14,6 +14,7 @@ import {
 } from "~/components/ProductListItem";
 import { View } from "~/components/View";
 import { Text } from "~/components/Text";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -25,7 +26,9 @@ const S = StyleSheet.create({
 });
 
 export const FavoriteProductListScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<
+    ScreenNavigationProp<"Tab.FavoriteProductListScreen">
+  >();
   const store = useStore();
 
   const handlePress: ProductListItemProps["onPress"] = useCallback(

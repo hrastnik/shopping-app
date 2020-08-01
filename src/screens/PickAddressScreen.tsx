@@ -5,11 +5,12 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Screen } from "~/components/Screen";
 import { useStore } from "~/mobx/useStore";
 import { PickAddressForm } from "~/features/pick-address-form/pick-address-form.component";
+import { ScreenNavigationProp, ScreenRouteProp } from "./RouterTypes";
 
 export const PickAddressScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ScreenNavigationProp<"PickAddressScreen">>();
   const store = useStore();
-  const route = useRoute();
+  const route = useRoute<ScreenRouteProp<"PickAddressScreen">>();
   const onAccept = route.params?.onAccept;
 
   return (

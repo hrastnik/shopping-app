@@ -4,9 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 
 import { constants as C } from "~/style";
 import { IconButton } from "./IconButton";
+import { ScreenNavigationProp } from "~/screens/RouterTypes";
 
 export const EditProfileButton = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ScreenNavigationProp<"Tab.ProfileScreen">>();
 
   const handleEditPress = useCallback(async () => {
     navigation.navigate("UpdateAccountScreen");

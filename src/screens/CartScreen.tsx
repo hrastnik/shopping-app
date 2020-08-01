@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import { FlatList, StyleSheet, ListRenderItem } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { ScreenNoScroll } from "~/components/Screen";
 import { View } from "~/components/View";
@@ -10,15 +11,15 @@ import { keyExtractor } from "~/utils/keyExtractor";
 import { ProductInstance } from "~/mobx/entities/product/Product";
 import { constants as C } from "~/style";
 import { Spacer } from "~/components/Spacer";
-import { useNavigation } from "@react-navigation/native";
 import { Button } from "~/components/Button";
+import { useAlert } from "~/components/AlertProvider";
 import { shadow } from "~/utils/shadow";
 import { promptYesNo } from "~/utils/promptYesNo";
-import { useAlert } from "~/components/AlertProvider";
 import {
   ProductListItemProps,
   ProductListItem,
 } from "~/components/ProductListItem";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -34,7 +35,7 @@ const S = StyleSheet.create({
 });
 
 export const CartScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ScreenNavigationProp<"CartScreen">>();
   const store = useStore();
   const alert = useAlert();
 

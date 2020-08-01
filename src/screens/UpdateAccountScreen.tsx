@@ -5,9 +5,12 @@ import { useNavigation } from "@react-navigation/native";
 import { Screen } from "~/components/Screen";
 
 import { UpdateAccountForm } from "~/features/update-account-form/update-account-form.component";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 export const UpdateAccountScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<
+    ScreenNavigationProp<"UpdateAccountScreen">
+  >();
 
   return (
     <Screen>

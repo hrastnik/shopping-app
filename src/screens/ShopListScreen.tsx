@@ -14,6 +14,7 @@ import { keyExtractor } from "~/utils/keyExtractor";
 import { ShopInstance } from "~/mobx/entities/shop/Shop";
 import { constants as C } from "~/style";
 import { shadow } from "~/utils/shadow";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -28,7 +29,10 @@ const S = StyleSheet.create({
 });
 
 export const ShopListScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<
+    ScreenNavigationProp<"Tab.ShopListScreen">
+  >();
+
   const store = useStore();
 
   const regionId = store.uiStore.activeRegionId;

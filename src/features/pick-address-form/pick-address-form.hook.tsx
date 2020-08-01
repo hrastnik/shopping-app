@@ -1,30 +1,9 @@
-import {
-  useRef,
-  useCallback,
-  useState,
-  useLayoutEffect,
-  useEffect,
-} from "react";
+import { useRef, useCallback, useState, useEffect } from "react";
 import { TextInput as RNTextInput } from "react-native";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import _, { add } from "lodash";
-
-import React, { useRef } from "react";
-import { observer } from "mobx-react";
-import { TextInput as RNTextInput } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Location from "expo-location";
 import * as yup from "yup";
-
-import { Screen } from "~/components/Screen";
-import { View } from "~/components/View";
-import { Text } from "~/components/Text";
-import { useStore } from "~/mobx/useStore";
-import { Button } from "~/components/Button";
-import { Spacer } from "~/components/Spacer";
-import { TextInput } from "~/components/TextInput";
-import { Formik } from "formik";
+import _ from "lodash";
+import { useFormik } from "formik";
 
 function useDetectAddress() {
   const [address, setAddress] = useState<{ city: string; address: string }>(
@@ -104,7 +83,7 @@ export function usePickAddressForm({
   // Sync picked address
   useEffect(() => {
     const shouldSync =
-      detectedAddress !== undefined && !_.isEqual(address, values);
+      detectedAddress !== undefined && !_.isEqual(detectedAddress, values);
 
     if (shouldSync) {
       setFieldValue("address", detectAddress);

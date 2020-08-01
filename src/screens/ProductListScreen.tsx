@@ -15,6 +15,7 @@ import {
   ProductListItemProps,
   ProductListItem,
 } from "~/components/ProductListItem";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -22,7 +23,7 @@ const S = StyleSheet.create({
 });
 
 export const ProductListScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ScreenNavigationProp<"ProductListScreen">>();
   const store = useStore();
   const route = useRoute();
   const regionId = store.uiStore.activeRegionId;

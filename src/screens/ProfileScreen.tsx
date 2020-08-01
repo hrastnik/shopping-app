@@ -1,19 +1,20 @@
 import React from "react";
-
+import { useNavigation } from "@react-navigation/native";
 import { observer } from "mobx-react";
+
 import { Screen } from "~/components/Screen";
 import { Text } from "~/components/Text";
 import { View } from "~/components/View";
-import { constants } from "~/style";
-import { Spacer } from "~/components/Spacer";
-import { useStore } from "~/mobx/useStore";
 import { MeasureLayout } from "~/components/MeasureLayout";
 import { Button } from "~/components/Button";
-import { useNavigation } from "@react-navigation/native";
+import { Spacer } from "~/components/Spacer";
+import { constants } from "~/style";
+import { useStore } from "~/mobx/useStore";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 export const ProfileScreen = observer(() => {
+  const navigation = useNavigation<ScreenNavigationProp<"Tab.ProfileScreen">>();
   const store = useStore();
-  const navigation = useNavigation();
   const user = store.authStore.activeUser;
 
   if (!user) {

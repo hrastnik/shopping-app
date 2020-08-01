@@ -10,5 +10,8 @@
     "skipLibCheck": true,
     "target": "esnext",
     "resolveJsonModule": true
-  }
+  },
+  "exclude": [
+    "env.development.ts"
+  ]
 }

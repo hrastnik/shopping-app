@@ -7,9 +7,10 @@ import { Screen } from "~/components/Screen";
 import { Spacer } from "~/components/Spacer";
 
 import { LoginForm } from "~/features/login-form/login-form.component";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 export const LoginScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ScreenNavigationProp<"LoginScreen">>();
 
   return (
     <Screen>

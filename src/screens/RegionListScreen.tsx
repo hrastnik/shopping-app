@@ -19,6 +19,7 @@ import { RegionInstance } from "~/mobx/entities/region/Region";
 import { constants as C } from "~/style";
 import { shadow } from "~/utils/shadow";
 import { Image } from "~/components/Image";
+import { ScreenNavigationProp } from "./RouterTypes";
 
 const S = StyleSheet.create({
   flex: { flex: 1 },
@@ -46,7 +47,7 @@ const S = StyleSheet.create({
 });
 
 export const RegionListScreen = observer(() => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ScreenNavigationProp<"RegionListScreen">>();
   const store = useStore();
   const query = useQuery((store) => {
     return {

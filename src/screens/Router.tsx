@@ -29,8 +29,10 @@ import { LogoutButton } from "~/components/LogoutButton";
 import { FavoriteButton } from "~/components/FavoriteButton";
 import { EditProfileButton } from "~/components/EditProfileButton";
 
-const Stack = createStackNavigator();
-const Tabs = createBottomTabNavigator();
+import type { StackParamList, TabParamList } from "./RouterTypes";
+
+const Stack = createStackNavigator<StackParamList>();
+const Tabs = createBottomTabNavigator<TabParamList>();
 
 const AuthStack = () => {
   return (
@@ -186,14 +188,14 @@ const MainStack = () => {
   return (
     <>
       <Stack.Screen
-        options={{ title: "Region List", headerRight: undefined }}
-        component={RegionListScreen}
         name="RegionListScreen"
+        component={RegionListScreen}
+        options={{ title: "Region List", headerRight: undefined }}
       />
       <Stack.Screen
-        options={{ title: "Address", headerRight: undefined }}
-        component={PickAddressScreen}
         name="PickAddressScreen"
+        component={PickAddressScreen}
+        options={{ title: "Address", headerRight: undefined }}
       />
       <Stack.Screen
         name="Stack.TabNavigator"
